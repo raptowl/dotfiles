@@ -1,0 +1,17 @@
+! rxvt-unicode
+URxvt.depth: 32
+URxvt.geometry: 80x24
+URxvt.background: [75]#000000
+URxvt.foreground: #CFCFCF
+URxvt.colorIT: #87AF5F
+URxvt.colorBD: #D7D7D7
+URxvt.colorUL: #87AFD7
+URxvt.cursorColor: #7F7F7F
+URxvt.fading: 0
+URxvt.font: xft:Ricty:size=14:antialias=true
+URxvt.boldFont: xft:Ricty:bold:size=14:antialias=true
+URxvt.scrollBar: false
+URxvt.saveLines: 10000
+URxvt.cursorBlink: false
+URxvt.preeditType: OverTheSpot
+URxvt.inputMethod: fcitx
