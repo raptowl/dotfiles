@@ -1,9 +1,19 @@
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+# If not running interactively, don't do anything.
+#if [ $- != *i* ]; then
+#    return 0
+#fi
 
+DOT_PATH="$HOME/.dotfiles"
+
+# define alias.
 alias ls='ls -la --color=auto'
-PS1='[\u@\h \W]\$ '
+alias grep='grep --color'
+alias df='df -h'
+alias ps='ps --sort=start_time'
 
+# define variables.
+PS1='[\u@\h \W]\$ '
+PATH=${DOTPATH}/bin:${PATH}
 PATH=${HOME}/usr/dropbox/bin:${PATH}
 PATH=${HOME}/usr/texlive/2017/bin/x86_64-linux:${PATH}
 
