@@ -6,7 +6,11 @@ dotexclude='. .. .git LICENSE README.md bin dotmgr.sh etc lib'
 
 ############################################################
 
-if [ $# -eq 1 ]
+if [ $# -eq 0 ] # get dotfiles from dotfiles repository.
+then
+    :
+    exit 0
+elif [ $# -eq 1 ] # operate dotfiles directory.
 then
     if [ $1 = 'deploy' ] # deploy dotfiles.
     then

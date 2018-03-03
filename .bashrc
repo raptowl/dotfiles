@@ -1,10 +1,3 @@
-# If not running interactively, don't do anything.
-#if [ $- != *i* ]; then
-#    return 0
-#fi
-
-DOT_PATH="$HOME/.dotfiles"
-
 # define alias.
 alias ls='ls -la --color=auto'
 alias grep='grep --color'
