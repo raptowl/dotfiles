@@ -9,12 +9,11 @@ dottarurl='https://github.com/raptowl/dotfiles/archive/master.tar.gz'
 if [ $# -eq 0 ] # get dotfiles from github repository.
 then
     :
-    wget $dottarurl
     exit 0
 elif [ $# -ge 1 ] # operate dotfiles directory.
 then
-    if [ $1 = 'deploy' ] # deploy dotfiles.
-    then
+    case $1 in
+    'deploy' ) # deploy dotfiles.
         for i in `ls -a $dotpath`
         do
             for j in $dotexclude
@@ -31,8 +30,8 @@ then
             ln -fsv $dotpath/$i $HOME/$i
         done
         exit 0
-    elif [ $1 = 'undeploy' ] # undeploy dotfiles.
-    then
+        ;;
+    'undeploy' ) # undeploy dotfiles.
         for i in `ls -a $dotpath`
         do
             for j in $dotexclude
@@ -49,17 +48,19 @@ then
             fi
         done
         exit 0
-    elif [ $1 = 'install' ] # build software locally.
-    then
+        ;;
+    'install' ) # build software locally.
         :
         exit 0
-    elif [ $1 = 'uninstall' ] # delete built software locally.
-    then
+        ;;
+    'uninstall' ) # delete built software locally.
         :
         exit 0
-    else # if any other instructions, return error.
+        ;;
+    * ) # if any other instructions, return error.
         echo "Error: instruction $1 is not defined." 1>&2
         exit 1
-    fi
+        ;;
+    esac
 fi
 
