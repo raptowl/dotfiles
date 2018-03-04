@@ -4,11 +4,12 @@
 dotpath="$HOME/.dotfiles"
 dotexclude='. .. .git LICENSE README.md dotmgr.sh etc'
 dotgiturl='https://github.com/raptowl/dotfiles.git'
-dottarurl='github.com/raptowl/dotfiles/archive/master.tar.gz'
+dottarurl='https://github.com/raptowl/dotfiles/archive/master.tar.gz'
 
 if [ $# -eq 0 ] # get dotfiles from github repository.
 then
     :
+    wget $dottarurl
     exit 0
 elif [ $# -ge 1 ] # operate dotfiles directory.
 then
