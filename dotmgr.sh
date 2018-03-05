@@ -3,18 +3,15 @@
 # define variables.
 dotpath="$HOME/.dotfiles"
 dotexclude='. .. .git LICENSE README.md dotmgr.sh etc'
-dotgiturl='https://github.com/raptowl/dotfiles.git'
-dottarurl='https://github.com/raptowl/dotfiles/archive/master.tar.gz'
 
-if [ $# -eq 0 ] # get dotfiles from github repository.
+if [ $# -eq 0 ] # if there is no arguments, behave as a libraries for self-made commands.
 then
     :
-    exit 0
-elif [ $# -ge 1 ] # operate dotfiles directory.
+elif [ $# -ge 1 ] # if there are any arguments, operate dotfiles directory.
 then
     case $1 in
-    'deploy' ) # deploy dotfiles.
-        for i in `ls -a $dotpath`
+    'deploy' ) # put symbolic links of dotfiles to $HOME.
+        for i in $(ls -a $dotpath)
         do
             for j in $dotexclude
             do
@@ -29,10 +26,9 @@ then
             fi
             ln -fsv $dotpath/$i $HOME/$i
         done
-        exit 0
         ;;
-    'undeploy' ) # undeploy dotfiles.
-        for i in `ls -a $dotpath`
+    'undeploy' ) # remove symbolic links of dotfiles from $HOME.
+        for i in $(ls -a $dotpath)
         do
             for j in $dotexclude
             do
@@ -41,26 +37,27 @@ then
                     continue 2
                 fi
             done
-            rm -v $HOME/$i
+            if [ -h $HOME/$i ]
+            then
+                rm -v $HOME/$i
+            fi
             if [ -f $HOME/${i}.old -o -d $HOME/${i}.old ]
             then
                 mv -v $HOME/${i}.old $HOME/${i}
             fi
         done
-        exit 0
         ;;
-    'install' ) # build software locally.
+    'install' ) # build specific software.
         :
-        exit 0
         ;;
-    'uninstall' ) # delete built software locally.
+    'uninstall' ) # remove built software.
         :
-        exit 0
         ;;
-    * ) # if any other instructions, return error.
-        echo "Error: instruction $1 is not defined." 1>&2
+    * ) # if the instruction is incorrect, return error.
+        printf "Error: instruction $1 is not defined.\n" 1>&2
         exit 1
         ;;
     esac
+    exit 0
 fi
 
