@@ -15,10 +15,8 @@ else
     colorflag='-G'
     export LSCOLORS=''
 fi
-alias l="ls $colorflag"
-alias ll="ls -l $colorflag"
-alias la="ls -a $colorflag"
 alias ls="ls -la $colorflag"
+unset colorflag
 
 # define alias of the other.
 alias grep='grep --color'

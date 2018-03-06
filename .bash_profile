@@ -1,3 +1,8 @@
+if [ -f $HOME/.bashrc ]
+then
+    source $HOME/.bashrc
+fi
+
 ############################################################
 # DOTFILES
 ############################################################
@@ -14,7 +19,7 @@ then
     printf "Error: $path_dotpath not found.\n" 1>&2
 else
     for tmppath in $(cat $path_dotpath | \
-                     sed -e 's/^ *#/d' \
+                     sed -e '/^ *#/d' \
                          -e "s%\$HOME%$HOME%")
     do
         PATH="${PATH}:${tmppath}"
