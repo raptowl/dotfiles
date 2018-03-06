@@ -1,0 +1,7 @@
+# mac OS (OS X)
+._*
+.DS_Store
+.Spotlight-V100
+.Trashes
+Desktop.ini
+Thumbs.db

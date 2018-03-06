@@ -10,5 +10,5 @@ startline=$1
 endline=$2
 shift 2
 
-cat $* | head -n $endline | tail -n `expr $endline - $startline + 1`
+cat $* | head -n $endline | tail -n $(expr $endline - $startline + 1)
 

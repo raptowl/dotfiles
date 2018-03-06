@@ -1,23 +1,29 @@
 #!/bin/sh
 
-# if any undefined variables are referred to, show error to standard output.
+# if any undefined variables are referred to,
+# show error to standard output.
 set -u
 
 # define variables.
 dotpath="$HOME/.dotfiles"
-dotexclude='. .. .git LICENSE README.md dotmgr.sh etc'
+dotexclude='. .. .git .gitignore LICENSE README.md dotmgr.sh etc lib'
 
 ############################################################
 # main routine
 ############################################################
 
-if [ $# -eq 0 ] # if there is no arguments, behave as a libraries for self-made commands.
+# if there is no arguments,
+# show usage of this command.
+if [ $# -eq 0 ]
 then
     :
-elif [ $# -ge 1 ] # if there are any arguments, operate dotfiles directory.
+    exit 0
+# if there are any arguments, operate dotfiles directory.
+elif [ $# -ge 1 ]
 then
     case $1 in
-    'deploy' ) # put symbolic links of dotfiles to $HOME.
+    # put symbolic links of dotfiles to $HOME.
+    'deploy' )
         for i in $(ls -a $dotpath)
         do
             for j in $dotexclude
@@ -34,7 +40,8 @@ then
             ln -fsv $dotpath/$i $HOME/$i
         done
         ;;
-    'undeploy' ) # remove symbolic links of dotfiles from $HOME.
+    # remove symbolic links of dotfiles from $HOME.
+    'undeploy' )
         for i in $(ls -a $dotpath)
         do
             for j in $dotexclude
@@ -54,13 +61,16 @@ then
             fi
         done
         ;;
-    'install' ) # build specific software.
+    # build specific software.
+    'install' )
         :
         ;;
-    'uninstall' ) # remove built software.
+    # remove built software.
+    'uninstall' )
         :
         ;;
-    * ) # if the instruction is incorrect, return error.
+    # if the instruction is incorrect, return error.
+    * )
         printf "Error: instruction $1 is not defined.\n" 1>&2
         exit 1
         ;;

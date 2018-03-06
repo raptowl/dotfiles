@@ -1,6 +1,7 @@
 #!/bin/sh
 
-# if any undefined variables are referred, show error to standard output.
+# if any undefined variables are referred,
+# show error to standard output.
 set -u
 
 # define variables.
