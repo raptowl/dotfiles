@@ -1,8 +1,15 @@
 #!/bin/sh
 
+# if any undefined variables are referred to, show error to standard output.
+set -u
+
 # define variables.
 dotpath="$HOME/.dotfiles"
 dotexclude='. .. .git LICENSE README.md dotmgr.sh etc'
+
+############################################################
+# main routine
+############################################################
 
 if [ $# -eq 0 ] # if there is no arguments, behave as a libraries for self-made commands.
 then
