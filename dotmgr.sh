@@ -85,9 +85,9 @@ then
     'uninstall' )
         :
         ;;
-    # if the instruction is incorrect, return error
+    # if the command is incorrect, return error
     * )
-        printf "Error: instruction $1 is not defined.\n" 1>&2
+        printf "Error: command $1 is not defined.\n" 1>&2
         exit 1
         ;;
     esac

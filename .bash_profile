@@ -12,7 +12,7 @@ export DOTFILES="$HOME/.dotfiles"
 path_path="$HOME/.path"
 if [ ! -f $path_path ]
 then
-    printf "Error: $path_path not found.\n" 1>&2
+    printf "Warning: $path_path not found.\n" 1>&2
 else
     for tmppath in $(cat $path_path | \
                      sed -e '/^ *#/d' \

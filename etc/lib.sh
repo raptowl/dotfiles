@@ -14,6 +14,10 @@ is_exist() {
     return $?
 }
 
+# unset defined variables
+unset_varialbles() {
+}
+
 # unset defined functions
 unset_functions() {
     unset -f is_exist

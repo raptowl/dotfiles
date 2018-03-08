@@ -55,22 +55,22 @@ auto_deploy() {
 if is_exist "git"
 then
     {
-        git clone "$url_gitrepo" "$DOTFILES" && \
-        auto_deploy
+    git clone "$url_gitrepo" "$DOTFILES" && \
+    auto_deploy
     } || return_stat=1
 elif is_exist "wget"
 then
     {
-        wget -O - "$url_tararch" | tar xzv && \
-        move_tar && \
-        auto_deploy
+    wget -O - "$url_tararch" | tar xzv && \
+    move_tar && \
+    auto_deploy
     } || return_stat=1
 elif is_exist "curl"
 then
     {
-        curl -L "$url_tararch" | tar xzv && \
-        move_tar && \
-        auto_deploy
+    curl -L "$url_tararch" | tar xzv && \
+    move_tar && \
+    auto_deploy
     } || return_stat=1
 else
     printf "Error: command 'git', 'wget' or 'curl' not found.\n" 1>&2
