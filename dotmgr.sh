@@ -1,32 +1,48 @@
 #!/bin/sh
 
-# if any undefined variables are referred to,
-# show error to standard output.
-set -u
+############################################################
+# VARIABLES, FUNCTIONS
+############################################################
 
-# define variables.
-dotpath="$HOME/.dotfiles"
-dotexclude='. .. .git .gitignore LICENSE README.md dotmgr.sh etc lib'
+set -u
+. $DOTFILES/etc/lib.sh
+
+# dotfiles which is excluded
+exclude='. .. .git .gitignore LICENSE README.md dotmgr.sh
+etc'
+
+# show usage to standard output
+show_usage() {
+cat << EOF
+usage: dotmgr.sh <command> [<arg>]
+
+(commands)
+deploy      put symbolic links of dotfiles to \$HOME
+undeploy    remove symbolic links of dotfiles from \$HOME
+install     build specific software
+uninstall   remove built software
+EOF
+}
 
 ############################################################
-# main routine
+# MAIN ROUTINE
 ############################################################
 
 # if there is no arguments,
-# show usage of this command.
+# show usage of this command
 if [ $# -eq 0 ]
 then
-    :
+    show_usage
     exit 0
-# if there are any arguments, operate dotfiles directory.
+# if there are any arguments, operate dotfiles directory
 elif [ $# -ge 1 ]
 then
     case $1 in
-    # put symbolic links of dotfiles to $HOME.
+    # put symbolic links of dotfiles to $HOME
     'deploy' )
-        for i in $(ls -a $dotpath)
+        for i in $(ls -a $DOTFILES)
         do
-            for j in $dotexclude
+            for j in $exclude
             do
                 if [ $i = $j ]
                 then
@@ -37,14 +53,14 @@ then
             then
                 mv -v $HOME/$i $HOME/${i}.old
             fi
-            ln -fsv $dotpath/$i $HOME/$i
+            ln -fsv $DOTFILES/$i $HOME/$i
         done
         ;;
-    # remove symbolic links of dotfiles from $HOME.
+    # remove symbolic links of dotfiles from $HOME
     'undeploy' )
-        for i in $(ls -a $dotpath)
+        for i in $(ls -a $DOTFILES)
         do
-            for j in $dotexclude
+            for j in $exclude
             do
                 if [ $i = $j ]
                 then
@@ -61,15 +77,15 @@ then
             fi
         done
         ;;
-    # build specific software.
+    # build specific software
     'install' )
         :
         ;;
-    # remove built software.
+    # remove built software
     'uninstall' )
         :
         ;;
-    # if the instruction is incorrect, return error.
+    # if the instruction is incorrect, return error
     * )
         printf "Error: instruction $1 is not defined.\n" 1>&2
         exit 1

@@ -1,18 +1,21 @@
 #!/bin/sh
 
 ############################################################
-# VARIABLES, FUNCTIONS
+# VARIABLES
 ############################################################
 
-set -u
-. $DOTFILES/etc/lib.sh
-
 ############################################################
-# MAIN ROUTINE
+# FUNCTIONS
 ############################################################
 
-cat $* | \
-grep -n '.*' | \
-sort -n -r | \
-sed -e 's/^[0-9]*://'
+# return whether the specified command ($1) is installed
+is_exist() {
+    type "$1" > /dev/null 2>&1
+    return $?
+}
+
+# unset defined functions
+unset_functions() {
+    unset -f is_exist
+}
 
