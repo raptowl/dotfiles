@@ -66,6 +66,6 @@ The original shell script such as in `bin/` and `dotmgr.sh` loads this file.
 
 This shell script helps that you download and install this repository.
 The location is `etc/download.sh`.
-This script executes downloading this repository by `git`, `wget` or `curl`, and putting symbolic links of configuration files (.bash\_profile, .vimrc, ...) to your home directory automatically.
+This script executes downloading this repository by `git`, `wget` or `curl`, and putting symbolic links of configuration files (`.bash_profile`, `.vimrc`, ...) to your home directory automatically.
 In general, the chance to run this script is just once.
 

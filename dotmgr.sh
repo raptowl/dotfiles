@@ -16,7 +16,7 @@ show_usage() {
 cat << EOF
 usage: dotmgr.sh <command> [<arg>]
 
-(commands)
+<commands>
 deploy      put symbolic links of dotfiles to \$HOME
 undeploy    remove symbolic links of dotfiles from \$HOME
 install     build specific software
