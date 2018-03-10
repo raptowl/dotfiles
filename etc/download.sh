@@ -9,7 +9,7 @@ set -u
 export DOTFILES="$HOME/.dotfiles"
 
 # load the lib.sh from remote
-url_libsh="https://githubusetcontent.com/raptowl/dotfiles/master/etc/lib.sh"
+url_libsh="https://raw.githubusercontent.com/raptowl/dotfiles/master/etc/lib.sh"
 path_tmpfile="$HOME/.tmp_lib.sh"
 if type "wget" > /dev/null 2>&1
 then
