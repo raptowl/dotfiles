@@ -1,10 +1,10 @@
 # DOTFILES
 
-This repository is hosting my config files and self-made scripts.
+This repository is hosting my configuration files and self-made scripts.
 
 ## How To Install
 
-If you would like to use this repository, please prepare at least one command from these commands.
+If you would like to try this repository, please prepare at least one command from these commands.
 ```
 git
 wget
@@ -35,11 +35,11 @@ but this method would not execute putting symbolic links, so you need to do it m
 
 This variable indicates the path to `.dotfiles`.
 By default, this is set to `$HOME/.dotfiles`, and changing this value is not recommended.
-The execution files such as in `bin/` and `dotmgr.sh` loads the original library file `lib.sh`.
+The most execution files of this repository loads the original library file `lib.sh`.
 To load the file, the execution files refer to this variable.
 
 At present, this variable is defined at `.bash_profile` only.
-It might be that you will be able to refer to this variable by `zsh`, `tcsh` later.
+It might be that you will be able to refer to this variable by `zsh` later.
 
 ### Manager Script `dotmgr.sh` (incomplete)
 
@@ -60,7 +60,7 @@ It has some subcommands.
 This shell script is a shared library.
 The location is `etc/lib.sh`.
 This file store a lot of useful variables and functions.
-The original shell script such as in `bin/` and `dotmgr.sh` loads this file.
+The most original shell script such as `dotmgr.sh` loads this file.
 
 ### Downloader Script `download.sh`
 

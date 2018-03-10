@@ -1,15 +1,25 @@
 #!/bin/sh
 
 ############################################################
-# VARIABLES, FUNCTIONS
+# PREPROCESSING
 ############################################################
 
 set -u
 . $DOTFILES/etc/lib.sh
 
+############################################################
+# VARIABLES, FUNCTIONS
+############################################################
+
 # dotfiles which is excluded
 exclude='. .. .git .gitignore LICENSE README.md dotmgr.sh
 etc'
+
+# extension to replace origin configuration files
+ext='dotold'
+
+# error code of the whole of this command
+return_stat=0
 
 # show usage to standard output
 show_usage() {
@@ -51,9 +61,31 @@ then
             done
             if [ -f $HOME/$i -o -d $HOME/$i ]
             then
-                mv -v $HOME/$i $HOME/${i}.old
+                if [ -f $HOME/${i}.${ext} -o -d $HOME/${i}.${ext} ]
+                then
+                    Msg_warn "$HOME/${i}.${ext} has already existed.\n"
+                else
+                    {
+                    mv $HOME/$i $HOME/${i}.${ext}
+                    Msg_done "renamed $HOME/$i to $HOME/${i}.${ext}\n"
+                    ln -fs $DOTFILES/$i $HOME/$i
+                    Msg_done "linked $DOTFILES/$i to $HOME/${i}\n"
+                    } || \
+                    {
+                        Msg_err "deploying $DOTFILES/$i to $HOME/$i not successed.\n"
+                        return_stat=1
+                    }
+                fi
+            else
+                {
+                ln -fs $DOTFILES/$i $HOME/$i
+                Msg_done "linked $DOTFILES/$i to $HOME/${i}\n"
+                } || \
+                {
+                Msg_err "deploying $DOTFILES/$i to $HOME/$i not successed.\n"
+                return_stat=1
+                }
             fi
-            ln -fsv $DOTFILES/$i $HOME/$i
         done
         ;;
     # remove symbolic links of dotfiles from $HOME
@@ -69,11 +101,25 @@ then
             done
             if [ -h $HOME/$i ]
             then
-                rm -v $HOME/$i
+                {
+                rm $HOME/$i
+                Msg_done "removed $HOME/${i}.\n"
+                } || \
+                {
+                Msg_err "removing $HOME/${i} not successed.\n"
+                return_stat=1
+                }
             fi
-            if [ -f $HOME/${i}.old -o -d $HOME/${i}.old ]
+            if [ -f $HOME/${i}.${ext} -o -d $HOME/${i}.${ext} ]
             then
-                mv -v $HOME/${i}.old $HOME/${i}
+                {
+                mv $HOME/${i}.${ext} $HOME/${i}
+                Msg_done "renamed $HOME/${i}.${ext} to $HOME/${i}.\n"
+                } || \
+                {
+                Msg_err "renaming $HOME/${i}.${ext} to $HOME/$i not successed.\n"
+                return_stat=1
+                }
             fi
         done
         ;;
@@ -87,10 +133,10 @@ then
         ;;
     # if the command is incorrect, return error
     * )
-        printf "Error: command $1 is not defined.\n" 1>&2
-        exit 1
+        Msg_err "command $1 is not defined.\n"
+        return_stat=1
         ;;
     esac
-    exit 0
+    exit $return_stat
 fi
 

@@ -1,9 +1,12 @@
 ############################################################
-# DOTFILES
+# PREPROCESSING
 ############################################################
+
+set -u
 # define a environment variable $DOTFILES,
 # which indicate the path to .dotfiles
 export DOTFILES="$HOME/.dotfiles"
+#. $DOTFILES/etc/lib.sh
 
 ############################################################
 # PATH
@@ -15,10 +18,13 @@ then
     printf "Warning: $path_path not found.\n" 1>&2
 else
     for tmppath in $(cat $path_path | \
-                     sed -e '/^ *#/d' \
+                     grep -n '.*' | \
+                     sort -n -r | \
+                     sed -e 's/^[0-9]*://' \
+                         -e '/^ *#/d' \
                          -e "s%\$HOME%$HOME%")
     do
-        PATH="${PATH}:${tmppath}"
+        PATH="${tmppath}:${PATH}"
     done
     export PATH
     unset tmppath
