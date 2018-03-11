@@ -33,10 +33,9 @@ then
                     -e "^etc\$")
     do
         # if dotfiles has already been linked, skip the process
-        if [ "$(file "$HOME/$i" | \
-                grep "symbolic link to $path_dotfiles" | \
-                sed -e "s/^.*symbolic link to //")" \
-            = "$path_dotfiles/$i" ]
+        if file "$HOME/$i" | \
+           grep -e "symbolic" | \
+           grep -e "$path_dotfiles" > /dev/null 2>&1
         then
             printf "WARNING: $HOME/$i has already been linked.\n" 1>&2
             continue
@@ -54,16 +53,19 @@ then
 elif [ "$1" = "undeploy" ]
 then
     # remove symbolic links of dotfiles from $HOME
-    ls -a "$HOME" | \
-    sed -e "s%^%$HOME/%" | \
-    xargs file | \
-    grep "symbolic link to $path_dotfiles" | \
-    sed -e "s/: .*\$//" | \
-    xargs rm -v
+    for i in $(ls -a "$HOME" | \
+               sed -e "s%^%$HOME/%" | \
+               xargs file | \
+               grep -e "symbolic" | \
+               grep -e "$path_dotfiles" | \
+               sed -e "s/: .*\$//")
+    do
+        rm -v $i
+    done
 
     # if there are dotold files, rename them to their original name
     for i in $(ls -a "$HOME" | \
-               grep "\.dotold\$" | \
+               grep -e "\.dotold\$" | \
                sed -e "s/\.dotold\$//")
     do
         mv -v "$HOME/${i}.dotold" "$HOME/$i"
