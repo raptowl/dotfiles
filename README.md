@@ -31,16 +31,6 @@ but this method would not execute putting symbolic links, so you need to do it m
 
 ## Mechanism
 
-### Environment Variable `DOTFILES`
-
-This variable indicates the path to `.dotfiles`.
-By default, this is set to `$HOME/.dotfiles`, and changing this value is not recommended.
-The most execution files of this repository loads the original library file `lib.sh`.
-To load the file, the execution files refer to this variable.
-
-At present, this variable is defined at `.bash_profile` only.
-It might be that you will be able to refer to this variable by `zsh` later.
-
 ### Manager Script `dotmgr.sh` (incomplete)
 
 This shell script manages the control of this dotfiles directory.
@@ -54,13 +44,6 @@ It has some subcommands.
 `install`(incomplete): build specific software.
 
 `uninstall`(incomplete): remove built software.
-
-### Shared Library `lib.sh` (incomplete)
-
-This shell script is a shared library.
-The location is `etc/lib.sh`.
-This file store a lot of useful variables and functions.
-The most original shell script such as `dotmgr.sh` loads this file.
 
 ### Downloader Script `download.sh`
 

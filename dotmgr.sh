@@ -1,29 +1,13 @@
 #!/bin/sh
 
-############################################################
-# PREPROCESSING
-############################################################
-
 set -u
-. $DOTFILES/etc/lib.sh
 
-############################################################
-# VARIABLES, FUNCTIONS
-############################################################
+path_dotfiles="$HOME/.dotfiles"
 
-# dotfiles which is excluded
-exclude='. .. .git .gitignore LICENSE README.md dotmgr.sh
-etc'
-
-# extension to replace origin configuration files
-ext='dotold'
-
-# error code of the whole of this command
-return_stat=0
-
-# show usage to standard output
-show_usage() {
-cat << EOF
+if [ $# -eq 0 ]
+then
+    # show usage
+    cat 1>&2 << EOF
 usage: dotmgr.sh <command> [<arg>]
 
 <commands>
@@ -32,111 +16,67 @@ undeploy    remove symbolic links of dotfiles from \$HOME
 install     build specific software
 uninstall   remove built software
 EOF
-}
-
-############################################################
-# MAIN ROUTINE
-############################################################
-
-# if there is no arguments,
-# show usage of this command
-if [ $# -eq 0 ]
+    exit 1
+elif [ "$1" = "deploy" ]
 then
-    show_usage
-    exit 0
-# if there are any arguments, operate dotfiles directory
-elif [ $# -ge 1 ]
-then
-    case $1 in
     # put symbolic links of dotfiles to $HOME
-    'deploy' )
-        for i in $(ls -a $DOTFILES)
-        do
-            for j in $exclude
-            do
-                if [ $i = $j ]
-                then
-                    continue 2
-                fi
-            done
-            if [ -f $HOME/$i -o -d $HOME/$i ]
-            then
-                if [ -f $HOME/${i}.${ext} -o -d $HOME/${i}.${ext} ]
-                then
-                    Msg_warn "$HOME/${i}.${ext} has already existed.\n"
-                else
-                    {
-                    mv $HOME/$i $HOME/${i}.${ext}
-                    Msg_done "renamed $HOME/$i to $HOME/${i}.${ext}\n"
-                    ln -fs $DOTFILES/$i $HOME/$i
-                    Msg_done "linked $DOTFILES/$i to $HOME/${i}\n"
-                    } || \
-                    {
-                        Msg_err "deploying $DOTFILES/$i to $HOME/$i not successed.\n"
-                        return_stat=1
-                    }
-                fi
-            else
-                {
-                ln -fs $DOTFILES/$i $HOME/$i
-                Msg_done "linked $DOTFILES/$i to $HOME/${i}\n"
-                } || \
-                {
-                Msg_err "deploying $DOTFILES/$i to $HOME/$i not successed.\n"
-                return_stat=1
-                }
-            fi
-        done
-        ;;
+    for i in $(ls -a "$path_dotfiles" | \
+               grep -v \
+                    -e "^\.\$" \
+                    -e "^\.\.\$" \
+                    -e "^\.git\$" \
+                    -e "^\.gitignore\$" \
+                    -e "^LICENSE\$" \
+                    -e "^README\.md\$" \
+                    -e "^dotmgr\.sh\$" \
+                    -e "^etc\$")
+    do
+        # if dotfiles has already been linked, skip the process
+        if [ "$(file "$HOME/$i" | \
+                grep "symbolic link to $path_dotfiles" | \
+                sed -e "s/^.*symbolic link to //")" \
+            = "$path_dotfiles/$i" ]
+        then
+            printf "WARNING: $HOME/$i has already been linked.\n" 1>&2
+            continue
+        fi
+
+        # if there are original files in $HOME, rename it
+        if [ -f "$HOME/$i" -o -d "$HOME/$i" ]
+        then
+            mv -v "$HOME/$i" "$HOME/${i}.dotold"
+        fi
+
+        # put symbolic link of dotfiles to $HOME
+        ln -fsv "$path_dotfiles/$i" "$HOME/$i"
+    done
+elif [ "$1" = "undeploy" ]
+then
     # remove symbolic links of dotfiles from $HOME
-    'undeploy' )
-        for i in $(ls -a $DOTFILES)
-        do
-            for j in $exclude
-            do
-                if [ $i = $j ]
-                then
-                    continue 2
-                fi
-            done
-            if [ -h $HOME/$i ]
-            then
-                {
-                rm $HOME/$i
-                Msg_done "removed $HOME/${i}.\n"
-                } || \
-                {
-                Msg_err "removing $HOME/${i} not successed.\n"
-                return_stat=1
-                }
-            fi
-            if [ -f $HOME/${i}.${ext} -o -d $HOME/${i}.${ext} ]
-            then
-                {
-                mv $HOME/${i}.${ext} $HOME/${i}
-                Msg_done "renamed $HOME/${i}.${ext} to $HOME/${i}.\n"
-                } || \
-                {
-                Msg_err "renaming $HOME/${i}.${ext} to $HOME/$i not successed.\n"
-                return_stat=1
-                }
-            fi
-        done
-        ;;
+    ls -a "$HOME" | \
+    sed -e "s%^%$HOME/%" | \
+    xargs file | \
+    grep "symbolic link to $path_dotfiles" | \
+    sed -e "s/: .*\$//" | \
+    xargs rm -v
+
+    # if there are dotold files, rename them to their original name
+    for i in $(ls -a "$HOME" | \
+               grep "\.dotold\$" | \
+               sed -e "s/\.dotold\$//")
+    do
+        mv -v "$HOME/${i}.dotold" "$HOME/$i"
+    done
+elif [ "$1" = "install" ]
+then
     # build specific software
-    'install' )
-        :
-        ;;
+    :
+elif [ "$1" = "uninstall" ]
+then
     # remove built software
-    'uninstall' )
-        :
-        ;;
-    # if the command is incorrect, return error
-    * )
-        Msg_err "command $1 is not defined.\n"
-        return_stat=1
-        ;;
-    esac
-    exit $return_stat
+    :
+else
+    printf "ERROR: command $1 is not defined.\n" 1>&2
+    exit 1
 fi
 
