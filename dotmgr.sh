@@ -2,6 +2,7 @@
 
 set -u
 
+# the path indicates the dotfiles directory
 path_dotfiles="$HOME/.dotfiles"
 
 if [ $# -eq 0 ]

@@ -1,32 +1,7 @@
 #!/bin/sh
 
-############################################################
-# PREPROCESSING
-############################################################
-
-set -u
-# $DOTFILES indicates the path to .dotfiles
-export DOTFILES="$HOME/.dotfiles"
-
-# load the lib.sh from remote
-url_libsh="https://raw.githubusercontent.com/raptowl/dotfiles/master/etc/lib.sh"
-path_tmpfile="$HOME/.tmp_lib.sh"
-if type "wget" > /dev/null 2>&1
-then
-    wget -O - "$url_libsh" > $path_tmpfile
-elif type "curl" > /dev/null 2>&1
-    curl -L "$url_libsh" > $path_tmpfile
-else
-    printf "command wget or curl is necessary at least.\n" 2>&1
-    exit 1
-fi && \
-. $path_tmpfile && \
-rm $path_tmpfile
-unset url_libsh path_tmpfile
-
-############################################################
-# VARIABLES, FUNCTIONS
-############################################################
+# the path indicates the dotfiles directory
+path_dotfiles="$HOME/.dotfiles"
 
 # the url indicates the git repository on github
 url_gitrepo="https://github.com/raptowl/dotfiles.git"
@@ -34,72 +9,61 @@ url_gitrepo="https://github.com/raptowl/dotfiles.git"
 # the url indicates the tar archive of this repository
 url_tararch="https://github.com/raptowl/dotfiles/archive/master.tar.gz"
 
-# the name of tar archive on master branch
-name_tararch="dotfiles-master"
+cd $HOME
+if type git > /dev/null 2>&1
+then
+    # download the repository using by git
+    git clone "$url_gitrepo" "$path_dotfiles"
 
-# the name of script which manages this repository
-name_mgrsh="dotmgr.sh"
-
-# the error code which this script returns
-return_stat=0
-
-# move tarball archive to $DOTFILES
-move_tar() {
-    if [ ! -d "$name_tararch" ]
+    # deploy the dotfiles using by dotmgr.sh
+    if [ ! -f "$path_dotfiles/dotmgr.sh" ]
     then
-        Msg_err "$name_tararch not found.\n"
+        printf "ERROR: $path_dotfiles/dotmgr.sh not found.\n" 1>&2
         exit 1
     fi
-    {
-    mv -v "$name_tararch" "$DOTFILES"
-    Msg_done "moved $name_tararch to ${DOTFILES}.\n"
-    } || \
-    {
-    Msg_err "moving $name_tararch to $DOTFILES not successed.\n"
-    exit 1
-    }
-    return $?
-}
+    sh $path_dotfiles/dotmgr.sh deploy
+elif type wget > /dev/null 2>&1
+then
+    # download the repository using by wget
+    wget -O - "$url_tararch" | tar xzv
 
-# deploy dotfiles in $DOTFILES
-# using by the script $name_mgrsh
-auto_deploy() {
-    if [ ! -f "$DOTFILES/$name_mgrsh" ]
+    # rename the directory
+    if [ ! -d "$HOME/dotfiles-master" ]
     then
-        Msg_err "$DOTFILES/$name_mgrsh not found.\n"
-        return 1
+        printf "ERROR: $HOME/dotfiles-master not found.\n" 1>&2
+        exit 1
     fi
-    $DOTFILES/$name_mgrsh deploy
-    return $?
-}
+    mv -v "$HOME/dotfiles-master" "$path_dotfiles"
 
-############################################################
-# MAIN ROUTINE
-############################################################
+    # deploy the dotfiles using by $path_dotfiles/dotmgr.sh
+    if [ ! -f "$path_dotfiles/dotmgr.sh" ]
+    then
+        printf "ERROR: $path_dotfiles/dotmgr.sh not found.\n" 1>&2
+        exit 1
+    fi
+    sh $path_dotfiles/dotmgr.sh deploy
+elif type curl > /dev/null 2>&1
+then
+    # download the repository using by curl
+    curl -L "$url_tararch" | tar xzv
 
-if Cmd_exist "git"
-then
-    {
-    git clone "$url_gitrepo" "$DOTFILES" && \
-    auto_deploy
-    } || return_stat=1
-elif Cmd_exist "wget"
-then
-    {
-    wget -O - "$url_tararch" | tar xzv && \
-    move_tar && \
-    auto_deploy
-    } || return_stat=1
-elif Cmd_exist "curl"
-then
-    {
-    curl -L "$url_tararch" | tar xzv && \
-    move_tar && \
-    auto_deploy
-    } || return_stat=1
+    # rename the directory
+    if [ ! -d "$HOME/dotfiles-master" ]
+    then
+        printf "ERROR: $HOME/dotfiles-master not found.\n" 1>&2
+        exit 1
+    fi
+    mv -v "$HOME/dotfiles-master" "$path_dotfiles"
+
+    # deploy the dotfiles using by $path_dotfiles/dotmgr.sh
+    if [ ! -f "$path_dotfiles/dotmgr.sh" ]
+    then
+        printf "ERROR: $path_dotfiles/dotmgr.sh not found.\n" 1>&2
+        exit 1
+    fi
+    sh $path_dotfiles/dotmgr.sh deploy
 else
-    Msg_err "command 'git', 'wget' or 'curl' not found.\n"
-    return_stat=1
+    printf "ERROR: at least one command of 'git', 'wget' or 'curl' is necessary.\n" 1>&2
+    exit 1
 fi
-exit $return_stat
 
