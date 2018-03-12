@@ -4,7 +4,7 @@ set -u
 
 if [ $# -le 2 ]
 then
-    printf "ERROR: the number of arguments is incorrect.\n" 1>&2
+    printf "ERROR: the number of arguments is incorrect.\\n" 1>&2
     exit 1
 fi
 
@@ -16,7 +16,7 @@ endline=$2
 
 shift 2
 
-cat $* | \
-head -n $endline | \
-tail -n $(expr $endline - $startline + 1)
+cat "$@" | \
+head -n "$endline" | \
+tail -n "$(expr "$endline" - "$startline" + 1)"
 

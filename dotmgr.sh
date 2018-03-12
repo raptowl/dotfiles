@@ -8,7 +8,7 @@ path_dotfiles="$HOME/.dotfiles"
 if [ $# -eq 0 ]
 then
     # show usage
-    cat 1>&2 << EOF
+    cat << EOF
 usage: dotmgr.sh <command> [<arg>]
 
 <commands>
@@ -17,19 +17,20 @@ undeploy    remove symbolic links of dotfiles from \$HOME
 install     build specific software
 uninstall   remove built software
 EOF
-    exit 1
 elif [ "$1" = "deploy" ]
 then
     # put symbolic links of dotfiles to $HOME
-    for i in $(ls -a "$path_dotfiles" | \
+    for i in $(find "$path_dotfiles" -maxdepth 1 | \
+               sed -e "s%$path_dotfiles/%%" | \
                grep -v \
-                    -e "^\.\$" \
-                    -e "^\.\.\$" \
-                    -e "^\.git\$" \
-                    -e "^\.gitignore\$" \
+                    -e "^$path_dotfiles\$" \
+                    -e "^\\.\$" \
+                    -e "^\\.\\.\$" \
+                    -e "^\\.git\$" \
+                    -e "^\\.gitignore\$" \
                     -e "^LICENSE\$" \
-                    -e "^README\.md\$" \
-                    -e "^dotmgr\.sh\$" \
+                    -e "^README\\.md\$" \
+                    -e "^dotmgr\\.sh\$" \
                     -e "^etc\$")
     do
         # if dotfiles has already been linked, skip the process
@@ -37,12 +38,12 @@ then
            grep -e "symbolic" | \
            grep -e "$path_dotfiles" > /dev/null 2>&1
         then
-            printf "WARNING: $HOME/$i has already been linked.\n" 1>&2
+            printf "WARNING: %s/%s has already been linked.\\n" "$HOME" "$i" 1>&2
             continue
         fi
 
         # if there are original files in $HOME, rename it
-        if [ -f "$HOME/$i" -o -d "$HOME/$i" ]
+        if [ -f "$HOME/$i" ] || [ -d "$HOME/$i" ]
         then
             mv -v "$HOME/$i" "$HOME/${i}.dotold"
         fi
@@ -53,33 +54,41 @@ then
 elif [ "$1" = "undeploy" ]
 then
     # remove symbolic links of dotfiles from $HOME
-    for i in $(ls -a "$HOME" | \
-               sed -e "s%^%$HOME/%" | \
-               xargs file | \
-               grep -e "symbolic" | \
-               grep -e "$path_dotfiles" | \
-               sed -e "s/: .*\$//")
-    do
-        rm -v $i
-    done
+    find "$HOME" -maxdepth 1 -exec file {} + | \
+    grep -e "symbolic" | \
+    grep -e "$path_dotfiles" | \
+    sed -e "s/: .*\$//" | \
+    xargs rm -fv
 
     # if there are dotold files, rename them to their original name
-    for i in $(ls -a "$HOME" | \
-               grep -e "\.dotold\$" | \
-               sed -e "s/\.dotold\$//")
+    for i in $(find "$HOME" -maxdepth 1 | \
+               grep -e "\\.dotold\$" | \
+               sed -e "s/\\.dotold\$//")
     do
-        mv -v "$HOME/${i}.dotold" "$HOME/$i"
+        mv -v "${i}.dotold" "$i"
     done
 elif [ "$1" = "install" ]
 then
     # build specific software
-    :
+    if [ $# -eq 1 ]
+    then
+        cat << EOF
+The following software is available.
+$(find "$path_dotfiles/etc/dotmgr.d" | \
+  grep -e "install" | \
+  sed -e "s/^.*install-//" \
+      -e "s/\\.sh\$//" \
+      -e "s/^/\\t/")
+EOF
+    exit 0
+    fi
+
 elif [ "$1" = "uninstall" ]
 then
     # remove built software
     :
 else
-    printf "ERROR: command $1 is not defined.\n" 1>&2
+    printf "ERROR: command %s is not defined.\\n" "$1" 1>&2
     exit 1
 fi
 
