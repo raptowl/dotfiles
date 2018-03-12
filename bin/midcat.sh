@@ -18,5 +18,5 @@ shift 2
 
 cat "$@" | \
 head -n "$endline" | \
-tail -n "$(expr "$endline" - "$startline" + 1)"
+tail -n "$(("$endline" - "$startline" + 1))"
 
