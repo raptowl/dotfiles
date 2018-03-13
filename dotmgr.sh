@@ -5,18 +5,24 @@ set -u
 # the path indicates the dotfiles directory
 path_dotfiles="$HOME/.dotfiles"
 
-if [ $# -eq 0 ]
-then
-    # show usage
+show_usage() {
     cat << EOF
-usage: dotmgr.sh <command> [<arg>]
+usage: dotmgr.sh [--help] <command> [<arg>]
 
 <commands>
 deploy      put symbolic links of dotfiles to \$HOME
 undeploy    remove symbolic links of dotfiles from \$HOME
 install     build specific software
 uninstall   remove built software
+help        show usage, same as --help option
 EOF
+}
+
+if [ $# -eq 0 ]
+then
+    # show usage
+    show_usage
+    exit 1
 elif [ "$1" = "deploy" ]
 then
     # put symbolic links of dotfiles to $HOME
@@ -87,6 +93,9 @@ elif [ "$1" = "uninstall" ]
 then
     # remove built software
     :
+elif [ "$1" = "--help" ] || [ "$1" = "help" ]
+then
+    show_usage
 else
     printf "ERROR: command %s is not defined.\\n" "$1" 1>&2
     exit 1
