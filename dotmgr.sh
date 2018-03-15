@@ -5,61 +5,57 @@ set -u
 # the path indicates the dotfiles directory
 path_dotfiles="$HOME/.dotfiles"
 
-show_usage() {
+# main process
+if [ $# -eq 0 ] # print message and exit with error
+then
+    cat 1>&2 << EOF
+dotmgr.sh is a dotfiles manager script.
+Please run "dotmgr.sh --help" to show the usage of this command.
+EOF
+    exit 1
+elif [ "$1" = "--help" ] # show usage
+then
     cat << EOF
-usage: dotmgr.sh [--help] <command> [<arg>]
+usage: dotmgr.sh [--help] <command> [arg]
 
 <commands>
 deploy      put symbolic links of dotfiles to \$HOME
 undeploy    remove symbolic links of dotfiles from \$HOME
 install     build specific software
 uninstall   remove built software
-help        show usage, same as --help option
 EOF
-}
-
-if [ $# -eq 0 ]
+elif [ "$1" = "deploy" ] # put symbolic links of dotfiles to $HOME
 then
-    # show usage
-    show_usage
-    exit 1
-elif [ "$1" = "deploy" ]
-then
-    # put symbolic links of dotfiles to $HOME
-    for i in $(find "$path_dotfiles" -maxdepth 1 | \
-               sed -e "s%$path_dotfiles/%%" | \
-               grep -v \
-                    -e "^$path_dotfiles\$" \
-                    -e "^\\.\$" \
-                    -e "^\\.\\.\$" \
-                    -e "^\\.git\$" \
-                    -e "^\\.gitignore\$" \
-                    -e "^LICENSE\$" \
-                    -e "^README\\.md\$" \
-                    -e "^dotmgr\\.sh\$" \
-                    -e "^etc\$")
-    do
-        # if dotfiles has already been linked, skip the process
-        if file "$HOME/$i" | \
-           grep -e "symbolic" | \
-           grep -e "$path_dotfiles" > /dev/null 2>&1
-        then
-            printf "WARNING: %s/%s has already been linked.\\n" "$HOME" "$i" 1>&2
-            continue
-        fi
+    # get the name of files to put symbolic links to $HOME
+    deployfiles="$(find "$path_dotfiles" -maxdepth 1 | \
+    grep -v -e "$path_dotfiles\$" \
+            -e "README\\.md\$" \
+            -e "\\.gitignore\$" \
+            -e "etc\$" \
+            -e "dotmgr\\.sh\$" \
+            -e "\\.git\$" \
+            -e "LICENSE\$" | \
+    sed -e "s%$path_dotfiles%$HOME%" | \
+    xargs file | \
+    grep -v -e "symbolic" | \
+    grep -v -e "$path_dotfiles" | \
+    sed -e "s%$HOME/%%" \
+        -e "s/: .*//")"
 
-        # if there are original files in $HOME, rename it
-        if [ -f "$HOME/$i" ] || [ -d "$HOME/$i" ]
-        then
-            mv -v "$HOME/$i" "$HOME/${i}.dotold"
-        fi
+    # rename the user original dotfiles to dotold name
+    echo "$deployfiles" | \
+    xargs -I{} sh -c "\
+        test -f \"$HOME/{}\" || \
+        test -d \"$HOME/{}\" && \
+        echo {}" | \
+    xargs -I{} mv -v "$HOME/{}" "$HOME/{}.dotold"
 
-        # put symbolic link of dotfiles to $HOME
-        ln -fsv "$path_dotfiles/$i" "$HOME/$i"
-    done
-elif [ "$1" = "undeploy" ]
+    # put symbolic links
+    echo "$deployfiles" | \
+    xargs -I{} ln -fsv "$path_dotfiles/{}" "$HOME/{}"
+elif [ "$1" = "undeploy" ] # remove symbolic links of dotfiles from $HOME
 then
-    # remove symbolic links of dotfiles from $HOME
+    # remove symbolic links
     find "$HOME" -maxdepth 1 -exec file {} + | \
     grep -e "symbolic" | \
     grep -e "$path_dotfiles" | \
@@ -67,15 +63,12 @@ then
     xargs rm -fv
 
     # if there are dotold files, rename them to their original name
-    for i in $(find "$HOME" -maxdepth 1 | \
-               grep -e "\\.dotold\$" | \
-               sed -e "s/\\.dotold\$//")
-    do
-        mv -v "${i}.dotold" "$i"
-    done
-elif [ "$1" = "install" ]
+    find "$HOME" -maxdepth 1 | \
+    grep -e "\\.dotold\$" | \
+    sed -e "s/\\.dotold\$//" | \
+    xargs -I{} mv -v "{}.dotold" "{}"
+elif [ "$1" = "install" ] # build specific software
 then
-    # build specific software
     if [ $# -eq 1 ]
     then
         cat << EOF
@@ -86,17 +79,11 @@ $(find "$path_dotfiles/etc/dotmgr.d" | \
       -e "s/\\.sh\$//" \
       -e "s/^/\\t/")
 EOF
-    exit 0
     fi
-
-elif [ "$1" = "uninstall" ]
+elif [ "$1" = "uninstall" ] # remove built software
 then
-    # remove built software
     :
-elif [ "$1" = "--help" ] || [ "$1" = "help" ]
-then
-    show_usage
-else
+else # print error message and exit with error
     printf "ERROR: command %s is not defined.\\n" "$1" 1>&2
     exit 1
 fi
