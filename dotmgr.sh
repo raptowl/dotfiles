@@ -56,9 +56,9 @@ then
     # rename the user original dotfiles to dotold name
     echo "$deployfiles" |
     xargs -I {} sh -c \
-        "if [ -f \"$HOME/{}\" ] || [ -d \"$HOME/{}\" ];
+        "if [ -f \"$HOME/{}\" ] || [ -d \"$HOME/{}\" ]
         then
-            mv -fv \"$HOME/{}\" \"$HOME/{}.dotold\";
+            mv -fv \"$HOME/{}\" \"$HOME/{}.dotold\"
         fi"
 
     # put symbolic links
