@@ -12,7 +12,7 @@ EOF
 elif [ "$1" = "--help" ]
 then
     cat << EOF
-cbmgr.sh [--help] <command>
+usage: cbmgr.sh [--help] <command>
 
 [option]
 --help
@@ -21,8 +21,10 @@ cbmgr.sh [--help] <command>
 <command>
 input | i
     write the data to clipboard from standard input
+
 output | o
     write the data to standard output from clipboard
+
 clear | c
     clear up clipboard
 EOF
@@ -38,8 +40,7 @@ then
     then
         pbcopy
     else
-        printf "ERROR: at least a command of \
-            'xclip' or 'xsel' or 'pbcopy' is necessary.\\n" 1>&2
+        printf "ERROR: at least a command of \"xclip\" or \"xsel\" or \"pbcopy\" is necessary.\\n" 1>&2
         exit 1
     fi
 elif [ "$1" = "output" ] || [ "$1" = "o" ]
@@ -54,8 +55,7 @@ then
     then
         pbpaste
     else
-        printf "ERROR: at least a command of \
-            'xclip' or 'xsel' or 'pbpaste' is necessary.\\n" 1>&2
+        printf "ERROR: at least a command of \"xclip\" or \"xsel\" or \"pbpaste\" is necessary.\\n" 1>&2
         exit 1
     fi
 elif [ "$1" = "clear" ] || [ "$1" = "c" ]
@@ -70,8 +70,7 @@ then
     then
         : | pbcopy
     else
-        printf "ERROR: at least a command of \
-            \"xclip\" or \"xsel\" or \"pbcopy\" is necessary.\\n" 1>&2
+        printf "ERROR: at least a command of \"xclip\" or \"xsel\" or \"pbcopy\" is necessary.\\n" 1>&2
         exit 1
     fi
 else

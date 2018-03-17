@@ -10,12 +10,15 @@ Please run "dpmgr.sh --help" to show usage of this command.
 EOF
     exit 1
 elif [ "$1" = "--help" ]
+then
     cat << EOF
-dpmgr.sh [--help] <command>
+usage: dpmgr.sh [--help] <command>
+
+[option]
+--help
+    show usage of this command
 
 <command>
 EOF
-then
-    :
 fi
 

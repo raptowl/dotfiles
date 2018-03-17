@@ -35,7 +35,7 @@ then
         printf "ERROR: %s/dotfiles-master not found.\\n" "$HOME" 1>&2
         exit 1
     fi
-    mv -v "$HOME/dotfiles-master" "$path_dotfiles"
+    mv -fv "$HOME/dotfiles-master" "$path_dotfiles"
 
     # deploy the dotfiles using by $path_dotfiles/dotmgr.sh
     if [ ! -f "$path_dotfiles/dotmgr.sh" ]
@@ -55,7 +55,7 @@ then
         printf "ERROR: %s/dotfiles-master not found.\\n" "$HOME" 1>&2
         exit 1
     fi
-    mv -v "$HOME/dotfiles-master" "$path_dotfiles"
+    mv -fv "$HOME/dotfiles-master" "$path_dotfiles"
 
     # deploy the dotfiles using by $path_dotfiles/dotmgr.sh
     if [ ! -f "$path_dotfiles/dotmgr.sh" ]
@@ -65,7 +65,7 @@ then
     fi
     sh "$path_dotfiles/dotmgr.sh" deploy
 else
-    printf "ERROR: at least one command of 'git', 'wget' or 'curl' is necessary.\\n" 1>&2
+    printf "ERROR: at least one command of \"git\" \"wget\" or \"curl\" is necessary.\\n" 1>&2
     exit 1
 fi
 
