@@ -1,5 +1,8 @@
 # add $HOME/bin to PATH
-PATH="$HOME/bin:${PATH}"
+export PATH="$HOME/bin:${PATH}"
+
+# define a variable EDITOR
+export EDITOR=vim
 
 # load $HOME/.bashrc
 if [ -f "$HOME/.bashrc" ]

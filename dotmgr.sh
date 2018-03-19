@@ -54,7 +54,7 @@ then
         -e "s/: .*//")"
 
     # rename the user original dotfiles to dotold name
-    echo "$deployfiles" |
+    printf "%s\\n" "$deployfiles" |
     xargs -I {} sh -c \
         "if [ -f \"$HOME/{}\" ] || [ -d \"$HOME/{}\" ]
         then
@@ -62,7 +62,7 @@ then
         fi"
 
     # put symbolic links
-    echo "$deployfiles" |
+    printf "%s\\n" "$deployfiles" |
     xargs -I {} ln -fsv "$path_dotfiles/{}" "$HOME/{}"
 elif [ "$1" = "undeploy" ] # remove symbolic links of dotfiles from $HOME
 then
@@ -84,17 +84,28 @@ then
     shift 1
     if [ $# -eq 0 ]
     then
+        # if there are no arguments, show available software
         cat << EOF
 The following software is available.
 $(find "$path_dotfiles/etc/dotmgr.d" |
   grep -e "install" |
   sed -e "s/^.*install-//" \
-      -e "s/\\.sh\$//" \
-      -e "s/^/\\t/")
+      -e "s/\\.sh\$//" |
+  sort |
+  sed -e "s/^/\\t/")
 EOF
     else
-        installsw="$*"
-        echo "$installsw"
+        # call each install script
+        printf "%s\\n" "$@" |
+        sort |
+        uniq |
+        xargs -I {} sh -c \
+            "if [ -f \"$path_dotfiles/etc/dotmgr.d/install-{}.sh\" ]
+            then
+                sh \"$path_dotfiles/etc/dotmgr.d/install-{}.sh\"
+            else
+                printf \"ERROR: %s is not available.\\n\" \"{}\" 1>&2
+            fi"
     fi
 elif [ "$1" = "uninstall" ] # remove built software
 then
