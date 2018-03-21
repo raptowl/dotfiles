@@ -39,19 +39,19 @@ elif [ "$1" = "deploy" ] # put symbolic links of dotfiles to $HOME
 then
     # get the name list of files to put symbolic links to $HOME
     deployfiles="$(find "$path_dotfiles" -maxdepth 1 |
-    grep -v -e "$path_dotfiles\$" \
-            -e "README\\.md\$" \
-            -e "\\.gitignore\$" \
-            -e "etc\$" \
-            -e "dotmgr\\.sh\$" \
-            -e "\\.git\$" \
-            -e "LICENSE\$" |
-    sed -e "s%$path_dotfiles%$HOME%" |
-    xargs file |
-    grep -v -e "symbolic" |
-    grep -v -e "$path_dotfiles" |
-    sed -e "s%$HOME/%%" \
-        -e "s/: .*//")"
+                   grep -v -e "$path_dotfiles\$" \
+                           -e "README\\.md\$" \
+                           -e "\\.gitignore\$" \
+                           -e "etc\$" \
+                           -e "dotmgr\\.sh\$" \
+                           -e "\\.git\$" \
+                           -e "LICENSE\$" |
+                   sed -e "s%$path_dotfiles%$HOME%" |
+                   xargs file |
+                   grep -v -e "symbolic" |
+                   grep -v -e "$path_dotfiles" |
+                   sed -e "s%$HOME/%%" \
+                       -e "s/: .*//")"
 
     # rename the user original dotfiles to dotold name
     printf "%s\\n" "$deployfiles" |
