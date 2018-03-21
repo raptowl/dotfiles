@@ -31,7 +31,7 @@ but this method would not execute putting symbolic links, so you need to do it m
 
 ## Mechanism
 
-### Manager Script `dotmgr.sh` (incomplete)
+### Manager Script `dotmgr.sh`
 
 This shell script manages the control of this dotfiles directory.
 The location is root of this repository.
@@ -41,9 +41,9 @@ It has some subcommands.
 
 `undeploy`: remove symbolic links of configuration files from home directory.
 
-`install`(incomplete): build specific software.
+`install`: build specific software.
 
-`uninstall`(incomplete): remove built software.
+`uninstall`: remove built software.
 
 ### Downloader Script `download.sh`
 

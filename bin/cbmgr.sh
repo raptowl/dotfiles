@@ -4,14 +4,14 @@ set -u
 
 if [ $# -eq 0 ]
 then
-    cat 1>&2 << EOF
+    cat 1>&2 << _EOT_
 cbmgr.sh is a clipboard manager script for CLI environment of UNIX like system.
 Please run "clpmgr.sh --help" to show the usage of this command.
-EOF
+_EOT_
     exit 1
 elif [ "$1" = "--help" ]
 then
-    cat << EOF
+    cat << _EOT_
 usage: cbmgr.sh [--help] <command>
 
 [option]
@@ -27,7 +27,7 @@ output | o
 
 clear | c
     clear up clipboard
-EOF
+_EOT_
 elif [ "$1" = "input" ] || [ "$1" = "i" ]
 then
     if xclip -h > /dev/null 2>&1

@@ -4,14 +4,14 @@ set -u
 
 if [ $# -eq 0 ]
 then
-    cat 1>&2 << EOF
+    cat 1>&2 << _EOT_
 dpmgr.sh is a display output manager script for X Window System.
 Please run "dpmgr.sh --help" to show usage of this command.
-EOF
+_EOT_
     exit 1
 elif [ "$1" = "--help" ]
 then
-    cat << EOF
+    cat << _EOT_
 usage: dpmgr.sh [--help] <command>
 
 [option]
@@ -19,6 +19,6 @@ usage: dpmgr.sh [--help] <command>
     show usage of this command
 
 <command>
-EOF
+_EOT_
 fi
 

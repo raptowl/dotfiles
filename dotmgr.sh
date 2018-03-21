@@ -8,14 +8,14 @@ path_dotfiles="$HOME/.dotfiles"
 # main process
 if [ $# -eq 0 ] # print message and exit with error
 then
-    cat 1>&2 << EOF
+    cat 1>&2 << _EOT_
 dotmgr.sh is a dotfiles manager script.
 Please run "dotmgr.sh --help" to show the usage of this command.
-EOF
+_EOT_
     exit 1
 elif [ "$1" = "--help" ] # show usage
 then
-    cat << EOF
+    cat << _EOT_
 usage: dotmgr.sh [--help] <command> [arg]...
 
 [option]
@@ -34,7 +34,7 @@ install [arg]...
 
 uninstall [arg]...
     remove built software
-EOF
+_EOT_
 elif [ "$1" = "deploy" ] # put symbolic links of dotfiles to $HOME
 then
     # get the name list of files to put symbolic links to $HOME
@@ -84,16 +84,16 @@ then
     shift 1
     if [ $# -eq 0 ]
     then
-        # if there are no arguments, show available software
-        cat << EOF
-The following software is available.
+        # if there are no arguments, show software whose install script is available
+        cat << _EOT_
+The install script of follwing software is available.
 $(find "$path_dotfiles/etc/dotmgr.d" |
-  grep -e "install" |
+  grep -e "/install" |
   sed -e "s/^.*install-//" \
       -e "s/\\.sh\$//" |
   sort |
   sed -e "s/^/\\t/")
-EOF
+_EOT_
     else
         # call each install script
         printf "%s\\n" "$@" |
@@ -109,7 +109,32 @@ EOF
     fi
 elif [ "$1" = "uninstall" ] # remove built software
 then
-    :
+    shift 1
+    if [ $# -eq 0 ]
+    then
+        # if there are no arguments, show software whose uninstall script is avaiable
+        cat << _EOT_
+The uninstall script of following software is available
+$(find "$path_dotfiles/etc/dotmgr.d" |
+  grep -e "/uninstall" |
+  sed -e "s/^.*uninstall-//" \
+      -e "s/\\.sh\$//" |
+  sort |
+  sed -e "s/^/\\t/")
+_EOT_
+    else
+        # call each uninstall script
+        printf "%s\\n" "$@" |
+        sort |
+        uniq |
+        xargs -I {} sh -c \
+            "if [ -f \"$path_dotfiles/etc/dotmgr.d/uninstall-{}.sh\" ]
+            then
+                sh \"$path_dotfiles/etc/dotmgr.d/uninstall-{}.sh\"
+            else
+                printf \"ERROR: %s is not available.\\n\" \"{}\" 1>&2
+            fi"
+    fi
 else # print error message and exit with error
     printf "ERROR: command %s is not defined.\\n" "$1" 1>&2
     exit 1
