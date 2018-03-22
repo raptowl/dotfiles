@@ -84,6 +84,9 @@ then
     fi &&
     mv -fv "$path_tmproot/sourcefiles/Ricty*.ttf" "$HOME/.fonts" &&
     cd "$path_tmproot" || exit
+else
+    printf "ERROR: command \"wget\" or \"curl\" not found.\\n" 1>&2
+    exit 1
 fi
 
 if [ -d "$path_tmproot" ]

@@ -89,7 +89,7 @@ then
 The install script of follwing software is available.
 $(find "$path_dotfiles/etc/dotmgr.d" |
   grep -e "/install" |
-  sed -e "s/^.*install-//" \
+  sed -e "s/^.*install_//" \
       -e "s/\\.sh\$//" |
   sort |
   sed -e "s/^/\\t/")
@@ -100,9 +100,9 @@ _EOT_
         sort |
         uniq |
         xargs -I {} sh -c \
-            "if [ -f \"$path_dotfiles/etc/dotmgr.d/install-{}.sh\" ]
+            "if [ -f \"$path_dotfiles/etc/dotmgr.d/install_{}.sh\" ]
             then
-                sh \"$path_dotfiles/etc/dotmgr.d/install-{}.sh\"
+                sh \"$path_dotfiles/etc/dotmgr.d/install_{}.sh\"
             else
                 printf \"ERROR: %s is not available.\\n\" \"{}\" 1>&2
             fi"
@@ -117,7 +117,7 @@ then
 The uninstall script of following software is available
 $(find "$path_dotfiles/etc/dotmgr.d" |
   grep -e "/uninstall" |
-  sed -e "s/^.*uninstall-//" \
+  sed -e "s/^.*uninstall_//" \
       -e "s/\\.sh\$//" |
   sort |
   sed -e "s/^/\\t/")
@@ -128,9 +128,9 @@ _EOT_
         sort |
         uniq |
         xargs -I {} sh -c \
-            "if [ -f \"$path_dotfiles/etc/dotmgr.d/uninstall-{}.sh\" ]
+            "if [ -f \"$path_dotfiles/etc/dotmgr.d/uninstall_{}.sh\" ]
             then
-                sh \"$path_dotfiles/etc/dotmgr.d/uninstall-{}.sh\"
+                sh \"$path_dotfiles/etc/dotmgr.d/uninstall_{}.sh\"
             else
                 printf \"ERROR: %s is not available.\\n\" \"{}\" 1>&2
             fi"

@@ -18,6 +18,22 @@ alias grep='grep --color'
 alias df='df -h'
 alias ps='ps --sort=start_time'
 
-# define primary prompt
+# load the setting file of git-completion for bash
+if [ -f "$HOME/.git-completion.bash" ]
+then
+    . "$HOME/.git-completion.bash"
+else
+    printf "WARNING: %s/.git-completion.bash not installed.\\n" "$HOME" 1>&2
+fi
+
+# define prompt
+if [ -f "$HOME/.git-prompt.sh" ]
+then
+    . "$HOME/.git-prompt.sh"
+else
+    printf "WARNING: %s/.git-prompt.sh not installed.\\n" "$HOME" 1>&2
+fi
 export PS1='[\u@\h \W]\$ '
 
+# clock (git branch) [path]
+# [user@hostname] $

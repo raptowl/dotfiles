@@ -30,13 +30,13 @@ clear | c
 _EOT_
 elif [ "$1" = "input" ] || [ "$1" = "i" ]
 then
-    if xclip -h > /dev/null 2>&1
+    if command -v xclip > /dev/null 2>&1
     then
         xclip -i -selection "clipboard"
-    elif xsel --help > /dev/null 2>&1
+    elif command -v xsel > /dev/null 2>&1
     then
         xsel -i -b
-    elif pbcopy -help > /dev/null 2>&1
+    elif command -v pbcopy > /dev/null 2>&1
     then
         pbcopy
     else
@@ -45,13 +45,13 @@ then
     fi
 elif [ "$1" = "output" ] || [ "$1" = "o" ]
 then
-    if xclip -h > /dev/null 2>&1
+    if command -v xclip > /dev/null 2>&1
     then
         xclip -o -selection "clipboard"
-    elif xsel --help > /dev/null 2>&1
+    elif command -v xsel > /dev/null 2>&1
     then
         xsel -o -b
-    elif pbpaste -help > /dev/null 2>&1
+    elif command -v pbpaste > /dev/null 2>&1
     then
         pbpaste
     else
@@ -60,13 +60,13 @@ then
     fi
 elif [ "$1" = "clear" ] || [ "$1" = "c" ]
 then
-    if xclip -h > /dev/null 2>&1
+    if command -v xclip > /dev/null 2>&1
     then
         : | xclip -i -selection "clipboard"
-    elif xsel --help > /dev/null 2>&1
+    elif command -v xsel > /dev/null 2>&1
     then
         xsel -c -b
-    elif pbcopy -help > /dev/null 2>&1
+    elif command -v pbcopy > /dev/null 2>&1
     then
         : | pbcopy
     else

@@ -12,7 +12,7 @@ url_gitrepo="https://github.com/raptowl/dotfiles.git"
 url_tararch="https://github.com/raptowl/dotfiles/archive/master.tar.gz"
 
 cd "$HOME" || exit
-if git --help > /dev/null 2>&1
+if command -v git > /dev/null 2>&1
 then
     # download the repository using by git
     git clone "$url_gitrepo" "$path_dotfiles"
@@ -24,7 +24,7 @@ then
         exit 1
     fi
     sh "$path_dotfiles/dotmgr.sh" deploy
-elif wget --help > /dev/null 2>&1
+elif command -v wget > /dev/null 2>&1
 then
     # download the repository using by wget
     wget -O - "$url_tararch" | tar xzv
@@ -44,7 +44,7 @@ then
         exit 1
     fi
     sh "$path_dotfiles/dotmgr.sh" deploy
-elif curl --help > /dev/null 2>&1
+elif command -v curl > /dev/null 2>&1
 then
     # download the repository using by curl
     curl -L "$url_tararch" | tar xzv
