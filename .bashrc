@@ -30,10 +30,44 @@ fi
 if [ -f "$HOME/.git-prompt.sh" ]
 then
     . "$HOME/.git-prompt.sh"
+    prm_git="\$(__git_ps1)"
 else
     printf "WARNING: %s/.git-prompt.sh not installed.\\n" "$HOME" 1>&2
+    prm_git="(no git prompt)"
 fi
-export PS1='[\u@\h \W]\$ '
 
-# clock (git branch) [path]
-# [user@hostname] $
+# prompt of date
+prm_date="\t"
+
+# prompt of username
+prm_un="\
+$(if [ "$UID" -eq 0 ]
+  then
+      printf "\033[1;31;43m"
+  else
+      printf "\033[36m"
+  fi)\
+\u\033[0m"
+
+# prompt of hostname
+prm_hn="\
+$(if [ "$SSH_CONNECTION" ]
+  then
+      printf "\033[1;32m"
+  else
+      printf "\033[32m"
+  fi)\
+\H\033[0m"
+
+# prompt of currect directory
+prm_cd="\033[34m\w\033[0m"
+
+# prompt of return code
+prm_prompt="\$? \$"
+
+PS1="\
+<${prm_date}> [${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\n\
+${prm_prompt} "
+
+unset prm_date prm_un prm_hn prm_cd prm_git prm_prompt
+
