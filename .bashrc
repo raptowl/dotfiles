@@ -63,7 +63,13 @@ $(if [ "$SSH_CONNECTION" ]
 prm_cd="\033[34m\w\033[0m"
 
 # prompt of return code
-prm_prompt="\$? \$"
+prm_prompt="\
+\$(if [ \$? -eq 0 ]
+  then
+      printf \"\033[32m\$? \$\033[0m\"
+  else
+      printf \"\033[31m\$? \$\033[0m\"
+  fi)"
 
 PS1="\
 <${prm_date}> [${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\n\
