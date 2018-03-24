@@ -1,3 +1,5 @@
+# ALIAS
+
 # define alias of 'cd'
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -18,6 +20,8 @@ alias grep='grep --color'
 alias df='df -h'
 alias ps='ps --sort=start_time'
 
+# PROMPT
+
 # load the setting file of git-completion for bash
 if [ -f "$HOME/.git-completion.bash" ]
 then
@@ -37,43 +41,43 @@ else
 fi
 
 # prompt of date
-prm_date="\t"
+prm_date="\$(date \"+%Y/%m/%d %H:%M:%S\")"
 
 # prompt of username
 prm_un="\
-$(if [ "$UID" -eq 0 ]
-  then
-      printf "\033[1;31;43m"
-  else
-      printf "\033[36m"
-  fi)\
-\u\033[0m"
+\$(if [ \"\$UID\" -eq 0 ]; \
+   then \
+       printf \"\\[\\033[1;31;43m\\]\\u\\[\\033[0m\\]\"; \
+   else \
+       printf \"\\[\\033[36m\\]\\u\\[\\033[0m\\]\"; \
+   fi)"
 
 # prompt of hostname
 prm_hn="\
-$(if [ "$SSH_CONNECTION" ]
-  then
-      printf "\033[1;32m"
-  else
-      printf "\033[32m"
-  fi)\
-\H\033[0m"
+\$(if [ -z \"\$SSH_CONNECTION\" ]; \
+   then \
+       printf \"\\[\\033[32m\\]\\H\\[\\033[0m\\]\"; \
+   else \
+       printf \"\\[\\033[1;32m\\]\\H\\[\\033[0m\\]\"; \
+   fi)"
 
 # prompt of currect directory
-prm_cd="\033[34m\w\033[0m"
+prm_cd="\\[\\033[34m\\]\\w\\[\\033[0m\\]"
 
 # prompt of return code
 prm_prompt="\
-\$(if [ \$? -eq 0 ]
-  then
-      printf \"\033[32m\$? \$\033[0m\"
-  else
-      printf \"\033[31m\$? \$\033[0m\"
-  fi)"
+\$(if [ \$prm_rc -eq 0 ]; \
+   then \
+       printf \"\\[\\033[32m\\]\$prm_rc \\$\\[\\033[0m\\]\"; \
+   else \
+       printf \"\\[\\033[31m\\]\$prm_rc \\$\\[\\033[0m\\]\"; \
+   fi)"
+
+PROMPT_COMMAND="prm_rc=\$?"
 
 PS1="\
-<${prm_date}> [${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\n\
+<${prm_date}> [${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\\n\
 ${prm_prompt} "
 
-unset prm_date prm_un prm_hn prm_cd prm_git prm_prompt
+unset prm_date prm_un prm_hn prm_cd prm_git prm_prompt prm_rc
 
