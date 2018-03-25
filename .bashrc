@@ -43,9 +43,6 @@ else
     prm_git="(no git-prompt.sh)"
 fi
 
-# prompt of date
-prm_date="\$(date \"+%Y/%m/%d %H:%M:%S\")"
-
 # prompt of username
 prm_un="\
 \$(if [ \"\$UID\" -eq 0 ]; then
@@ -56,14 +53,16 @@ prm_un="\
 
 # prompt of hostname
 prm_hn="\
-\$(if [ -z \"\$SSH_CONNECTION\" ]; then
+\$(if [ -z \"\$SSH_TTY\" ]; then
        printf \"\\[\\033[32m\\]\\H\\[\\033[0m\\]\"
    else
        printf \"\\[\\033[1;32m\\]\\H\\[\\033[0m\\]\"
    fi)"
 
 # prompt of currect directory
-prm_cd="\\[\\033[34m\\]\\w\\[\\033[0m\\]"
+prm_cd="\
+\$(printf \"\\[\\033[34m\\]\\w\\[\\033[0m\\]\" |
+   sed -e \"s%/%\\[\\033[1m\\]/\\[\\033[0m\\033[34m\\]%g\")"
 
 # prompt of return code
 prm_prompt="\
@@ -76,8 +75,8 @@ prm_prompt="\
 PROMPT_COMMAND="prm_rc=\$?"
 
 PS1="\
-<${prm_date}> [${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\\n\
+[${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\\n\
 ${prm_prompt} "
 
-unset prm_rc prm_date prm_un prm_hn prm_cd prm_git prm_prompt
+unset prm_rc prm_un prm_hn prm_cd prm_git prm_prompt
 
