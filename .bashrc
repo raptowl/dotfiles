@@ -66,17 +66,18 @@ prm_cd="\
 
 # prompt of return code
 prm_prompt="\
-\$(if [ \$prm_rc -eq 0 ]; then
-       printf \"\\[\\033[32m\\]\$prm_rc \\$\\[\\033[0m\\]\"
+\$(if [ \$__prm_return_code -eq 0 ]; then
+       printf \"\\[\\033[32m\\]\$__prm_return_code \\$\\[\\033[0m\\]\"
    else
-       printf \"\\[\\033[31m\\]\$prm_rc \\$\\[\\033[0m\\]\"
+       printf \"\\[\\033[31m\\]\$__prm_return_code \\$\\[\\033[0m\\]\"
    fi)"
 
-PROMPT_COMMAND="prm_rc=\$?"
+#PROMPT_COMMAND="prm_rc=\$?"
+PROMPT_COMMAND="__prm_return_code=\$?"
 
 PS1="\
 [${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\\n\
 ${prm_prompt} "
 
-unset prm_rc prm_un prm_hn prm_cd prm_git prm_prompt
+unset prm_un prm_hn prm_cd prm_git prm_prompt
 
