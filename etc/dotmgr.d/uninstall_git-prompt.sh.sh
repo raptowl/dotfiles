@@ -2,8 +2,7 @@
 
 set -u
 
-if [ -f "$HOME/.git-prompt.sh" ]
-then
+if [ -f "$HOME/.git-prompt.sh" ]; then
     rm -fv "$HOME/.git-prompt.sh"
 fi
 

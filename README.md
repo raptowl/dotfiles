@@ -41,9 +41,9 @@ It has some subcommands.
 
 `undeploy`: remove symbolic links of configuration files from home directory.
 
-`install`: build specific software.
+`install`: download and set-up specific software.
 
-`uninstall`: remove built software.
+`uninstall`: remove self-set-up software.
 
 ### Downloader Script `download.sh`
 

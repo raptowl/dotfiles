@@ -6,8 +6,7 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 
 # define alias of 'ls'
-if ls --color > /dev/null 2>&1
-then
+if ls --color > /dev/null 2>&1; then
     alias ls='ls -la --color=auto'
     export LS_COLORS=''
 else
@@ -23,16 +22,14 @@ alias ps='ps --sort=start_time'
 # PROMPT
 
 # load the setting file of git-completion for bash
-if [ -f "$HOME/.git-completion.bash" ]
-then
+if [ -f "$HOME/.git-completion.bash" ]; then
     . "$HOME/.git-completion.bash"
 else
     printf "WARNING: %s/.git-completion.bash not installed.\\n" "$HOME" 1>&2
 fi
 
 # define prompt
-if [ -f "$HOME/.git-prompt.sh" ]
-then
+if [ -f "$HOME/.git-prompt.sh" ]; then
     . "$HOME/.git-prompt.sh"
     GIT_PS1_SHOWDIRTYSTATE=true
     GIT_PS1_SHOWSTASHSTATE=true
@@ -51,8 +48,7 @@ prm_date="\$(date \"+%Y/%m/%d %H:%M:%S\")"
 
 # prompt of username
 prm_un="\
-\$(if [ \"\$UID\" -eq 0 ]
-   then
+\$(if [ \"\$UID\" -eq 0 ]; then
        printf \"\\[\\033[1;31;43m\\]\\u\\[\\033[0m\\]\"
    else
        printf \"\\[\\033[36m\\]\\u\\[\\033[0m\\]\"
@@ -60,8 +56,7 @@ prm_un="\
 
 # prompt of hostname
 prm_hn="\
-\$(if [ -z \"\$SSH_CONNECTION\" ]
-   then
+\$(if [ -z \"\$SSH_CONNECTION\" ]; then
        printf \"\\[\\033[32m\\]\\H\\[\\033[0m\\]\"
    else
        printf \"\\[\\033[1;32m\\]\\H\\[\\033[0m\\]\"
@@ -72,8 +67,7 @@ prm_cd="\\[\\033[34m\\]\\w\\[\\033[0m\\]"
 
 # prompt of return code
 prm_prompt="\
-\$(if [ \$prm_rc -eq 0 ]
-   then
+\$(if [ \$prm_rc -eq 0 ]; then
        printf \"\\[\\033[32m\\]\$prm_rc \\$\\[\\033[0m\\]\"
    else
        printf \"\\[\\033[31m\\]\$prm_rc \\$\\[\\033[0m\\]\"

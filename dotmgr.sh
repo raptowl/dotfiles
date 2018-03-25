@@ -6,15 +6,17 @@ set -u
 path_dotfiles="$HOME/.dotfiles"
 
 # main process
-if [ $# -eq 0 ] # print message and exit with error
-then
+if [ $# -eq 0 ]; then
+    # print message and exit with error
+
     cat 1>&2 << _EOT_
 dotmgr.sh is a dotfiles manager script.
 Please run "dotmgr.sh --help" to show the usage of this command.
 _EOT_
     exit 1
-elif [ "$1" = "--help" ] # show usage
-then
+elif [ "$1" = "--help" ]; then
+    # show usage
+
     cat << _EOT_
 usage: dotmgr.sh [--help] <command> [arg]...
 
@@ -30,13 +32,14 @@ undeploy
     remove symbolic links of dotfiles from \$HOME
 
 install [arg]...
-    build specific software
+    download and set-up specific software
 
 uninstall [arg]...
-    remove built software
+    remove self-set-up software
 _EOT_
-elif [ "$1" = "deploy" ] # put symbolic links of dotfiles to $HOME
-then
+elif [ "$1" = "deploy" ]; then
+    # put symbolic links of dotfiles to $HOME
+
     # get the name list of files to put symbolic links to $HOME
     deployfiles="$(find "$path_dotfiles" -maxdepth 1 |
                    grep -v -e "$path_dotfiles\$" \
@@ -56,16 +59,16 @@ then
     # rename the user original dotfiles to dotold name
     printf "%s\\n" "$deployfiles" |
     xargs -I {} sh -c \
-        "if [ -f \"$HOME/{}\" ] || [ -d \"$HOME/{}\" ]
-        then
+        "if [ -f \"$HOME/{}\" ] || [ -d \"$HOME/{}\" ]; then
             mv -fv \"$HOME/{}\" \"$HOME/{}.dotold\"
         fi"
 
     # put symbolic links
     printf "%s\\n" "$deployfiles" |
     xargs -I {} ln -fsv "$path_dotfiles/{}" "$HOME/{}"
-elif [ "$1" = "undeploy" ] # remove symbolic links of dotfiles from $HOME
-then
+elif [ "$1" = "undeploy" ]; then
+    # remove symbolic links of dotfiles from $HOME
+
     # remove symbolic links
     find "$HOME" -maxdepth 1 -print0 |
     xargs -0 file |
@@ -79,11 +82,11 @@ then
     grep -e "\\.dotold\$" |
     sed -e "s/\\.dotold\$//" |
     xargs -I {} mv -fv "{}.dotold" "{}"
-elif [ "$1" = "install" ] # build specific software
-then
+elif [ "$1" = "install" ]; then
+    # download and set-up specific software
+
     shift 1
-    if [ $# -eq 0 ]
-    then
+    if [ $# -eq 0 ]; then
         # if there are no arguments, show software whose install script is available
         cat << _EOT_
 The install script of follwing software is available.
@@ -100,18 +103,17 @@ _EOT_
         sort |
         uniq |
         xargs -I {} sh -c \
-            "if [ -f \"$path_dotfiles/etc/dotmgr.d/install_{}.sh\" ]
-            then
+            "if [ -f \"$path_dotfiles/etc/dotmgr.d/install_{}.sh\" ]; then
                 sh \"$path_dotfiles/etc/dotmgr.d/install_{}.sh\"
             else
                 printf \"ERROR: %s is not available.\\n\" \"{}\" 1>&2
             fi"
     fi
-elif [ "$1" = "uninstall" ] # remove built software
-then
+elif [ "$1" = "uninstall" ]; then
+    # remove self-set-up software
+
     shift 1
-    if [ $# -eq 0 ]
-    then
+    if [ $# -eq 0 ]; then
         # if there are no arguments, show software whose uninstall script is avaiable
         cat << _EOT_
 The uninstall script of following software is available
@@ -128,14 +130,15 @@ _EOT_
         sort |
         uniq |
         xargs -I {} sh -c \
-            "if [ -f \"$path_dotfiles/etc/dotmgr.d/uninstall_{}.sh\" ]
-            then
+            "if [ -f \"$path_dotfiles/etc/dotmgr.d/uninstall_{}.sh\" ]; then
                 sh \"$path_dotfiles/etc/dotmgr.d/uninstall_{}.sh\"
             else
                 printf \"ERROR: %s is not available.\\n\" \"{}\" 1>&2
             fi"
     fi
-else # print error message and exit with error
+else
+    # print error message and exit with error
+
     printf "ERROR: command %s is not defined.\\n" "$1" 1>&2
     exit 1
 fi
