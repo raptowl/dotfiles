@@ -11,10 +11,10 @@ url_fontforge="https://sourceforge.net/projects/fontforge/files/fontforge-source
 
 trap '
     if [ -d "$path_tmproot" ]; then
-        rm -rf "$path_tmproot"
+        rm -rfv "$path_tmproot"
     fi
     if [ -d "$HOME/.FontForge" ]; then
-        rm -rf "$HOME/.FontForge"
+        rm -rfv "$HOME/.FontForge"
     fi
 ' 1 2 3 15
 
@@ -73,7 +73,10 @@ elif command -v curl > /dev/null 2>&1; then
     if [ ! -d "$HOME/.fonts" ]; then
         mkdir "$HOME/.fonts"
     fi &&
-    mv -fv "$path_tmproot/sourcefiles/Ricty*.ttf" "$HOME/.fonts" &&
+    find "$path_tmproot/sourcefiles" -maxdepth 1 |
+    grep -e "Ricty.*\\.ttf" |
+    sed -e "s%$path_tmproot/sourcefiles/%%" |
+    xargs -I {} mv -fv "$path_tmproot/sourcefiles/{}" "$HOME/.fonts/{}" &&
     cd "$path_tmproot" || exit
 else
     printf "ERROR: command \"wget\" or \"curl\" not found.\\n" 1>&2
@@ -81,9 +84,9 @@ else
 fi
 
 if [ -d "$path_tmproot" ]; then
-    rm -rf "$path_tmproot"
+    rm -rfv "$path_tmproot"
 fi
 if [ -d "$HOME/.FontForge" ]; then
-    rm -rf "$HOME/.FontForge"
+    rm -rfv "$HOME/.FontForge"
 fi
 

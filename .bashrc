@@ -1,3 +1,13 @@
+# load ~/.bashrc.dotold or not
+if [ -f "$HOME/.bashrc.dotold" ]; then
+    printf "QUERY: load ~/.bashrc.dotold ?: [y/(other)] "
+    read -r ans
+    if [ "$ans" = "y" ]; then
+        . "$HOME/.bashrc.dotold"
+    fi
+    unset ans
+fi
+
 # ALIAS
 
 # define alias of 'cd'
@@ -28,7 +38,7 @@ else
     printf "WARNING: %s/.git-completion.bash not installed.\\n" "$HOME" 1>&2
 fi
 
-# define prompt
+# define git prompt
 if [ -f "$HOME/.git-prompt.sh" ]; then
     . "$HOME/.git-prompt.sh"
     GIT_PS1_SHOWDIRTYSTATE=true
@@ -72,9 +82,10 @@ prm_prompt="\
        printf \"\\[\\033[31m\\]\$__prm_return_code \\$\\[\\033[0m\\]\"
    fi)"
 
-#PROMPT_COMMAND="prm_rc=\$?"
+# get error code of the previous command
 PROMPT_COMMAND="__prm_return_code=\$?"
 
+# define primary prompt
 PS1="\
 [${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\\n\
 ${prm_prompt} "

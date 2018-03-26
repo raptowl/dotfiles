@@ -48,8 +48,7 @@ elif [ "$1" = "output" ] || [ "$1" = "o" ]; then
         printf "ERROR: at least a command of \"xclip\" or \"xsel\" or \"pbpaste\" is necessary.\\n" 1>&2
         exit 1
     fi
-elif [ "$1" = "clear" ] || [ "$1" = "c" ]
-then
+elif [ "$1" = "clear" ] || [ "$1" = "c" ]; then
     if command -v xclip > /dev/null 2>&1; then
         : | xclip -i -selection "clipboard"
     elif command -v xsel > /dev/null 2>&1; then
