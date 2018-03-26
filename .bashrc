@@ -1,14 +1,12 @@
 # load ~/.bashrc.dotold or not
 if [ -f "$HOME/.bashrc.dotold" ]; then
-    printf "QUERY: load ~/.bashrc.dotold ?: [y/(other)] "
+    printf "QUERY: load ~/.bashrc.dotold ? [y/(other)]: "
     read -r ans
     if [ "$ans" = "y" ]; then
         . "$HOME/.bashrc.dotold"
     fi
     unset ans
 fi
-
-# ALIAS
 
 # define alias of 'cd'
 alias ..='cd ..'
@@ -28,8 +26,6 @@ fi
 alias grep='grep --color'
 alias df='df -h'
 alias ps='ps --sort=start_time'
-
-# PROMPT
 
 # load the setting file of git-completion for bash
 if [ -f "$HOME/.git-completion.bash" ]; then
