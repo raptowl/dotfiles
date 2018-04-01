@@ -50,7 +50,10 @@ if command -v wget > /dev/null 2>&1; then
     if [ ! -d "$HOME/.fonts" ]; then
         mkdir "$HOME/.fonts"
     fi &&
-    mv -fv "$path_tmproot/sourcefiles/Ricty*.ttf" "$HOME/.fonts" &&
+    find "$path_tmproot/sourcefiles" -maxdepth 1 |
+    grep -e "Ricty.*\\.ttf" |
+    sed -e "s%$path_tmproot/sourcefiles/%%" |
+    xargs -I {} mv -fv "$path_tmproot/sourcefiles/{}" "$HOME/.fonts/{}" &&
     cd "$path_tmproot" || exit
 elif command -v curl > /dev/null 2>&1; then
     curl -L "$url_script" > "$path_tmproot/sourcefiles/ricty_generator.sh" &&

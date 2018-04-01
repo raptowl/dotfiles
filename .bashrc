@@ -1,12 +1,13 @@
-# load ~/.bashrc.dotold or not
+# load $HOME/.bashrc.dotold
 if [ -f "$HOME/.bashrc.dotold" ]; then
-    printf "QUERY: load ~/.bashrc.dotold ? [y/(other)]: "
-    read -r ans
-    if [ "$ans" = "y" ]; then
-        . "$HOME/.bashrc.dotold"
-    fi
-    unset ans
+    . "$HOME/.bashrc.dotold"
 fi
+
+# add $HOME/bin to PATH
+export PATH="$HOME/bin:$PATH"
+
+# set EDITOR
+export EDITOR="vim"
 
 # define alias of 'cd'
 alias ..='cd ..'
@@ -87,4 +88,9 @@ PS1="\
 ${prm_prompt} "
 
 unset prm_un prm_hn prm_cd prm_git prm_prompt
+
+# load $HOME/.bashrc_local
+if [ -f "$HOME/.bashrc_local" ]; then
+    . "$HOME/.bashrc_local"
+fi
 
