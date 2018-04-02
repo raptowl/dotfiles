@@ -7,6 +7,12 @@ elif [ -f "$HOME/.profile" ]; then
     . "$HOME/.profile"
 fi
 
+# add $HOME/bin to PATH
+export PATH="$HOME/bin:$PATH"
+
+# set EDITOR
+export EDITOR="vim"
+
 # load $HOME/.bash_profile_local
 if [ -f "$HOME/.bash_profile_local" ]; then
     . "$HOME/.bash_profile_local"

@@ -3,12 +3,6 @@ if [ -f "$HOME/.bashrc.dotold" ]; then
     . "$HOME/.bashrc.dotold"
 fi
 
-# add $HOME/bin to PATH
-export PATH="$HOME/bin:$PATH"
-
-# set EDITOR
-export EDITOR="vim"
-
 # define alias of 'cd'
 alias ..='cd ..'
 alias ...='cd ../..'
