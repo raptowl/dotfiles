@@ -2,7 +2,7 @@
 
 set -u
 
-url_script="https://raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
+url_script="raw.githubusercontent.com/git/git/master/contrib/completion/git-completion.bash"
 
 if command -v wget > /dev/null 2>&1; then
     wget -O - "$url_script" > "$HOME/.git-completion.bash"

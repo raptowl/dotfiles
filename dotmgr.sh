@@ -90,6 +90,7 @@ elif [ "$1" = "install" ]; then
         # if there are no arguments, show software whose install script is available
         cat << _EOT_
 The install script of follwing software is available.
+
 $(find "$path_dotfiles/etc/dotmgr.d" |
   grep -e "/install" |
   sed -e "s/^.*install_//" \
@@ -116,7 +117,8 @@ elif [ "$1" = "uninstall" ]; then
     if [ $# -eq 0 ]; then
         # if there are no arguments, show software whose uninstall script is avaiable
         cat << _EOT_
-The uninstall script of following software is available
+The uninstall script of following software is available.
+
 $(find "$path_dotfiles/etc/dotmgr.d" |
   grep -e "/uninstall" |
   sed -e "s/^.*uninstall_//" \

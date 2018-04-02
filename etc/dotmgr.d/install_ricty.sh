@@ -4,10 +4,10 @@ set -u
 
 path_tmproot="$HOME/tmp$$"
 url_script="www.rs.tus.ac.jp/yyusa/ricty/ricty_generator.sh"
-url_inconsolata_r="https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf"
-url_inconsolata_b="https://github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf"
-url_migu="https://ja.osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-1m-20150712.zip"
-url_fontforge="https://sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-20120731-b.tar.bz2/download"
+url_inconsolata_r="github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf"
+url_inconsolata_b="github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf"
+url_migu="ja.osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-1m-20150712.zip"
+url_fontforge="sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-20120731-b.tar.bz2/download"
 
 trap '
     if [ -d "$path_tmproot" ]; then
@@ -17,6 +17,16 @@ trap '
         rm -rfv "$HOME/.FontForge"
     fi
 ' 1 2 3 15
+
+if ! command -v make > /dev/null 2>&1; then
+    printf "ERROR: command \"make\" not found.\\n" 1>&2
+    exit 1
+fi
+
+if ! command -v gcc > /dev/null 2>&1; then
+    printf "ERROR: command \"gcc\" not found.\\n" 1>&2
+    exit 1
+fi
 
 if ! command -v unzip > /dev/null 2>&1; then
     printf "ERROR: command \"unzip\" not found.\\n" 1>&2

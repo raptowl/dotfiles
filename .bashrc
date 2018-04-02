@@ -22,14 +22,21 @@ alias grep='grep --color'
 alias df='df -h'
 alias ps='ps --sort=start_time'
 
-# load the setting file of git-completion for bash
+# load the setting script "bash-completion"
+if [ -f "$HOME/usr/bash-completion/share/bash-completion/bash_completion" ]; then
+    . "$HOME/usr/bash-completion/share/bash-completion/bash_completion"
+else
+    printf "WARNING: %s/bash_completion not installed.\\n" "$HOME/usr/bash-completion/share/bash-completion" 1>&2
+fi
+
+# load the setting script "git-completion.bash" for bash
 if [ -f "$HOME/.git-completion.bash" ]; then
     . "$HOME/.git-completion.bash"
 else
     printf "WARNING: %s/.git-completion.bash not installed.\\n" "$HOME" 1>&2
 fi
 
-# define git prompt
+# load the setting script "git-prompt.sh"
 if [ -f "$HOME/.git-prompt.sh" ]; then
     . "$HOME/.git-prompt.sh"
     GIT_PS1_SHOWDIRTYSTATE=true
