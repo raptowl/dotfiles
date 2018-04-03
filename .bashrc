@@ -10,10 +10,16 @@ alias ....='cd ../../..'
 
 # define alias of 'ls'
 if ls --color > /dev/null 2>&1; then
-    alias ls='ls -la --color=auto'
+    alias l='\ls --color=auto'
+    alias ll='\ls -l --color=auto'
+    alias la='\ls -a --color=auto'
+    alias ls='\ls -la --color=auto'
     export LS_COLORS=''
 else
-    alias ls='ls -la -G'
+    alias l='\ls -G'
+    alias ll='\ls -l -G'
+    alias la='\ls -a -G'
+    alias ls='\ls -la -G'
     export LSCOLORS=''
 fi
 
