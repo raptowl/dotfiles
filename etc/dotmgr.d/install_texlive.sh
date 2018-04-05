@@ -8,7 +8,7 @@ url_texlive="mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
 
 trap '
     if [ -d "$path_tmproot" ]; then
-        rm -rvf "$path_tmproot"
+        rm -rf "$path_tmproot"
     fi
 ' 1 2 3 15
 
@@ -32,6 +32,6 @@ TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl
 
 cd "$HOME" || exit
 if [ -d "$path_tmproot" ]; then
-    rm -rvf "$path_tmproot"
+    rm -rf "$path_tmproot"
 fi
 

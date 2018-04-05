@@ -10,7 +10,7 @@ url_tarball="github.com/scop/bash-completion/archive/master.tar.gz"
 
 trap '
     if [ -d "$path_tmproot" ]; then
-        rm -rvf "$path_tmproot"
+        rm -rf "$path_tmproot"
     fi
 ' 1 2 3 15
 
@@ -53,6 +53,6 @@ else
 fi
 
 if [ -d "$path_tmproot" ]; then
-    rm -rvf "$path_tmproot"
+    rm -rf "$path_tmproot"
 fi
 

@@ -1,6 +1,6 @@
 #!/bin/sh
 
 if [ -d "$HOME/usr/texlive" ]; then
-    rm -rvf "$HOME/usr/texlive"
+    rm -rfv "$HOME/usr/texlive"
 fi
 

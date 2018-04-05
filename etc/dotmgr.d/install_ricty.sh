@@ -11,10 +11,10 @@ url_fontforge="sourceforge.net/projects/fontforge/files/fontforge-source/fontfor
 
 trap '
     if [ -d "$path_tmproot" ]; then
-        rm -rfv "$path_tmproot"
+        rm -rf "$path_tmproot"
     fi
     if [ -d "$HOME/.FontForge" ]; then
-        rm -rfv "$HOME/.FontForge"
+        rm -rf "$HOME/.FontForge"
     fi
 ' 1 2 3 15
 
@@ -97,9 +97,9 @@ else
 fi
 
 if [ -d "$path_tmproot" ]; then
-    rm -rfv "$path_tmproot"
+    rm -rf "$path_tmproot"
 fi
 if [ -d "$HOME/.FontForge" ]; then
-    rm -rfv "$HOME/.FontForge"
+    rm -rf "$HOME/.FontForge"
 fi
 
