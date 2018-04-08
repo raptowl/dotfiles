@@ -1,7 +1,7 @@
 !!! rxvt-unicode
 URxvt.depth:        32
 URxvt.geometry:     128x32
-URxvt.background:   [64]#0f0f0f
+URxvt.background:   [80]#0f0f0f
 URxvt.foreground:   #efefef
 !URxvt.color0:       #0f0f0f
 !URxvt.color1:       #bf7f7f
