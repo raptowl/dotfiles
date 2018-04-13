@@ -4,5 +4,5 @@ set -u
 
 find "$HOME/.fonts" -maxdepth 1 |
 grep -e "Ricty" |
-xargs rm -fv
+xargs rm -rf
 

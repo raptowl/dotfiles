@@ -3,6 +3,6 @@
 set -u
 
 if [ -f "$HOME/.git-completion.bash" ]; then
-    rm -fv "$HOME/.git-completion.bash"
+    rm -rf "$HOME/.git-completion.bash"
 fi
 
