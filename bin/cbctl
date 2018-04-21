@@ -4,13 +4,13 @@ set -u
 
 if [ $# -eq 0 ]; then
     cat 1>&2 << _EOT_
-cbmgr is a clipboard manager script for CLI environment of UNIX like system.
-Please run "clpmgr.sh --help" to show the usage of this command.
+cbctl is a clipboard manager script for CLI environment of UNIX like system.
+Please run "cbctl --help" to show the usage of this command.
 _EOT_
     exit 1
 elif [ "$1" = "--help" ]; then
     cat << _EOT_
-usage: cbmgr [--help] <command>
+usage: cbctl [--help] <command>
 
 [option]
 --help

@@ -21,7 +21,7 @@ elif command -v curl > /dev/null 2>&1; then
     curl -L "$url_tarball" | tar xzv    &&
     mv -f "$HOME/dotfiles-master" "$path_dotfiles"
 else
-    printf "ERROR: at least one command of \"git\" \"wget\" or \"curl\" is necessary.\\n" 1>&2
+    printf "ERROR: command \"git\" \"wget\" or \"curl\" not found.\\n" 1>&2
     exit 1
 fi && sh "$path_dotfiles/etc/link.sh"
 
