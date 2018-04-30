@@ -5,6 +5,7 @@ set -u
 path_tmproot="$HOME/tmp$$"
 
 url_texlive="mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz"
+
 url_texrepo="http://ftp.jaist.ac.jp/pub/CTAN/systems/texlive/tlnet"
 
 trap '
