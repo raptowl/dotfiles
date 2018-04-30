@@ -1,13 +1,14 @@
 ! xterm
-xterm*cursorBlink: true
+xterm*cursorBlink: false
 xterm*faceName: Ricty
-xterm*geometry: 80x24
 xterm*faceSize: 14
+xterm*geometry: 80x24
 xterm*forcePackedFont: true
 xterm*locale: true
 xterm*saveLines: 1024
 xterm*selectToClipboard: true
 xterm*utf8: true
+xterm*utf8Title: true
 xterm*background: #101010
 xterm*foreground: #d0d0d0
 xterm*color0: #101010

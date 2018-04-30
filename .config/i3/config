@@ -6,7 +6,7 @@ set $up k
 set $right l
 
 # set font
-font pango:Ricty-Regular 12
+font pango:Ricty Regular 12
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -18,7 +18,7 @@ bindsym $mod+Return exec xterm
 bindsym $mod+q kill
 
 # start application launcher
-bindsym $mod+d exec rofi
+bindsym $mod+d exec --no-startup-id dmenu_run
 
 # change focus
 bindsym $mod+$left focus left
@@ -131,9 +131,9 @@ mode "$mode_resize" {
 }
 bindsym $mod+r mode "$mode_resize"
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# set bar
 bar {
-        status_command i3status
+    position top
+    status_command i3status
 }
 
