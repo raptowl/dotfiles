@@ -1,9 +1,5 @@
 # define basic keybindings
 set $mod Mod4
-set $left h
-set $down j
-set $up k
-set $right l
 
 # set font
 font pango:Ricty Regular 12
@@ -21,16 +17,16 @@ bindsym $mod+q kill
 bindsym $mod+d exec --no-startup-id dmenu_run
 
 # change focus
-bindsym $mod+$left focus left
-bindsym $mod+$down focus down
-bindsym $mod+$up focus up
-bindsym $mod+$right focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # move focused window
-bindsym $mod+Shift+$left move left
-bindsym $mod+Shift+$down move down
-bindsym $mod+Shift+$up move up
-bindsym $mod+Shift+$right move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # split in horizontal orientation
 bindsym $mod+g split h
@@ -109,7 +105,7 @@ mode "$mode_system" {
     bindsym s exec --no-startup-id i3lock && sleep 1 && systemctl suspend, mode "default"
     bindsym h exec --no-startup-id i3lock && sleep 1 && systemctl hibernate, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s --no-startup-id systemctl poweroff -i, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
     bindsym $mod+Shift+e mode "default"
     bindsym Return mode "default"
@@ -120,10 +116,10 @@ bindsym $mod+Shift+e mode "$mode_system"
 # resize window
 set $mode_resize resize
 mode "$mode_resize" {
-        bindsym $left resize shrink width 5 px or 5 ppt
-        bindsym $down resize grow height 5 px or 5 ppt
-        bindsym $up resize shrink height 5 px or 5 ppt
-        bindsym $right resize grow width 5 px or 5 ppt
+        bindsym h resize shrink width 5 px or 5 ppt
+        bindsym j resize grow height 5 px or 5 ppt
+        bindsym k resize shrink height 5 px or 5 ppt
+        bindsym l resize grow width 5 px or 5 ppt
 
         bindsym $mod+r mode "default"
         bindsym Return mode "default"
@@ -135,5 +131,18 @@ bindsym $mod+r mode "$mode_resize"
 bar {
     position top
     status_command i3status
+    colors {
+        separator #333333
+        background #2c001e
+        statusline #aea79f
+        focused_workspace #dd4814 #dd4814 #ffffff
+        active_workspace #902a07 #902a07 #aea79f
+        inactive_workspace #902a07 #902a07 #aea79f
+        urgent_workspace #77216f #77216f #ffffff
+    }
 }
+client.focused #dd4814 #dd4814 #ffffff #902a07
+client.focused_inactive #5e2750 #5e2750 #aea79f #5e2750
+client.unfocused #5e2750 #5e2750 #aea79f #5e2750
+client.urgent #77216f #77216f #ffffff #efb73e
 
