@@ -2,11 +2,11 @@
 
 set -u
 
-path_dalrc="$HOME/.dalrc"
+path_configfile="$HOME/.dal.conf"
 
-# check .dalrc
-if [ ! -f "$path_dalrc" ]; then
-    printf "ERROR: %s not found.\\n" "$path_dalrc" 1>&2
+# check configfile
+if [ ! -f "$path_configfile" ]; then
+    printf "ERROR: %s not found.\\n" "$path_configfile" 1>&2
     exit 1
 fi
 
@@ -24,25 +24,23 @@ _EOT_
 fi
 
 case $1 in
-"w" )   exec $(cat "$path_dalrc"            |
-               grep -v -e "^#"              |
-               grep -e "web_browser"        |
-               sed -e "s/web_browser=//"    |
-               tail -n 1)
+"w" )   exec "$(grep -v -e "^#" < "$path_configfile"    |
+                grep -e "web_browser="                  |
+                sed -e "s/web_browser=//"               |
+                tail -n 1)"
         ;;
-"m" )   exec $(cat "$path_dalrc"            |
-               grep -v -e "^#"              |
-               grep -e "mailer"             |
-               sed -e "s/mailer=//"         |
-               tail -n 1)
+"m" )   exec "$(grep -v -e "^#" < "$path_configfile"    |
+                grep -e "mailer="                       |
+                sed -e "s/mailer=//"                    |
+                tail -n 1)"
         ;;
-"f" )   exec $(cat "$path_dalrc"            |
-               grep -v -e "^#"              |
-               grep -e "file_manager"       |
-               sed -e "s/file_manager=//"   |
-               tail -n 1)
+"f" )   exec "$(grep -v -e "^#" < "$path_configfile"    |
+                grep -e "file_manager="                 |
+                sed -e "s/file_manager=//"              |
+                tail -n 1)"
         ;;
 * )     printf "ERROR: %s is not defined.\\n" "$1"
+        exit 1
         ;;
 esac
 
