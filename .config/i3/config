@@ -97,8 +97,8 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 
-# system lock, logout, suspend, hibernate, reboot, and shutdown
-set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
+# mode to operate system lock, logout, suspend, hibernate, reboot, and shutdown
+set $mode_system system [l]lock, [e]logout, [s]suspend, [h]hibernate, [r]reboot, [Shift+s]shutdown
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3lock && sleep 1, mode "default"
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
@@ -113,19 +113,31 @@ mode "$mode_system" {
 }
 bindsym $mod+Shift+e mode "$mode_system"
 
-# resize window
+# mode to resize window
 set $mode_resize resize
 mode "$mode_resize" {
-        bindsym h resize shrink width 5 px or 5 ppt
-        bindsym j resize grow height 5 px or 5 ppt
-        bindsym k resize shrink height 5 px or 5 ppt
-        bindsym l resize grow width 5 px or 5 ppt
+    bindsym h resize shrink width 5 px or 5 ppt
+    bindsym j resize grow height 5 px or 5 ppt
+    bindsym k resize shrink height 5 px or 5 ppt
+    bindsym l resize grow width 5 px or 5 ppt
 
-        bindsym $mod+r mode "default"
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 bindsym $mod+r mode "$mode_resize"
+
+# mode to launch applications
+set $mode_launch launch [w]web_browser [m]mailer [f]file_manager
+mode "$mode_launch" {
+    bindsym w exec dal.sh w, mode "default"
+    bindsym m exec dal.sh m, mode "default"
+    bindsym f exec dal.sh f, mode "default"
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+o mode "$mode_launch"
 
 # set bar
 bar {
@@ -145,4 +157,3 @@ client.focused #dd4814 #dd4814 #ffffff #902a07
 client.focused_inactive #5e2750 #5e2750 #aea79f #5e2750
 client.unfocused #5e2750 #5e2750 #aea79f #5e2750
 client.urgent #77216f #77216f #ffffff #efb73e
-
