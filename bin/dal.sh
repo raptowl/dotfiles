@@ -1,12 +1,16 @@
 #!/bin/sh
 
 set -u
+umask 0022
+PATH='/usr/bin:/bin'
+IFS=$(printf ' \t\n_'); IFS=${IFS%_}
+export IFS LC_ALL=C LANG=C PATH
 
-path_configfile="$HOME/.dal.conf"
+path_conf="$HOME/.dal.conf"
 
-# check configfile
-if [ ! -f "$path_configfile" ]; then
-    printf "ERROR: %s not found.\\n" "$path_configfile" 1>&2
+# check configuration file
+if [ ! -f "$path_conf" ]; then
+    printf "ERROR: %s not found.\\n" "$path_conf" 1>&2
     exit 1
 fi
 
@@ -24,19 +28,19 @@ _EOT_
 fi
 
 case $1 in
-"w" )   exec "$(grep -v -e "^#" < "$path_configfile"    |
-                grep -e "web_browser="                  |
-                sed -e "s/web_browser=//"               |
+"w" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+                grep -e "web_browser="          |
+                sed -e "s/web_browser=//"       |
                 tail -n 1)"
         ;;
-"m" )   exec "$(grep -v -e "^#" < "$path_configfile"    |
-                grep -e "mailer="                       |
-                sed -e "s/mailer=//"                    |
+"m" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+                grep -e "mailer="               |
+                sed -e "s/mailer=//"            |
                 tail -n 1)"
         ;;
-"f" )   exec "$(grep -v -e "^#" < "$path_configfile"    |
-                grep -e "file_manager="                 |
-                sed -e "s/file_manager=//"              |
+"f" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+                grep -e "file_manager="         |
+                sed -e "s/file_manager=//"      |
                 tail -n 1)"
         ;;
 * )     printf "ERROR: %s is not defined.\\n" "$1"

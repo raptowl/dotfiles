@@ -1,5 +1,11 @@
 #!/bin/sh
 
+set -u
+umask 0022
+PATH='/usr/bin:/bin'
+IFS=$(printf ' \t\n_'); IFS=${IFS%_}
+export IFS LC_ALL=C LANG=C PATH
+
 printf "             40m   41m   42m   43m   44m   45m   46m   47m \\n"
 
 printf "    m"

@@ -1,6 +1,10 @@
 #!/bin/sh
 
 set -u
+umask 0022
+PATH='/usr/bin:/bin'
+IFS=$(printf ' \t\n_'); IFS=${IFS%_}
+export IFS LC_ALL=C LANG=C PATH
 
 if [ "$1" = "input" ] || [ "$1" = "i" ]; then
     if command -v xclip > /dev/null 2>&1; then
