@@ -28,17 +28,23 @@ _EOT_
 fi
 
 case $1 in
-"w" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"w" )   LANG=ja_JP.UTF-8
+        LC_ALL=ja_JP.UTF-8
+        exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "web_browser="          |
                 sed -e "s/web_browser=//"       |
                 tail -n 1)"
         ;;
-"m" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"m" )   LANG=ja_JP.UTF-8
+        LC_ALL=ja_JP.UTF-8
+        exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "mailer="               |
                 sed -e "s/mailer=//"            |
                 tail -n 1)"
         ;;
-"f" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"f" )   LANG=ja_JP.UTF-8
+        LC_ALL=ja_JP.UTF-8
+        exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "file_manager="         |
                 sed -e "s/file_manager=//"      |
                 tail -n 1)"
