@@ -6,7 +6,7 @@ xterm*geometry: 80x24
 xterm*forcePackedFont: true
 xterm*saveLines: 65535
 xterm*selectToClipboard: true
-xterm*visualBell: true
+xterm*visualBell: false
 xterm*background: #000f1f
 xterm*foreground: #afafaf
 xterm*color0: #1f1f1f

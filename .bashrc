@@ -31,15 +31,11 @@ alias ps='ps --sort=start_time'
 # load the setting script "bash-completion"
 if [ -f "$HOME/usr/bash-completion/share/bash-completion/bash_completion" ]; then
     . "$HOME/usr/bash-completion/share/bash-completion/bash_completion"
-else
-    printf "WARNING: %s/bash_completion not installed.\\n" "$HOME/usr/bash-completion/share/bash-completion" 1>&2
 fi
 
 # load the setting script "git-completion.bash" for bash
 if [ -f "$HOME/.git-completion.bash" ]; then
     . "$HOME/.git-completion.bash"
-else
-    printf "WARNING: %s/.git-completion.bash not installed.\\n" "$HOME" 1>&2
 fi
 
 # load the setting script "git-prompt.sh"
@@ -53,7 +49,6 @@ if [ -f "$HOME/.git-prompt.sh" ]; then
     GIT_PS1_HIDE_IF_PWD_IGNORED=true
     prm_git="\$(__git_ps1)"
 else
-    printf "WARNING: %s/.git-prompt.sh not installed.\\n" "$HOME" 1>&2
     prm_git="(no git-prompt.sh)"
 fi
 

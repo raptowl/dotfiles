@@ -6,7 +6,7 @@ fi
 # add $HOME/bin to $PATH
 export PATH="$HOME/bin:$PATH"
 
-# set EDITOR
+# set $EDITOR
 export EDITOR="vim"
 
 # load $HOME/.profile_local

@@ -134,6 +134,7 @@ mode "$mode_launch" {
     bindsym m exec dal.sh m, mode "default"
     bindsym f exec dal.sh f, mode "default"
 
+    bindsym $mod+o mode "default"
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
