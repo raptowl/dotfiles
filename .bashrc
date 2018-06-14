@@ -38,58 +38,8 @@ if [ -f "$HOME/.git-completion.bash" ]; then
     . "$HOME/.git-completion.bash"
 fi
 
-# load the setting script "git-prompt.sh"
-if [ -f "$HOME/.git-prompt.sh" ]; then
-    . "$HOME/.git-prompt.sh"
-    GIT_PS1_SHOWDIRTYSTATE=true
-    GIT_PS1_SHOWSTASHSTATE=true
-    GIT_PS1_SHOWUNTRACKEDFILES=true
-    GIT_PS1_SHOWUPSTREAM="auto"
-    GIT_PS1_SHOWCOLORHINTS=true
-    GIT_PS1_HIDE_IF_PWD_IGNORED=true
-    prm_git="\$(__git_ps1)"
-else
-    prm_git="(no git-prompt.sh)"
-fi
-
-# prompt of username
-prm_un="\
-\$(if [ \"\$UID\" -eq 0 ]; then
-       printf \"\\[\\033[1;31;43m\\]\\u\\[\\033[0m\\]\"
-   else
-       printf \"\\[\\033[36m\\]\\u\\[\\033[0m\\]\"
-   fi)"
-
-# prompt of hostname
-prm_hn="\
-\$(if [ -z \"\$SSH_TTY\" ]; then
-       printf \"\\[\\033[32m\\]\\H\\[\\033[0m\\]\"
-   else
-       printf \"\\[\\033[1;32m\\]\\H\\[\\033[0m\\]\"
-   fi)"
-
-# prompt of currect directory
-prm_cd="\
-\$(printf \"\\[\\033[34m\\]\\w\\[\\033[0m\\]\" |
-   sed -e \"s%/%\\[\\033[1m\\]/\\[\\033[0m\\033[34m\\]%g\")"
-
-# prompt of return code
-prm_prompt="\
-\$(if [ \$__prm_return_code -eq 0 ]; then
-       printf \"\\[\\033[32m\\]\$__prm_return_code \\$\\[\\033[0m\\]\"
-   else
-       printf \"\\[\\033[31m\\]\$__prm_return_code \\$\\[\\033[0m\\]\"
-   fi)"
-
-# get error code of the previous command
-PROMPT_COMMAND="__prm_return_code=\$?"
-
 # define primary prompt
-PS1="\
-[${prm_un}@${prm_hn}:${prm_cd}] ${prm_git}\\n\
-${prm_prompt} "
-
-unset prm_un prm_hn prm_cd prm_git prm_prompt
+PS1='$(if [ $? -eq 0 ]; then printf "\[\033[32m\]"; else printf "\[\033[31m\]"; fi; if [ $UID -eq 0 ]; then printf "\[\033[1m\]"; fi)\$\[\033[0m\] '
 
 # load $HOME/.bashrc_local
 if [ -f "$HOME/.bashrc_local" ]; then

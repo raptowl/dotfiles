@@ -2,9 +2,8 @@
 
 set -u
 umask 0022
-PATH='/usr/bin:/bin'
 IFS=$(printf ' \t\n_'); IFS=${IFS%_}
-export IFS LC_ALL=C LANG=C PATH
+export IFS
 
 path_conf="$HOME/.dal.conf"
 
@@ -28,25 +27,19 @@ _EOT_
 fi
 
 case $1 in
-"w" )   LANG=ja_JP.UTF-8
-        LC_ALL=ja_JP.UTF-8
-        exec "$(grep -v -e "^#" < "$path_conf"  |
-                grep -e "web_browser="          |
-                sed -e "s/web_browser=//"       |
+"w" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+                grep -e "web="                  |
+                sed -e "s/web=//"               |
                 tail -n 1)"
         ;;
-"m" )   LANG=ja_JP.UTF-8
-        LC_ALL=ja_JP.UTF-8
-        exec "$(grep -v -e "^#" < "$path_conf"  |
-                grep -e "mailer="               |
-                sed -e "s/mailer=//"            |
+"m" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+                grep -e "mail="                 |
+                sed -e "s/mail=//"              |
                 tail -n 1)"
         ;;
-"f" )   LANG=ja_JP.UTF-8
-        LC_ALL=ja_JP.UTF-8
-        exec "$(grep -v -e "^#" < "$path_conf"  |
-                grep -e "file_manager="         |
-                sed -e "s/file_manager=//"      |
+"f" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+                grep -e "file="                 |
+                sed -e "s/file=//"              |
                 tail -n 1)"
         ;;
 * )     printf "ERROR: %s is not defined.\\n" "$1"
