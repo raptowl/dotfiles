@@ -1,10 +1,10 @@
 # load settings
 if [ -f "$HOME/.bash_profile.dotold" ]; then
     . "$HOME/.bash_profile_dotold"
-elif [ -f "$HOME/.bash_login.dotold" ]; then
-    . "$HOME/.bash_login.dotold"
-elif [ -f "$HOME/.profile.dotold" ]; then
-    . "$HOME/.profile.dotold"
+elif [ -f "$HOME/.bash_login" ]; then
+    . "$HOME/.bash_login"
+elif [ -f "$HOME/.profile" ]; then
+    . "$HOME/.profile"
 fi
 
 # add $HOME/bin to $PATH

@@ -6,41 +6,48 @@ PATH='/usr/bin:/bin'
 IFS=$(printf ' \t\n_'); IFS=${IFS%_}
 export IFS LC_ALL=C LANG=C PATH
 
-if [ "$1" = "input" ] || [ "$1" = "i" ]; then
-    if command -v xclip > /dev/null 2>&1; then
-        xclip -i -selection "clipboard"
-    elif command -v xsel > /dev/null 2>&1; then
+# check the number of arguments
+if [ $# -ne 1 ]; then
+    printf "ERROR: the number of arguments is incorrect.\\n" 1>&2
+    exit 1
+fi
+
+# main routine
+if [ "$1" = "i" ]; then
+    if type xsel > /dev/null 2>&1; then
         xsel -i -b
-    elif command -v pbcopy > /dev/null 2>&1; then
+    elif type xclip > /dev/null 2>&1; then
+        xclip -i -selection "clipboard"
+    elif type pbcopy > /dev/null 2>&1; then
         pbcopy
     else
-        printf "ERROR: command \"xclip\", \"xsel\" or \"pbcopy\" not found.\\n" 1>&2
+        printf "ERROR: command \"xsel\", \"xclip\" or \"pbcopy\" not found.\\n" 1>&2
         exit 1
     fi
-elif [ "$1" = "output" ] || [ "$1" = "o" ]; then
-    if command -v xclip > /dev/null 2>&1; then
-        xclip -o -selection "clipboard"
-    elif command -v xsel > /dev/null 2>&1; then
+elif [ "$1" = "o" ]; then
+    if type xsel > /dev/null 2>&1; then
         xsel -o -b
-    elif command -v pbpaste > /dev/null 2>&1; then
+    elif type xclip > /dev/null 2>&1; then
+        xclip -o -selection "clipboard"
+    elif type pbpaste > /dev/null 2>&1; then
         pbpaste
     else
-        printf "ERROR: command \"xclip\", \"xsel\" or \"pbcopy\" not found.\\n" 1>&2
+        printf "ERROR: command \"xsel\", \"xclip\" or \"pbcopy\" not found.\\n" 1>&2
         exit 1
     fi
-elif [ "$1" = "clear" ] || [ "$1" = "c" ]; then
-    if command -v xclip > /dev/null 2>&1; then
-        : | xclip -i -selection "clipboard"
-    elif command -v xsel > /dev/null 2>&1; then
+elif [ "$1" = "c" ]; then
+    if type xsel > /dev/null 2>&1; then
         xsel -c -b
-    elif command -v pbcopy > /dev/null 2>&1; then
+    elif type xclip > /dev/null 2>&1; then
+        : | xclip -i -selection "clipboard"
+    elif type pbcopy > /dev/null 2>&1; then
         : | pbcopy
     else
-        printf "ERROR: command \"xclip\", \"xsel\" or \"pbcopy\" not found.\\n" 1>&2
+        printf "ERROR: command \"xsel\", \"xclip\" or \"pbcopy\" not found.\\n" 1>&2
         exit 1
     fi
 else
-    printf "ERROR: command %s is not defined.\\n" "$1" 1>&2
+    printf "ERROR: operation %s is not defined.\\n" "$1" 1>&2
     exit 1
 fi
 

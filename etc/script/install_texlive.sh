@@ -18,7 +18,7 @@ trap '
     fi
 ' 1 2 3 15
 
-if ! command -v wget > /dev/null 2>&1; then
+if ! type wget > /dev/null 2>&1; then
     printf "ERROR: command \"wget\" not found.\\n" 1>&2
     exit 1
 fi
@@ -30,11 +30,19 @@ if [ ! -d "$HOME/usr/texlive" ]; then
     mkdir -p "$HOME/usr/texlive"
 fi
 
-wget -O - "$url_texlive" | tar xzv &&
-cd "$(find "$path_tmproot" -maxdepth 1 |
-      grep -e "install-tl")" || exit
-printf "I\\n" |
-TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl --repository "$url_texrepo"
+if type curl > /dev/null 2>&1; then
+    curl -L "$url_texlive" | tar xzv &&
+    cd "$(find "$path_tmproot" -maxdepth 1 |
+          grep -e "install-tl")" || exit
+    printf "I\\n" |
+    TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl --repository "$url_texrepo"
+elif type wget > /dev/null 2>&1; then
+    wget -O - "$url_texlive" | tar xzv &&
+    cd "$(find "$path_tmproot" -maxdepth 1 |
+          grep -e "install-tl")" || exit
+    printf "I\\n" |
+    TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl --repository "$url_texrepo"
+fi
 
 cd "$HOME" || exit
 if [ -d "$path_tmproot" ]; then

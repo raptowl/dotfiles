@@ -16,12 +16,12 @@ url_gitrepo="https://github.com/raptowl/dotfiles.git"
 url_tarball="github.com/raptowl/dotfiles/archive/master.tar.gz"
 
 cd "$HOME" || exit
-if command -v git > /dev/null 2>&1; then
+if type git > /dev/null 2>&1; then
     git clone "$url_gitrepo" "$path_dotfiles"
-elif command -v wget > /dev/null 2>&1; then
+elif type wget > /dev/null 2>&1; then
     wget -O - "$url_tarball" | tar xzv  &&
     mv -f "$HOME/dotfiles-master" "$path_dotfiles"
-elif command -v curl > /dev/null 2>&1; then
+elif type curl > /dev/null 2>&1; then
     curl -L "$url_tarball" | tar xzv    &&
     mv -f "$HOME/dotfiles-master" "$path_dotfiles"
 else

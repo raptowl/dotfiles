@@ -19,11 +19,11 @@ trap '
 mkdir "$path_tmproot"
 cd "$path_tmproot" || exit
 
-if command -v curl > /dev/null 2>&1; then
-    curl -L "$url_installer" > "$path_tmproot/installer.sh"                     &&
-    sh "$path_tmproot/installer.sh" --prefix="$HOME/usr/shellshoccar" install
-elif command -v wget > /dev/null 2>&1; then
+if type curl > /dev/null 2>&1; then
     wget -O - "$url_installer" > "$path_tmproot/installer.sh"                   &&
+    sh "$path_tmproot/installer.sh" --prefix="$HOME/usr/shellshoccar" install
+elif type wget > /dev/null 2>&1; then
+    curl -L "$url_installer" > "$path_tmproot/installer.sh"                     &&
     sh "$path_tmproot/installer.sh" --prefix="$HOME/usr/shellshoccar" install
 else
     printf "ERROR: command \"curl\" or \"wget\" not found.\\n" 2>&1

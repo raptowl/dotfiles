@@ -23,14 +23,9 @@ else
     export LSCOLORS=''
 fi
 
-# define alias of the other
-alias grep='grep --color'
-alias df='df -h'
-alias ps='ps --sort=start_time'
-
 # load the setting script "bash-completion"
-if [ -f "$HOME/usr/bash-completion/share/bash-completion/bash_completion" ]; then
-    . "$HOME/usr/bash-completion/share/bash-completion/bash_completion"
+if [ -f "$HOME/usr/bash-completion/etc/profile.d/bash_completion.sh" ]; then
+    . "$HOME/usr/bash-completion/etc/profile.d/bash_completion.sh"
 fi
 
 # load the setting script "git-completion.bash" for bash
@@ -39,7 +34,7 @@ if [ -f "$HOME/.git-completion.bash" ]; then
 fi
 
 # define primary prompt
-PS1='$(if [ $? -eq 0 ]; then printf "\[\033[32m\]"; else printf "\[\033[31m\]"; fi; if [ $UID -eq 0 ]; then printf "\[\033[1m\]"; fi)\$\[\033[0m\] '
+PS1='$(if [ $? -eq 0 ]; then printf "\[\033[32m\]"; else printf "\[\033[31m\]"; fi; if [ $UID -eq 0 ]; then printf "\[\033[1m\]"; fi; printf "\$\[\033[0m\] ")'
 
 # load $HOME/.bashrc_local
 if [ -f "$HOME/.bashrc_local" ]; then

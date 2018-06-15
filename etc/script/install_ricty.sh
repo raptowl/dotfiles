@@ -22,17 +22,17 @@ trap '
     fi
 ' 1 2 3 15
 
-if ! command -v make > /dev/null 2>&1; then
+if ! type make > /dev/null 2>&1; then
     printf "ERROR: command \"make\" not found.\\n" 1>&2
     exit 1
 fi
 
-if ! command -v gcc > /dev/null 2>&1; then
+if ! type gcc > /dev/null 2>&1; then
     printf "ERROR: command \"gcc\" not found.\\n" 1>&2
     exit 1
 fi
 
-if ! command -v unzip > /dev/null 2>&1; then
+if ! type unzip > /dev/null 2>&1; then
     printf "ERROR: command \"unzip\" not found.\\n" 1>&2
     exit 1
 fi
@@ -43,19 +43,19 @@ mkdir \
     "$path_tmproot/fontforge"
 cd "$path_tmproot" || exit
 
-if command -v wget > /dev/null 2>&1; then
-    wget -O - "$url_script" > "$path_tmproot/sourcefiles/ricty_generator.sh" &&
-    wget -O - "$url_inconsolata_r" > "$path_tmproot/sourcefiles/Inconsolata-Regular.ttf" &&
-    wget -O - "$url_inconsolata_b" > "$path_tmproot/sourcefiles/Inconsolata-Bold.ttf" &&
-    wget -O - "$url_migu" > "$path_tmproot/migu-1m-20150712.zip" &&
+if type curl > /dev/null 2>&1; then
+    curl -L "$url_script" > "$path_tmproot/sourcefiles/ricty_generator.sh" &&
+    curl -L "$url_inconsolata_r" > "$path_tmproot/sourcefiles/Inconsolata-Regular.ttf" &&
+    curl -L "$url_inconsolata_b" > "$path_tmproot/sourcefiles/Inconsolata-Bold.ttf" &&
+    curl -L "$url_migu" > "$path_tmproot/migu-1m-20150712.zip" &&
     unzip "$path_tmproot/migu-1m-20150712.zip" &&
     mv -fv "$path_tmproot/migu-1m-20150712/migu-1m-regular.ttf" "$path_tmproot/sourcefiles" &&
     mv -fv "$path_tmproot/migu-1m-20150712/migu-1m-bold.ttf" "$path_tmproot/sourcefiles" &&
-    if command -v fontforge > /dev/null 2>&1; then
+    if type fontforge > /dev/null 2>&1; then
         cd "$path_tmproot/sourcefiles" || exit
         sh ricty_generator.sh auto
     else
-        wget -O - "$url_fontforge" | tar xjv &&
+        curl -L "$url_fontforge" | tar xjv &&
         cd "$path_tmproot/fontforge-20120731-b" || exit
         ./configure --prefix="$path_tmproot/fontforge" && make && make install &&
         cd "$path_tmproot/sourcefiles" || exit
@@ -69,19 +69,19 @@ if command -v wget > /dev/null 2>&1; then
     sed -e "s%$path_tmproot/sourcefiles/%%" |
     xargs -I {} mv -fv "$path_tmproot/sourcefiles/{}" "$HOME/.fonts/{}" &&
     cd "$path_tmproot" || exit
-elif command -v curl > /dev/null 2>&1; then
-    curl -L "$url_script" > "$path_tmproot/sourcefiles/ricty_generator.sh" &&
-    curl -L "$url_inconsolata_r" > "$path_tmproot/sourcefiles/Inconsolata-Regular.ttf" &&
-    curl -L "$url_inconsolata_b" > "$path_tmproot/sourcefiles/Inconsolata-Bold.ttf" &&
-    curl -L "$url_migu" > "$path_tmproot/migu-1m-20150712.zip" &&
+elif type wget > /dev/null 2>&1; then
+    wget -O - "$url_script" > "$path_tmproot/sourcefiles/ricty_generator.sh" &&
+    wget -O - "$url_inconsolata_r" > "$path_tmproot/sourcefiles/Inconsolata-Regular.ttf" &&
+    wget -O - "$url_inconsolata_b" > "$path_tmproot/sourcefiles/Inconsolata-Bold.ttf" &&
+    wget -O - "$url_migu" > "$path_tmproot/migu-1m-20150712.zip" &&
     unzip "$path_tmproot/migu-1m-20150712.zip" &&
     mv -fv "$path_tmproot/migu-1m-20150712/migu-1m-regular.ttf" "$path_tmproot/sourcefiles" &&
     mv -fv "$path_tmproot/migu-1m-20150712/migu-1m-bold.ttf" "$path_tmproot/sourcefiles" &&
-    if command -v fontforge > /dev/null 2>&1; then
+    if type fontforge > /dev/null 2>&1; then
         cd "$path_tmproot/sourcefiles" || exit
         sh ricty_generator.sh auto
     else
-        curl -L "$url_fontforge" | tar xjv &&
+        wget -O - "$url_fontforge" | tar xjv &&
         cd "$path_tmproot/fontforge-20120731-b" || exit
         ./configure --prefix="$path_tmproot/fontforge" && make && make install &&
         cd "$path_tmproot/sourcefiles" || exit
