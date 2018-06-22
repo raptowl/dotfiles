@@ -13,6 +13,9 @@ export PATH="$HOME/bin:$PATH"
 # set $EDITOR
 export EDITOR="vim"
 
+# set $INPUTRC
+export INPUTRC="$HOME/.inputrc"
+
 # load settings
 if [ -f "$HOME/.bash_profile_local" ]; then
     . "$HOME/.bash_profile_local"

@@ -34,7 +34,7 @@ if [ -f "$HOME/.git-completion.bash" ]; then
 fi
 
 # define primary prompt
-PS1='$(if [ $? -eq 0 ]; then printf "\[\033[32m\]"; else printf "\[\033[31m\]"; fi; if [ $UID -eq 0 ]; then printf "\[\033[1m\]"; fi; printf "\$\[\033[0m\] ")'
+PS1='$(if [ $? -eq 0 ]; then printf "\[\033[32m\]"; else printf "\[\033[31m\]"; fi; if [ $UID -eq 0 ]; then printf "\[\033[1m\]"; fi)\$\[\033[0m\] '
 
 # load $HOME/.bashrc_local
 if [ -f "$HOME/.bashrc_local" ]; then
