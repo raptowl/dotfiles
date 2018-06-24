@@ -22,42 +22,42 @@ fi
 
 # main routine
 case $1 in
-"f" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"-f" )  exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "file="                 |
                 sed -e "s/file=//"              |
                 head -n 1)"
         ;;
-"m" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"-i" )  exec "$(grep -v -e "^#" < "$path_conf"  |
+                grep -e "image="                |
+                sed -e "s/image=//"             |
+                head -n 1)"
+        ;;
+"-m" )  exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "mail="                 |
                 sed -e "s/mail=//"              |
                 head -n 1)"
         ;;
-"p" )   exec "$(grep -v -e "^#" < "$path_conf"  |
-                grep -e "photo="                |
-                sed -e "s/photo=//"             |
-                head -n 1)"
-        ;;
-"s" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"-s" )  exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "sound="                |
                 sed -e "s/sound=//"             |
                 head -n 1)"
         ;;
-"t" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"-t" )  exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "terminal="             |
                 sed -e "s/terminal=//"          |
                 head -n 1)"
         ;;
-"v" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"-v" )  exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "video="                |
                 sed -e "s/video=//"             |
                 head -n 1)"
         ;;
-"w" )   exec "$(grep -v -e "^#" < "$path_conf"  |
+"-w" )  exec "$(grep -v -e "^#" < "$path_conf"  |
                 grep -e "web="                  |
                 sed -e "s/web=//"               |
                 head -n 1)"
         ;;
-* )     printf "ERROR: %s is not defined.\\n" "$1"
+* )     printf "ERROR: %s is not defined.\\n" "$1" 1>&2
         exit 1
         ;;
 esac

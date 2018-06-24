@@ -128,11 +128,15 @@ mode "$mode_resize" {
 bindsym $mod+r mode "$mode_resize"
 
 # mode to launch applications
-set $mode_launch launch [w]web_browser [m]mailer [f]file_manager
+set $mode_launch launch [f]file [i]image [m]mail [s]sound [t]terminal [v]video [w]web
 mode "$mode_launch" {
-    bindsym w exec dal.sh w, mode "default"
-    bindsym m exec dal.sh m, mode "default"
-    bindsym f exec dal.sh f, mode "default"
+    bindsym f exec dal.sh -f, mode "default"
+    bindsym i exec dal.sh -i, mode "default"
+    bindsym m exec dal.sh -m, mode "default"
+    bindsym s exec dal.sh -s, mode "default"
+    bindsym t exec dal.sh -t, mode "default"
+    bindsym v exec dal.sh -v, mode "default"
+    bindsym w exec dal.sh -w, mode "default"
 
     bindsym $mod+o mode "default"
     bindsym Return mode "default"

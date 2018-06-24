@@ -13,7 +13,7 @@ if [ $# -ne 1 ]; then
 fi
 
 # main routine
-if [ "$1" = "i" ]; then
+if [ "$1" = "-i" ]; then
     if type xsel > /dev/null 2>&1; then
         xsel -i -b
     elif type xclip > /dev/null 2>&1; then
@@ -24,7 +24,7 @@ if [ "$1" = "i" ]; then
         printf "ERROR: command \"xsel\", \"xclip\" or \"pbcopy\" not found.\\n" 1>&2
         exit 1
     fi
-elif [ "$1" = "o" ]; then
+elif [ "$1" = "-o" ]; then
     if type xsel > /dev/null 2>&1; then
         xsel -o -b
     elif type xclip > /dev/null 2>&1; then
@@ -35,7 +35,7 @@ elif [ "$1" = "o" ]; then
         printf "ERROR: command \"xsel\", \"xclip\" or \"pbcopy\" not found.\\n" 1>&2
         exit 1
     fi
-elif [ "$1" = "c" ]; then
+elif [ "$1" = "-c" ]; then
     if type xsel > /dev/null 2>&1; then
         xsel -c -b
     elif type xclip > /dev/null 2>&1; then

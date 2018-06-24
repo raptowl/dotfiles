@@ -1,1 +1,25 @@
-set editing-mode vi
+$if Bash
+    set bell-style none
+    #set bind-tty-special-chars on
+    #set blink-matching-paren off
+    set colored-completion-prefix on
+    set colored-stats on
+    #set comment-begin #
+    #set completion-display-width -1
+    set completion-ignore-case on
+    #set completion-map-case off
+
+    set convert-meta off
+    set editing-mode vi
+    set expand-tilde on
+    set input-meta on
+    #set mark-directories on
+    #set match-hidden-files on
+    set output-meta on
+    #set show-all-if-ambiguous off
+    set visible-stats on
+
+    Control-n: history-search-forward
+    Control-p: history-search-backward
+    Control-l: clear-screen
+$endif
