@@ -1,12 +1,10 @@
 scriptencoding utf-8
 set ambiwidth=double
-set autoindent
 set autoread
 set backspace=start,eol,indent
 set cmdheight=2
 set confirm
 set encoding=utf-8
-set expandtab
 set fileencoding=utf-8
 set fileencodings=utf-8,ucs-boms,euc-jp,cp932
 set fileformats=unix,dos,mac
@@ -22,16 +20,24 @@ set nocompatible
 set noerrorbells
 set noswapfile
 set number
+set ruler
 set shellslash
-set shiftwidth=4
+set showcmd
 set showmatch
 set smartcase
 set smartindent
-set softtabstop=4
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
-set tabstop=4
 set viminfo=
 set wildmenu
 set wildmenu wildmode=list:longest,full
 set wrapscan
 syntax on
+
+filetype plugin indent on
+set noexpandtab
+set autoindent
+set smartindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+
