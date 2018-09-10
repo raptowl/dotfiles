@@ -7,9 +7,7 @@ elif [ -f "$HOME/.profile" ]; then
 fi
 
 export PATH="$HOME/bin:$PATH"
-
 export EDITOR="vim"
-
 export INPUTRC="$HOME/.inputrc"
 
 if [ -f "$HOME/.bash_profile_local" ]; then
