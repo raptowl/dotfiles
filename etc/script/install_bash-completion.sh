@@ -2,9 +2,6 @@
 
 set -u
 umask 0022
-PATH='/usr/bin:/bin'
-IFS=$(printf ' \t\n_'); IFS=${IFS%_}
-export IFS LC_ALL=C LANG=C PATH
 
 path_tmproot="$HOME/tmp$$"
 
@@ -13,19 +10,19 @@ url_gitrepo="https://github.com/scop/bash-completion.git"
 url_tarball="github.com/scop/bash-completion/archive/master.tar.gz"
 
 trap '
-    if [ -d "$path_tmproot" ]; then
-        rm -rf "$path_tmproot"
-    fi
+	if [ -d "$path_tmproot" ]; then
+		rm -rf "$path_tmproot"
+	fi
 ' 1 2 3 15
 
 if ! type autoreconf > /dev/null 2>&1; then
-    printf "ERROR: command \"autoreconf\" not found.\\n" 1>&2
+    printf 'ERROR: command autoreconf not found.\n' 1>&2
     exit 1
 fi
 
 if ! type make > /dev/null 2>&1; then
-    printf "ERROR: command \"make\" not found.\\n" 1>&2
-    exit 1
+	printf 'ERROR: command make not found.\n' 1>&2
+	exit 1
 fi
 
 mkdir "$path_tmproot"

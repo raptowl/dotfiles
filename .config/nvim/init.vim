@@ -1,4 +1,3 @@
-" general
 scriptencoding utf-8
 set ambiwidth=double
 set autoread
@@ -34,7 +33,6 @@ set wildmenu wildmode=list:longest,full
 set wrapscan
 let g:netrw_dirhistmax=0
 
-" indent
 filetype plugin indent on
 set noexpandtab
 set autoindent
@@ -43,7 +41,6 @@ set tabstop=4
 set softtabstop=4
 set shiftwidth=4
 
-" colors
 syntax on
 colorscheme default
 autocmd ColorScheme * highlight Comment ctermfg=darkgray
