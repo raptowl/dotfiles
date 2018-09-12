@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -u
+set -eu
 umask 0022
 
 # path to the configuration file
@@ -22,45 +22,45 @@ fi
 case $1 in
 '-f' )
 	exec $(grep -v -e '^#' < "$path_conf" | \
-		grep -e 'file=' | \
-		sed -e 's/file=//' | \
-		head -n 1)
+		grep -e '^file=' | \
+		tail -n 1 | \
+		sed -e 's/^file=//')
 	;;
 '-i' )
 	exec $(grep -v -e '^#' < "$path_conf" | \
-		grep -e 'image=' | \
-		sed -e 's/image=//' | \
-		head -n 1)
+		grep -e '^image=' | \
+		tail -n 1 | \
+		sed -e 's/^image=//')
 	;;
 '-m' )
 	exec $(grep -v -e '^#' < "$path_conf" | \
-		grep -e 'mail=' | \
-		sed -e 's/mail=//' | \
-		head -n 1)
+		grep -e '^mail=' | \
+		tail -n 1 | \
+		sed -e 's/^mail=//')
 	;;
 '-s' )
 	exec $(grep -v -e '^#' < "$path_conf" | \
-		grep -e 'sound=' | \
-		sed -e 's/sound=//' | \
-		head -n 1)
+		grep -e '^sound=' | \
+		tail -n 1 | \
+		sed -e 's/sound=//')
 	;;
 '-t' )
 	exec $(grep -v -e '^#' < "$path_conf" | \
-		grep -e 'terminal=' | \
-		sed -e 's/terminal=//' | \
-		head -n 1)
+		grep -e '^terminal=' | \
+		tail -n 1 | \
+		sed -e 's/^terminal=//')
 	;;
 '-v' )
 	exec $(grep -v -e '^#' < "$path_conf" | \
-		grep -e 'video=' | \
-		sed -e 's/video=//' | \
-		head -n 1)
+		grep -e '^video=' | \
+		tail -n 1 | \
+		sed -e 's/^video=//')
 	;;
 '-w' )
 	exec $(grep -v -e '^#' < "$path_conf" | \
-		grep -e 'web=' | \
-		sed -e 's/web=//' | \
-		head -n 1)
+		grep -e '^web=' | \
+		tail -n 1 | \
+		sed -e 's/^web=//')
 	;;
 * )
 	printf 'ERROR: %s is not defined.\n' "$1" 1>&2

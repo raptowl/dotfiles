@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -u
+set -eu
 umask 0022
 
 # the path indicates the dotfiles directory
@@ -12,7 +12,7 @@ url_gitrepo='https://github.com/raptowl/dotfiles.git'
 # the url indicates the tar archive of this repository
 url_tarball='github.com/raptowl/dotfiles/archive/master.tar.gz'
 
-cd "$HOME" || exit
+cd "$HOME"
 if type git > /dev/null 2>&1; then
 	git clone "$url_gitrepo" "$path_dotfiles"
 elif type wget > /dev/null 2>&1; then

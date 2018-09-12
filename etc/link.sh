@@ -1,25 +1,24 @@
 #!/bin/sh
 
-set -u
+set -eu
 umask 0022
 
 # the path indicates the dotfiles directory
 path_dotfiles="$HOME/.dotfiles"
 
 # get the name list of files to put symbolic links to $HOME
-for i in \
-	$(find "$path_dotfiles" -maxdepth 1 | \
-		grep -v -e "$path_dotfiles\$" \
-			-e '.config$' \
-			-e 'etc$' \
-			-e '.gitignore$' \
-			-e '.git$' | \
-		sed -e "s%$path_dotfiles%$HOME%" | \
-		xargs file | \
-		grep -v -e 'symbolic' | \
-		grep -v -e "$path_dotfiles" | \
-		sed -e "s%$HOME/%%" \
-			-e 's/: .*//')
+for i in $(find "$path_dotfiles" -maxdepth 1 | \
+	grep -v -e "$path_dotfiles\$" \
+		-e '.config$' \
+		-e 'etc$' \
+		-e '.gitignore$' \
+		-e '.git$' | \
+	sed -e "s%$path_dotfiles%$HOME%" | \
+	xargs file | \
+	grep -v -e 'symbolic' | \
+	grep -v -e "$path_dotfiles" | \
+	sed -e "s%$HOME/%%" \
+		-e 's/: .*//')
 do
 	# if there is a original dotfile, rename it
 	if [ -f "$HOME/$i" ] || [ -d "$HOME/$i" ]; then
@@ -35,15 +34,14 @@ if ! [ -d "$HOME/.config" ]; then
 	mkdir "$HOME/.config"
 fi
 
-for i in \
-	$(find "$path_dotfiles/.config" -maxdepth 1 | \
-		grep -v -e "$path_dotfiles/.config\$" | \
-		sed -e "s%$path_dotfiles/.config%$HOME/.config%" | \
-		xargs file | \
-		grep -v -e 'symbolic' | \
-		grep -v -e "$path_dotfiles/.config" | \
-		sed -e "s%$HOME/.config/%%" \
-			-e 's/: .*//')
+for i in $(find "$path_dotfiles/.config" -maxdepth 1 | \
+	grep -v -e "$path_dotfiles/.config\$" | \
+	sed -e "s%$path_dotfiles/.config%$HOME/.config%" | \
+	xargs file | \
+	grep -v -e 'symbolic' | \
+	grep -v -e "$path_dotfiles/.config" | \
+	sed -e "s%$HOME/.config/%%" \
+		-e 's/: .*//')
 do
 	# if there is a original dotfile, rename it
 	if [ -f "$HOME/.config/$i" ] || [ -d "$HOME/.config/$i" ]; then

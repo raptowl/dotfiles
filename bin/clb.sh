@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -u
+set -eu
 umask 0022
 
 # check the number of arguments
@@ -36,9 +36,9 @@ elif [ "$1" = '-c' ]; then
 	if type xsel > /dev/null 2>&1; then
 		xsel -c -b
 	elif type xclip > /dev/null 2>&1; then
-		: | xclip -i -selection 'clipboard'
+		xclip -i -selection 'clipboard' < /dev/null
 	elif type pbcopy > /dev/null 2>&1; then
-		: | pbcopy
+		pbcopy < /dev/null
 	else
 		printf 'ERROR: command xsel, xclip or pbcopy not found.\n' 1>&2
 		exit 1

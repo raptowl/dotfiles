@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -u
+set -eu
 umask 0022
 
 printf '             40m   41m   42m   43m   44m   45m   46m   47m \n' 1>&2
