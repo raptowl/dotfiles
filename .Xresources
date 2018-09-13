@@ -36,7 +36,7 @@
 
 ! xterm
 XTerm*cursorBlink: false
-XTerm*forcePackedFont: true
+XTerm*forcePackedFont: false
 XTerm*geometry: 80x24
 XTerm*saveLines: 1024
 XTerm*selectToClipboard: true

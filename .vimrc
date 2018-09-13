@@ -46,5 +46,4 @@ set shiftwidth=4
 " colors
 syntax on
 colorscheme default
-autocmd ColorScheme * highlight Comment ctermfg=darkgray
 

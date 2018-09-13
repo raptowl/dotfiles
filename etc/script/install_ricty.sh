@@ -5,6 +5,7 @@ umask 0022
 
 path_tmproot="$HOME/tmp$$"
 url_script='www.rs.tus.ac.jp/yyusa/ricty/ricty_generator.sh'
+url_reviser_script='www.rs.tus.ac.jp/yyusa/ricty/os2version_reviser.sh'
 url_inconsolata_r='github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Regular.ttf'
 url_inconsolata_b='github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolata-Bold.ttf'
 url_migu='ja.osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-1m-20150712.zip'
@@ -38,6 +39,7 @@ mkdir "$path_tmproot" "$path_tmproot/sourcefiles" "$path_tmproot/fontforge"
 cd "$path_tmproot"
 if type curl > /dev/null 2>&1; then
 	curl -L "$url_script" > "$path_tmproot/sourcefiles/ricty_generator.sh"
+	curl -L "$url_reviser_script" > "$path_tmproot/sourcefiles/os2version_reviser.sh"
 	curl -L "$url_inconsolata_r" > "$path_tmproot/sourcefiles/Inconsolata-Regular.ttf"
 	curl -L "$url_inconsolata_b" > "$path_tmproot/sourcefiles/Inconsolata-Bold.ttf"
 	curl -L "$url_migu" > "$path_tmproot/migu-1m-20150712.zip"
@@ -47,6 +49,7 @@ if type curl > /dev/null 2>&1; then
 	if type fontforge > /dev/null 2>&1; then
 		cd "$path_tmproot/sourcefiles"
 		sh ricty_generator.sh auto
+		sh os2version_reviser.sh ./Ricty*.ttf
 	else
 		curl -L "$url_fontforge" | \
 			tar xjv
@@ -56,6 +59,7 @@ if type curl > /dev/null 2>&1; then
 		make install
 		cd "$path_tmproot/sourcefiles"
 		PATH="$path_tmproot/fontforge/bin:$PATH" sh ricty_generator.sh auto
+		PATH="$path_tmproot/fontforge/bin:$PATH" sh os2version_reviser.sh ./Ricty*.ttf
 	fi
 	if [ ! -d "$HOME/.fonts" ]; then
 		mkdir "$HOME/.fonts"
@@ -67,6 +71,7 @@ if type curl > /dev/null 2>&1; then
 	cd "$path_tmproot"
 elif type wget > /dev/null 2>&1; then
 	wget -O - "$url_script" > "$path_tmproot/sourcefiles/ricty_generator.sh"
+	wget -O - "$url_reviser_script" > "$path_tmproot/sourcefiles/os2version_reviser.sh"
 	wget -O - "$url_inconsolata_r" > "$path_tmproot/sourcefiles/Inconsolata-Regular.ttf"
 	wget -O - "$url_inconsolata_b" > "$path_tmproot/sourcefiles/Inconsolata-Bold.ttf"
 	wget -O - "$url_migu" > "$path_tmproot/migu-1m-20150712.zip"
@@ -76,6 +81,7 @@ elif type wget > /dev/null 2>&1; then
 	if type fontforge > /dev/null 2>&1; then
 		cd "$path_tmproot/sourcefiles"
 		sh ricty_generator.sh auto
+		sh os2version_reviser.sh ./Ricty*.ttf
 	else
 		wget -O - "$url_fontforge" | \
 			tar xjv
@@ -85,6 +91,7 @@ elif type wget > /dev/null 2>&1; then
 		make install
 		cd "$path_tmproot/sourcefiles"
 		PATH="$path_tmproot/fontforge/bin:$PATH" sh ricty_generator.sh auto
+		PATH="$path_tmproot/fontforge/bin:$PATH" sh os2version_reviser.sh ./Ricty*.ttf
 	fi
 	if [ ! -d "$HOME/.fonts" ]; then
 		mkdir "$HOME/.fonts"
