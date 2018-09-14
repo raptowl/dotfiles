@@ -45,7 +45,9 @@ XTerm*wideChars: true
 XTerm*utf8: 1
 XTerm*locale: true
 XTerm*utf8Title: true
-XTerm*faceName: Ricty
-XTerm*faceNameDoublesize: Ricty
+!XTerm*faceName: Ricty:style=Regular
+!XTerm*faceNameDoublesize: Ricty:style=Regular
+XTerm*faceName: Inconsolata:style=Regular
+XTerm*faceNameDoublesize: Migu 1M:style=Regular
 XTerm*faceSize: 14
 
