@@ -38,4 +38,3 @@ find "$HOME/.config" -maxdepth 1 | \
 find "$HOME" -maxdepth 1 -type d -empty | \
 	grep -e "^$HOME/.config\$" | \
 	xargs rm -rf
-

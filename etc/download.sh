@@ -28,4 +28,3 @@ else
 	exit 1
 fi && \
 sh "$path_dotfiles/etc/link.sh"
-

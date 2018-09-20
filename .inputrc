@@ -17,4 +17,3 @@ $if Bash
 	Control-p: history-search-backward
 	Control-l: clear-screen
 $endif
-

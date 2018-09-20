@@ -13,4 +13,3 @@ export INPUTRC="$HOME/.inputrc"
 if [ -f "$HOME/.bash_profile_local" ]; then
 	. "$HOME/.bash_profile_local"
 fi
-

@@ -29,4 +29,3 @@ cd
 if [ -d "$path_tmproot" ]; then
 	rm -rf "$path_tmproot"
 fi
-

@@ -13,4 +13,3 @@ else
 	printf 'ERROR: command curl or wget not found.\n' 1>&2
 	exit 1
 fi
-

@@ -47,4 +47,3 @@ else
 	printf 'ERROR: operation %s is not defined.\n' "$1" 1>&2
 	exit 1
 fi
-

@@ -31,18 +31,17 @@ if type curl > /dev/null 2>&1; then
 	cd "$(find "$path_tmproot" -maxdepth 1 | \
 		grep -e "install-tl")"
 	printf 'I\n' | \
-	TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl --repository "$url_texrepo"
+		TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl --repository "$url_texrepo"
 elif type wget > /dev/null 2>&1; then
 	wget -O - "$url_texlive" | \
 		tar xzv
 	cd "$(find "$path_tmproot" -maxdepth 1 | \
 		grep -e "install-tl")" || exit
 	printf 'I\n' | \
-	TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl --repository "$url_texrepo"
+		TEXLIVE_INSTALL_PREFIX="$HOME/usr/texlive" ./install-tl --repository "$url_texrepo"
 fi
 
 cd "$HOME"
 if [ -d "$path_tmproot" ]; then
 	rm -rf "$path_tmproot"
 fi
-

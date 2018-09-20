@@ -33,4 +33,3 @@ PS1='$(if [ $? -eq 0 ]; then printf "\[\033[32m\]"; else printf "\[\033[31m\]"; 
 if [ -f "$HOME/.bashrc_local" ]; then
 	. "$HOME/.bashrc_local"
 fi
-

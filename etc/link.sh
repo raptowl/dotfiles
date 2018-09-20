@@ -51,4 +51,3 @@ do
 	# put a symbolic link
 	ln -fsv "$path_dotfiles/.config/$i" "$HOME/.config/$i"
 done
-
