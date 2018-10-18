@@ -8,10 +8,12 @@ CursorBlinks=yes
 CursorType=block
 Font=Ricty Diminished
 FontHeight=14
-Locale=ja_JP
+Language=ja
+Locale=C
 RightClickAction=paste
 Rows=24
-Term=xterm-256color
+Term=xterm
+Transparency=off
 
 BackgroundColour=15,31,47
 ForegroundColour=159,159,159

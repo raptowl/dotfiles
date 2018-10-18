@@ -35,7 +35,7 @@
 *color15: tc_white
 
 ! xterm
-XTerm*cursorBlink: false
+XTerm*cursorBlink: true
 XTerm*forcePackedFont: false
 XTerm*geometry: 80x24
 XTerm*saveLines: 1024
@@ -45,8 +45,6 @@ XTerm*wideChars: true
 XTerm*utf8: 1
 XTerm*locale: true
 XTerm*utf8Title: true
-!XTerm*faceName: Ricty:style=Regular
-!XTerm*faceNameDoublesize: Ricty:style=Regular
 XTerm*faceName: Inconsolata:style=Regular
 XTerm*faceNameDoublesize: Migu 1M:style=Regular
 XTerm*faceSize: 14
