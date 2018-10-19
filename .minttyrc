@@ -13,7 +13,7 @@ Locale=C
 RightClickAction=paste
 Rows=24
 Term=xterm
-Transparency=off
+Transparency=medium
 
 BackgroundColour=15,31,47
 ForegroundColour=159,159,159
