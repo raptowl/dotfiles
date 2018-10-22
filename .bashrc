@@ -28,7 +28,7 @@ if [ -f "$HOME/.git-completion.bash" ]; then
 	. "$HOME/.git-completion.bash"
 fi
 
-PS1='$(if [ $? -eq 0 ]; then printf "\[\033[32m\]"; else printf "\[\033[31m\]"; fi; if [ $UID -eq 0 ]; then printf "\[\033[1m\]"; fi)\$\[\033[0m\] '
+PS1='\[\033[1;34m\]\W\[\033[0m\] $(if [ $? -eq 0 ]; then printf "\[\033[1;32m\]"; else printf "\[\033[1;31m\]"; fi)>\[\033[0m\] '
 
 if [ -f "$HOME/.bashrc_local" ]; then
 	. "$HOME/.bashrc_local"
