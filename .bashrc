@@ -29,6 +29,7 @@ if [ -f "$HOME/.git-completion.bash" ]; then
 fi
 
 PS1='\[\033[1;34m\]\W\[\033[0m\] $(if [ $? -eq 0 ]; then printf "\[\033[1;32m\]"; else printf "\[\033[1;31m\]"; fi)>\[\033[0m\] '
+PS2='\[\033[1;33m\]>\[\033[0m\] '
 
 if [ -f "$HOME/.bashrc_local" ]; then
 	. "$HOME/.bashrc_local"
