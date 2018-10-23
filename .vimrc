@@ -3,6 +3,7 @@ scriptencoding utf-8
 set ambiwidth=double
 set autoread
 set backspace=start,eol,indent
+set clipboard=unnamed,autoselect
 set cmdheight=2
 set confirm
 set encoding=utf-8
