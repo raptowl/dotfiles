@@ -38,7 +38,3 @@ ls -1 -a "$path_dst" |
 	sed -e "s%^%$path_dst/%" |
 	sed -e "s/^\(.*\)\.dotold\$/mv '\1.dotold' '\1'/" |
 	sh -s -v
-
-if [ -z "$(ls -1 -a "$path_dst")" ]; then
-	rmdir "$path_dst"
-fi
