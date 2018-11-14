@@ -36,6 +36,10 @@ ls -1 -a "$path_src" |
 path_dst="$HOME/.config"
 path_src="$HOME/.dotfiles/.config"
 
+if [ ! -d "$path_dst" ]; then
+	mkdir "$path_dst"
+fi
+
 {
 	ls -1 -a "$path_src" |
 		grep -v -e '^\.$' \
