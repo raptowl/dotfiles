@@ -1,40 +1,44 @@
 #!/bin/sh
 
-set -eu
+set -e -u
 umask 0022
 
-# the path indicates the dotfiles directory
-path_dotfiles="$HOME/.dotfiles"
+# about ~
+path_dst="$HOME"
+path_src="$HOME/.dotfiles"
 
-# remove symbolic links of dotfiles
-find "$HOME" -maxdepth 1 -print0 | \
-	xargs -0 file | \
-	grep -e 'symbolic' | \
-	grep -e "$path_dotfiles" | \
-	sed -e 's/: .*$//' | \
-	xargs rm -rfv
+ls -1 -a "$path_dst" |
+	sed -e "s%^%$path_dst/%" |
+	xargs file |
+	awk -F ':' '$2 ~ symbolic link to "'"$path_src"'" { print; }' |
+	cut -d ':' -f 1 |
+	sed -e "s/^\(.*\)\$/rm '&'/" |
+	sh -s -v
 
-# if there are dotold files, rename them to their original name
-find "$HOME" -maxdepth 1 | \
-	grep -e '.dotold$' | \
-	sed -e 's/.dotold$//' | \
-	xargs -I@ mv -fv '@.dotold' '@'
+ls -1 -a "$path_dst" |
+	grep -e '\.dotold$' |
+	sed -e "s%^%$path_dst/%" |
+	sed -e "s/^\(.*\)\.dotold\$/mv '\1.dotold' '\1'/" |
+	sh -s -v
 
-# remove symbolic links of config dotfiles
-find "$HOME/.config" -maxdepth 1 -print0 | \
-	xargs -0 file | \
-	grep -e 'symbolic' | \
-	grep -e "$path_dotfiles/.config" | \
-	sed -e 's/: .*$//' | \
-	xargs rm -rfv
+# about ~/.config
+path_dst="$HOME/.config"
+path_src="$HOME/.dotfiles/.config"
 
-# if there are dotold files, rename them to their original name
-find "$HOME/.config" -maxdepth 1 | \
-	grep -e '.dotold$' | \
-	sed -e 's/.dotold$//' | \
-	xargs -I@ mv -fv '@.dotold' '@'
+ls -1 -a "$path_dst" |
+	sed -e "s%^%$path_dst/%" |
+	xargs file |
+	awk -F ':' '$2 ~ symbolic link to "'"$path_src"'" { print; }' |
+	cut -d ':' -f 1 |
+	sed -e "s/^\(.*\)\$/rm '&'/" |
+	sh -s -v
 
-# if $HOME/.config is empty, remove the directory $HOME/.config 
-find "$HOME" -maxdepth 1 -type d -empty | \
-	grep -e "^$HOME/.config\$" | \
-	xargs rm -rf
+ls -1 -a "$path_dst" |
+	grep -e '\.dotold$' |
+	sed -e "s%^%$path_dst/%" |
+	sed -e "s/^\(.*\)\.dotold\$/mv '\1.dotold' '\1'/" |
+	sh -s -v
+
+if [ -z "$(ls -1 -a "$path_dst")" ]; then
+	rmdir "$path_dst"
+fi

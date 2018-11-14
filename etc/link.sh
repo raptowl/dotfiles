@@ -1,53 +1,54 @@
 #!/bin/sh
 
-set -eu
+set -e -u
 umask 0022
 
-# the path indicates the dotfiles directory
-path_dotfiles="$HOME/.dotfiles"
+# about ~
+path_dst="$HOME"
+path_src="$HOME/.dotfiles"
 
-# get the name list of files to put symbolic links to $HOME
-for i in $(find "$path_dotfiles" -maxdepth 1 | \
-	grep -v -e "$path_dotfiles\$" \
-		-e '.config$' \
-		-e 'etc$' \
-		-e '.gitignore$' \
-		-e '.git$' | \
-	sed -e "s%$path_dotfiles%$HOME%" | \
-	xargs file | \
-	grep -v -e 'symbolic' | \
-	grep -v -e "$path_dotfiles" | \
-	sed -e "s%$HOME/%%" \
-		-e 's/: .*//')
-do
-	# if there is a original dotfile, rename it
-	if [ -f "$HOME/$i" ] || [ -d "$HOME/$i" ]; then
-		mv -fv "$HOME/$i" "$HOME/$i.dotold"
-	fi
+{
+	ls -1 -a "$path_src" |
+		grep -v -e '^\.$' \
+			-e '^\.\.$' \
+			-e '^\.config$' \
+			-e '^etc$' \
+			-e '^\.gitignore$' \
+			-e '^\.git$'
+	ls -1 -a "$path_dst"
+} |
+	sort |
+	uniq -d |
+	sed -e "s%^\(.*\)\$%mv '$path_dst/&' '$path_dst/&.dotold'%" |
+	sh -s -v
 
-	# put a symbolic link
-	ln -fsv "$path_dotfiles/$i" "$HOME/$i"
-done
+ls -1 -a "$path_src" |
+	grep -v -e '^\.$' \
+		-e '^\.\.$' \
+		-e '^\.config$' \
+		-e '^etc$' \
+		-e '^\.gitignore$' \
+		-e '^\.git$' |
+	sed -e "s%^\(.*\)\$%ln -s '$path_src/&' '$path_dst/&'%" |
+	sh -s -v
 
-# get the name list of files in .config to put symbolic links to $HOME/.config
-if ! [ -d "$HOME/.config" ]; then
-	mkdir "$HOME/.config"
-fi
+# about ~/.config
+path_dst="$HOME/.config"
+path_src="$HOME/.dotfiles/.config"
 
-for i in $(find "$path_dotfiles/.config" -maxdepth 1 | \
-	grep -v -e "$path_dotfiles/.config\$" | \
-	sed -e "s%$path_dotfiles/.config%$HOME/.config%" | \
-	xargs file | \
-	grep -v -e 'symbolic' | \
-	grep -v -e "$path_dotfiles/.config" | \
-	sed -e "s%$HOME/.config/%%" \
-		-e 's/: .*//')
-do
-	# if there is a original dotfile, rename it
-	if [ -f "$HOME/.config/$i" ] || [ -d "$HOME/.config/$i" ]; then
-		mv -fv "$HOME/.config/$i" "$HOME/.config/$i.dotold"
-	fi
+{
+	ls -1 -a "$path_src" |
+		grep -v -e '^\.$' \
+			-e '^\.\.$'
+	ls -1 -a "$path_dst"
+} |
+	sort |
+	uniq -d |
+	sed -e "s%^\(.*\)\$%mv '$path_dst/&' '$path_dst/&.dotold'%" |
+	sh -s -v
 
-	# put a symbolic link
-	ln -fsv "$path_dotfiles/.config/$i" "$HOME/.config/$i"
-done
+ls -1 -a "$path_src" |
+	grep -v -e '^\.$' \
+		-e '^\.\.$' |
+	sed -e "s%^\(.*\)\$%ln -s '$path_src/&' '$path_dst/&'%" |
+	sh -s -v

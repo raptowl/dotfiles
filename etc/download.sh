@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eu
+set -e -u
 umask 0022
 
 # the path indicates the dotfiles directory
@@ -16,15 +16,15 @@ cd "$HOME"
 if type git > /dev/null 2>&1; then
 	git clone "$url_gitrepo" "$path_dotfiles"
 elif type wget > /dev/null 2>&1; then
-	wget -O - "$url_tarball" | \
-		tar xzv && \
-	mv -f "$HOME/dotfiles-master" "$path_dotfiles"
+	wget -O - "$url_tarball" |
+		tar xzv
+	mv "$HOME/dotfiles-master" "$path_dotfiles"
 elif type curl > /dev/null 2>&1; then
-	curl -L "$url_tarball" | \
-		tar xzv && \
-	mv -f "$HOME/dotfiles-master" "$path_dotfiles"
+	curl -L "$url_tarball" |
+		tar xzv
+	mv "$HOME/dotfiles-master" "$path_dotfiles"
 else
 	printf 'ERROR: command git wget or curl not found.\n' 1>&2
 	exit 1
-fi && \
+fi
 sh "$path_dotfiles/etc/link.sh"
