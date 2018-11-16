@@ -27,4 +27,3 @@ else
 	printf 'ERROR: command git wget or curl not found.\n' 1>&2
 	exit 1
 fi
-sh "$path_dotfiles/etc/link.sh"
