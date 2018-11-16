@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eu
+set -e -u
 umask 0022
 
 if [ -f "$HOME/.git-completion.bash" ]; then

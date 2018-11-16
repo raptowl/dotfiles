@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -eu
+set -e -u
 umask 0022
 
 path_fonts="$HOME/.local/share/fonts"

@@ -6,7 +6,7 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
-if ls --color > /dev/null 2>&1; then
+if ls --color >/dev/null 2>&1; then
 	alias l='\ls --color=auto'
 	alias ll='\ls -l --color=auto'
 	alias la='\ls -a --color=auto'
