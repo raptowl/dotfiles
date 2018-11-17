@@ -7,13 +7,8 @@ elif [ -f "$HOME/.profile" ]; then
 	. "$HOME/.profile"
 fi
 
-# set the environment variables
-export PATH="$HOME/bin:$PATH"
-export EDITOR="vim"
-export INPUTRC="$HOME/.inputrc"
-
 # load the interactive settings
-if [ -f "$HOME/.bashrc" ] && [ -n "$SSH_TTY" ]; then
+if [ -f "$HOME/.bashrc" ] && printf '%s\n' "$-" | grep -q -e 'i'; then
 	. "$HOME/.bashrc"
 fi
 
