@@ -18,12 +18,12 @@ if ! type wget >/dev/null 2>&1; then
 	exit 1
 fi
 
-mkdir "$path_tmproot"
-cd "$path_tmproot"
-
-if [ ! -d "$HOME/usr/texlive" ]; then
-	mkdir -p "$HOME/usr/texlive"
+if [ ! -d "$HOME/usr" ]; then
+	mkdir -p "$HOME/usr"
 fi
+
+mkdir -p "$path_tmproot"
+cd "$path_tmproot"
 
 if type curl >/dev/null 2>&1; then
 	curl -L "$url_texlive" |

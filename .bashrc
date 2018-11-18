@@ -36,8 +36,8 @@ else
 fi
 
 # load the settings of 'git-completion.bash'
-if [ -f "$HOME/.git-completion.bash" ]; then
-	. "$HOME/.git-completion.bash"
+if [ -f "$HOME/usr/.git-completion.bash" ]; then
+	. "$HOME/usr/.git-completion.bash"
 else
 	printf 'INFO: "git-completion" is not installed.\n' >&2
 fi
@@ -50,6 +50,6 @@ if [ -n "$XTERM_VERSION" ] && [ -z "$SSH_TTY" ]; then
 fi
 
 # load the local interactive settings
-if [ -f "$HOME/.bashrc_local" ]; then
-	. "$HOME/.bashrc_local"
+if [ -f "$HOME/usr/.bashrc_local" ]; then
+	. "$HOME/usr/.bashrc_local"
 fi

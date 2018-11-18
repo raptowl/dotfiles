@@ -23,7 +23,8 @@ fi
 if [ ! -d "$path_fonts_to_set" ]; then
 	mkdir -p "$path_fonts_to_set"
 fi
-mkdir "$path_tmproot"
+
+mkdir -p "$path_tmproot"
 cd "$path_tmproot"
 if type curl >/dev/null 2>&1; then
 	curl -L "$url_inconsolata_r" >"$path_fonts_to_set/Inconsolata-Regular.ttf"

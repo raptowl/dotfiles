@@ -12,7 +12,11 @@ trap '
 	fi
 ' 1 2 3 15
 
-mkdir "$path_tmproot"
+if [ ! -d "$HOME/usr" ]; then
+	mkdir -p "$HOME/usr"
+fi
+
+mkdir -p "$path_tmproot"
 cd "$path_tmproot"
 if type curl >/dev/null 2>&1; then
 	wget -O - "$url_installer" >"$path_tmproot/installer.sh"
