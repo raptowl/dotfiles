@@ -9,9 +9,9 @@ export EDITOR="vim"
 export INPUTRC="$HOME/.inputrc"
 
 # set aliases
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
+alias ..='\cd ..'
+alias ...='\cd ../..'
+alias ....='\cd ../../..'
 if ls --color >/dev/null 2>&1; then
 	alias l='\ls --color=auto'
 	alias ll='\ls -l --color=auto'
