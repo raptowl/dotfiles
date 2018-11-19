@@ -1,3 +1,7 @@
+msg_warning() {
+	printf '\033[1;33mWARNING:\033[0m %s\n' "$1" >&2
+}
+
 # load the default interactive settings
 if [ -f "$HOME/.bashrc.dotold" ]; then
 	. "$HOME/.bashrc.dotold"
@@ -32,14 +36,14 @@ PS2='\[\033[1;33m\]>\[\033[0m\] '
 if [ -f "$HOME/usr/bash-completion/etc/profile.d/bash_completion.sh" ]; then
 	. "$HOME/usr/bash-completion/etc/profile.d/bash_completion.sh"
 else
-	printf 'INFO: "bash-completion" is not installed.\n' >&2
+	msg_warning '"bash-completion" is not installed.'
 fi
 
 # load the settings of 'git-completion.bash'
-if [ -f "$HOME/usr/.git-completion.bash" ]; then
-	. "$HOME/usr/.git-completion.bash"
+if [ -f "$HOME/usr/git-completion.bash" ]; then
+	. "$HOME/usr/git-completion.bash"
 else
-	printf 'INFO: "git-completion" is not installed.\n' >&2
+	msg_warning '"git-completion" is not installed.'
 fi
 
 # load the settings of the transparent setting for xterm
@@ -50,6 +54,8 @@ if [ -n "$XTERM_VERSION" ] && [ -z "$SSH_TTY" ]; then
 fi
 
 # load the local interactive settings
-if [ -f "$HOME/usr/.bashrc_local" ]; then
-	. "$HOME/usr/.bashrc_local"
+if [ -f "$HOME/usr/bashrc_local" ]; then
+	. "$HOME/usr/bashrc_local"
 fi
+
+unset -f msg_warning

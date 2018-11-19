@@ -36,7 +36,7 @@ path_dst="$HOME/.config"
 path_src="$HOME/.dotfiles/.config"
 
 if [ ! -d "$path_dst" ]; then
-	mkdir "$path_dst"
+	mkdir -p "$path_dst"
 fi
 
 ls -1 -A "$path_src" |
