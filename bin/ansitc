@@ -3,6 +3,7 @@
 set -e -u
 umask 0022
 
+# main routine
 printf '             40m   41m   42m   43m   44m   45m   46m   47m \n' >&2
 
 printf '    m' >&2
