@@ -13,6 +13,6 @@ if [ -f "$HOME/.bashrc" ] && printf '%s\n' "$-" | grep -q -e 'i'; then
 fi
 
 # load the local login settings
-if [ -f "$HOME/usr/bash_profile_local" ]; then
-	. "$HOME/usr/bash_profile_local"
+if [ -f "$HOME/usr/local/bash_profile" ]; then
+	. "$HOME/usr/local/bash_profile"
 fi
