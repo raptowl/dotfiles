@@ -1,7 +1,7 @@
 ! XTerm
 XTerm*cursorBlink: true
 XTerm*forcePackedFont: false
-XTerm*geometry: 80x24
+XTerm*geometry: 128x32
 XTerm*saveLines: 1024
 XTerm*selectToClipboard: true
 XTerm*wideChars: true
