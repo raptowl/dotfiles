@@ -27,7 +27,6 @@ set shellslash
 set showcmd
 set showmatch
 set smartcase
-set smartindent
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 set viminfo=
 set wildmenu
@@ -36,13 +35,15 @@ set wrapscan
 let g:netrw_dirhistmax=0
 
 " indent
-filetype plugin indent on
-set noexpandtab
-set autoindent
-set smartindent
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
+if has("autocmd")
+	filetype plugin on
+	filetype indent on
+	autocmd FileType c setlocal cindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType sh setlocal cindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType haskell setlocal cindent smarttab expandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType vim setlocal cindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType make setlocal cindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+endif
 
 " colors
 syntax on
