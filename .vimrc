@@ -39,10 +39,11 @@ if has("autocmd")
 	filetype plugin on
 	filetype indent on
 	autocmd FileType c setlocal cindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
-	autocmd FileType sh setlocal smartindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
-	autocmd FileType haskell setlocal smartindent smarttab expandtab tabstop=4 softtabstop=0 shiftwidth=4
-	autocmd FileType vim setlocal smartindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
-	autocmd FileType make setlocal smartindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType haskell setlocal autoindent smarttab expandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType make setlocal autoindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType sh setlocal autoindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType text setlocal autoindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType vim setlocal autoindent smarttab noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
 endif
 
 " colors
