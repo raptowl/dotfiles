@@ -41,6 +41,7 @@ if has("autocmd")
 	filetype plugin on
 	filetype indent on
 	autocmd FileType c setlocal noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
+	autocmd FileType cuda setlocal noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
 	autocmd FileType haskell setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
 	autocmd FileType make setlocal noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
 	autocmd FileType sh setlocal noexpandtab tabstop=4 softtabstop=0 shiftwidth=4
