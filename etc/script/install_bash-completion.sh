@@ -1,52 +1,62 @@
 #!/bin/sh
 
-set -e -u
+set -u
 umask 0022
 
+# path to the temporary directory
 path_tmproot="$HOME/tmp$$"
+
+# url of the git repository of 'bash-completion'
 url_gitrepo='https://github.com/scop/bash-completion.git'
+
+# url of the tarball of 'bash-completion'
 url_tarball='github.com/scop/bash-completion/archive/master.tar.gz'
 
-trap '
+# remove tmporary directory
+remove_tmproot() {
 	if [ -d "$path_tmproot" ]; then
 		rm -rf "$path_tmproot"
 	fi
-' 1 2 3 15
+}
+trap 'remove_tmproot' 1 2 3 15
 
-if ! type autoreconf >/dev/null 2>&1; then
+# output error and exit if command 'autoreconf' is not installed
+if ! command -v autoreconf >/dev/null 2>&1; then
 	printf 'ERROR: command autoreconf not found.\n' >&2
 	exit 1
 fi
 
-if ! type make >/dev/null 2>&1; then
+# output error and exit if command 'make' is not installed
+if ! command -v make >/dev/null 2>&1; then
 	printf 'ERROR: command make not found.\n' >&2
 	exit 1
 fi
 
+# make a directory which contains local applications
 if [ ! -d "$HOME/usr" ]; then
 	mkdir -p "$HOME/usr"
 fi
 
+# main routine
 mkdir -p "$path_tmproot"
-cd "$path_tmproot"
-if type git >/dev/null 2>&1; then
+cd "$path_tmproot" || exit 1
+if command -v git >/dev/null 2>&1; then
 	git clone "$url_gitrepo" "$path_tmproot/bash-completion"
-elif type curl >/dev/null 2>&1; then
+elif command -v curl >/dev/null 2>&1; then
 	curl -L "$url_tarball" |
 		tar xvz
-elif type wget >/dev/null 2>&1; then
+elif command -v wget >/dev/null 2>&1; then
 	wget -O - "$url_tarball" |
 		tar xvz
 else
 	printf 'ERROR: command git, curl or wget not found.\n' >&2
 	exit 1
-fi
-cd "$path_tmproot/bash-completion"
+fi &&
+cd "$path_tmproot/bash-completion" || exit 1
 autoreconf -i
 ./configure --prefix="$HOME/usr/bash-completion"
 make
 make install
 
-if [ -d "$path_tmproot" ]; then
-	rm -rf "$path_tmproot"
-fi
+# remove tmporary directory
+remove_tmproot

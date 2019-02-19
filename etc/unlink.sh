@@ -1,42 +1,43 @@
 #!/bin/sh
 
-set -e -u
+set -u
 umask 0022
 
 # about ~
 path_dst="$HOME"
 path_src="$HOME/.dotfiles"
 
-ls -1 -A "$path_dst" |
+# remove links at ~
+cd "$path_dst" || exit 1
+for line in * .*; do printf '%s\n' "$line"; done |
 	sed -e "s%^%$path_dst/%" |
 	xargs file |
-	awk -F ':' '$2 ~ "symbolic link to '"$path_src"'" { print $0; }' |
-	cut -d ':' -f 1 |
-	sed -e "s%^\(.*\)\$%rm '\1'%" |
-	sh -s "$@"
+	awk -F ':' 'match($2, ".*symbolic link to.*'"$path_src"'") { print $1; }' |
+	sed -e "s%^.*\$%rm '&'%"
 
-ls -1 -A "$path_dst" |
+# rename dotfiles which were original
+for line in * .*; do printf '%s\n' "$line"; done |
 	grep -e '\.dotold$' |
-	sed -e "s%^\(.*\)\.dotold\$%mv '$path_dst/\1.dotold' '$path_dst/\1'%" |
-	sh -s "$@"
+	sed -e "s%^\(.*\)\.dotold\$%mv '$path_dst/\1.dotold' '$path_dst/\1'%"
 
 # about ~/.config
 path_dst="$HOME/.config"
 path_src="$HOME/.dotfiles/.config"
 
-ls -1 -A "$path_dst" |
+# remove links at ~/.config
+cd "$path_dst" || exit 1
+for line in * .*; do printf '%s\n' "$line"; done |
 	sed -e "s%^%$path_dst/%" |
 	xargs file |
-	awk -F ':' '$2 ~ "symbolic link to '"$path_src"'" { print $0; }' |
-	cut -d ':' -f 1 |
-	sed -e "s%^\(.*\)\$%rm '\1'%" |
-	sh -s "$@"
+	awk -F ':' 'match($2, ".*symbolic link to.*'"$path_src"'") { print $1; }' |
+	sed -e "s%^.*\$%rm '&'%"
 
-ls -1 -A "$path_dst" |
+# rename dotfiles which were original
+for line in * .*; do printf '%s\n' "$line"; done |
 	grep -e '\.dotold$' |
-	sed -e "s%^\(.*\)\.dotold\$%mv '$path_dst/\1.dotold' '$path_dst/\1'%" |
-	sh -s "$@"
+	sed -e "s%^\(.*\)\.dotold\$%mv '$path_dst/\1.dotold' '$path_dst/\1'%"
 
+# remove ~/.config if it does not contain any files
 if [ -z "$(ls -1 -A "$path_dst")" ]; then
 	rmdir "$path_dst"
 fi

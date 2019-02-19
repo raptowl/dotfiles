@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e -u
+set -u
 umask 0022
 
 # check the number of arguments
@@ -12,8 +12,7 @@ fi
 # main routine
 printf '%s\n' "$PATH" |
 	tr ':' '\n' |
-	sed -e "s:\$:/$1:" |
+	sed -e "s%\$%/$1%" |
 	xargs file |
-	awk -F ':' '$2 !~ "cannot open" { print $0; }' |
-	cut -d ':' -f 1 |
-	grep -e ''
+	awk -F ':' '! match($2, ".*cannot open.*") { print $1; }' |
+	grep -e '^'

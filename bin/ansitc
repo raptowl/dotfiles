@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e -u
+set -u
 umask 0022
 
 # main routine
