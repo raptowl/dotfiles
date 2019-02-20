@@ -39,13 +39,6 @@ else
 	msg_warning '"bash-completion" is not installed.'
 fi
 
-# load the settings of 'git-completion.bash'
-if [ -f "$HOME/usr/local/git-completion.bash" ]; then
-	. "$HOME/usr/local/git-completion.bash"
-else
-	msg_warning '"git-completion" is not installed.'
-fi
-
 # load the local interactive settings
 if [ -f "$HOME/usr/local/bashrc" ]; then
 	. "$HOME/usr/local/bashrc"
