@@ -41,7 +41,7 @@ fi
 mkdir -p "$path_tmproot"
 cd "$path_tmproot" || exit 1
 if command -v git >/dev/null 2>&1; then
-	git clone "$url_gitrepo" "$path_tmproot/bash-completion"
+	git clone "$url_gitrepo" "$path_tmproot/bash-completion-master"
 elif command -v curl >/dev/null 2>&1; then
 	curl -L "$url_tarball" |
 		tar xvz
@@ -52,7 +52,7 @@ else
 	printf 'ERROR: command git, curl or wget not found.\n' >&2
 	exit 1
 fi &&
-cd "$path_tmproot/bash-completion" || exit 1
+cd "$path_tmproot/bash-completion-master" || exit 1
 autoreconf -i
 ./configure --prefix="$HOME/usr/bash-completion"
 make

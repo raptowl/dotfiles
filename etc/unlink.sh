@@ -36,8 +36,3 @@ for line in * .*; do printf '%s\n' "$line"; done |
 for line in * .*; do printf '%s\n' "$line"; done |
 	grep -e '\.dotold$' |
 	sed -e "s%^\(.*\)\.dotold\$%mv '$path_dst/\1.dotold' '$path_dst/\1'%"
-
-# remove ~/.config if it does not contain any files
-if [ -z "$(ls -1 -A "$path_dst")" ]; then
-	rmdir "$path_dst"
-fi
