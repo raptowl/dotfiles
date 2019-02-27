@@ -11,33 +11,33 @@ fi
 
 # main routine
 if [ "$1" = '-i' ]; then
-	if command -v xsel >/dev/null 2>&1; then
+	if type xsel >/dev/null 2>&1; then
 		xsel -i -b
-	elif command -v xclip >/dev/null 2>&1; then
+	elif type xclip >/dev/null 2>&1; then
 		xclip -i -selection 'clipboard'
-	elif command -v pbcopy >/dev/null 2>&1; then
+	elif type pbcopy >/dev/null 2>&1; then
 		pbcopy
 	else
 		printf 'ERROR: command xsel, xclip or pbcopy not found.\n' >&2
 		exit 1
 	fi
 elif [ "$1" = '-o' ]; then
-	if command -v xsel >/dev/null 2>&1; then
+	if type xsel >/dev/null 2>&1; then
 		xsel -o -b
-	elif command -v xclip >/dev/null 2>&1; then
+	elif type xclip >/dev/null 2>&1; then
 		xclip -o -selection 'clipboard'
-	elif command -v pbpaste >/dev/null 2>&1; then
+	elif type pbpaste >/dev/null 2>&1; then
 		pbpaste
 	else
 		printf 'ERROR: command xsel, xclip or pbcopy not found.\n' >&2
 		exit 1
 	fi
 elif [ "$1" = '-c' ]; then
-	if command -v xsel >/dev/null 2>&1; then
+	if type xsel >/dev/null 2>&1; then
 		xsel -c -b
-	elif command -v xclip >/dev/null 2>&1; then
+	elif type xclip >/dev/null 2>&1; then
 		xclip -i -selection 'clipboard' < /dev/null
-	elif command -v pbcopy >/dev/null 2>&1; then
+	elif type pbcopy >/dev/null 2>&1; then
 		pbcopy < /dev/null
 	else
 		printf 'ERROR: command xsel, xclip or pbcopy not found.\n' >&2

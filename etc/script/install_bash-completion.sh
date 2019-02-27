@@ -21,13 +21,13 @@ remove_tmproot() {
 trap 'remove_tmproot' 1 2 3 15
 
 # output error and exit if command 'autoreconf' is not installed
-if ! command -v autoreconf >/dev/null 2>&1; then
+if ! type autoreconf >/dev/null 2>&1; then
 	printf 'ERROR: command autoreconf not found.\n' >&2
 	exit 1
 fi
 
 # output error and exit if command 'make' is not installed
-if ! command -v make >/dev/null 2>&1; then
+if ! type make >/dev/null 2>&1; then
 	printf 'ERROR: command make not found.\n' >&2
 	exit 1
 fi
@@ -40,12 +40,12 @@ fi
 # main routine
 mkdir -p "$path_tmproot"
 cd "$path_tmproot" || exit 1
-if command -v git >/dev/null 2>&1; then
+if type git >/dev/null 2>&1; then
 	git clone "$url_gitrepo" "$path_tmproot/bash-completion-master"
-elif command -v curl >/dev/null 2>&1; then
+elif type curl >/dev/null 2>&1; then
 	curl -L "$url_tarball" |
 		tar xvz
-elif command -v wget >/dev/null 2>&1; then
+elif type wget >/dev/null 2>&1; then
 	wget -O - "$url_tarball" |
 		tar xvz
 else

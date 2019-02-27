@@ -21,7 +21,7 @@ remove_tmproot() {
 trap 'remove_tmproot' 1 2 3 15
 
 # output error and exit if command 'wget' is not installed
-if ! command -v wget >/dev/null 2>&1; then
+if ! type wget >/dev/null 2>&1; then
 	printf 'ERROR: command wget not found.\n' >&2
 	exit 1
 fi
@@ -35,10 +35,10 @@ fi
 mkdir -p "$path_tmproot"
 cd "$path_tmproot" || exit 1
 
-if command -v curl >/dev/null 2>&1; then
+if type curl >/dev/null 2>&1; then
 	curl -L "$url_texlive" |
 		tar xzv
-elif command -v wget >/dev/null 2>&1; then
+elif type wget >/dev/null 2>&1; then
 	wget -O - "$url_texlive" |
 		tar xzv
 fi
