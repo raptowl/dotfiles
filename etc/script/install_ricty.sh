@@ -57,9 +57,12 @@ mkdir -p "$path_tmproot"
 mkdir -p "$path_tmproot/sourcefiles"
 mkdir -p "$path_tmproot/fontforge"
 
-# main routine
+# change the working directory to the temporary root directory
 cd "$path_tmproot" || exit 1
+
 if type curl >/dev/null 2>&1; then
+# if command 'curl' is installed, download files using 'curl' to generate ricty
+
 	# download the ricty generation script
 	curl -L "$url_script" >'./sourcefiles/ricty_generator.sh'
 
@@ -85,6 +88,7 @@ if type curl >/dev/null 2>&1; then
 		sh ricty_generator.sh auto
 	fi
 elif type wget >/dev/null 2>&1; then
+# if 'curl' is not installed but 'wget' is installed, download files using 'wget' to generate ricty
 	# download the ricty generation script
 	wget -O - "$url_script" >'./sourcefiles/ricty_generator.sh'
 
@@ -110,9 +114,7 @@ elif type wget >/dev/null 2>&1; then
 		sh ricty_generator.sh auto
 	fi
 else
+# if neither 'curl' or 'wget' is not installed, output error message and exit
 	printf 'ERROR: command wget or curl not found.\n' >&2
 	exit 1
 fi
-
-# remove tmporary directory
-remove_tmproot
