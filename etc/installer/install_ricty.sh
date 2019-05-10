@@ -9,7 +9,7 @@ path_tmproot="$HOME/tmp$$"
 # path to install fonts
 path_fonts_to_set="$HOME/.local/share/fonts"
 
-# url of ricty generation script
+# url of 'ricty' generation script
 url_script='www.rs.tus.ac.jp/yyusa/ricty/ricty_generator.sh'
 
 # url of font 'inconsolata regular'
@@ -21,7 +21,7 @@ url_inconsolata_b='github.com/google/fonts/raw/master/ofl/inconsolata/Inconsolat
 # url of font 'migu'
 url_migu='ja.osdn.jp/projects/mix-mplus-ipa/downloads/63545/migu-1m-20150712.zip'
 
-# url of fontforge
+# url of 'fontforge'
 url_fontforge='sourceforge.net/projects/fontforge/files/fontforge-source/fontforge_full-20120731-b.tar.bz2/download'
 
 # remove tmporary directory
@@ -49,21 +49,18 @@ if ! type unzip >/dev/null 2>&1; then
 	exit 1
 fi
 
-# make a directory to install fonts
-[ ! -d "$path_fonts_to_set" ] && mkdir -p "$path_fonts_to_set"
+# make a temporary root directory
+[ ! -d "$path_tmproot" ] && mkdir -p "$path_tmproot"
 
-# make temporary directories
-mkdir -p "$path_tmproot"
-mkdir -p "$path_tmproot/sourcefiles"
-mkdir -p "$path_tmproot/fontforge"
-
-# change the working directory to the temporary root directory
-cd "$path_tmproot" || exit 1
+# change the working directory to the temporary root directory, and make a source files directory and a 'fontforge' directory.
+cd "$path_tmproot" || exit
+[ ! -d './sourcefiles' ] && mkdir -p './sourcefiles'
+[ ! -d './fontforge' ] && mkdir -p './fontforge'
 
 if type curl >/dev/null 2>&1; then
-# if command 'curl' is installed, download files using 'curl' to generate ricty
+# if command 'curl' is installed, download files using 'curl' to generate 'ricty'
 
-	# download the ricty generation script
+	# download the 'ricty' generation script
 	curl -L "$url_script" >'./sourcefiles/ricty_generator.sh'
 
 	# download fonts 'Inconsolata-Regular' and 'Inconsolata-Bold'
@@ -72,24 +69,34 @@ if type curl >/dev/null 2>&1; then
 
 	# download fonts 'Migu-1m' series
 	curl -L "$url_migu" >'./migu-1m-20150712.zip'
-	unzip "$path_tmproot/migu-1m-20150712.zip"
+	unzip './migu-1m-20150712.zip'
 	mv -fv './migu-1m-20150712/migu-1m-regular.ttf' './sourcefiles'
 	mv -fv './migu-1m-20150712/migu-1m-bold.ttf' './sourcefiles'
 
-	# if 'FontForge' is not installed in the system, make its binary locally and run the ricty generation script
 	if ! type fontforge >/dev/null 2>&1; then
+	# if 'fontforge' is not installed in the system, make its binary locally and run the 'ricty' generation script
+
+		# download source files of 'fontforge'
 		curl -L "$url_fontforge" | tar xjv
+
+		# build 'fontforge'
 		cd "$path_tmproot/fontforge-20120731-b" || exit
 		./configure --prefix="$path_tmproot/fontforge" && make && make install
+
+		# run the 'ricty' generation script
 		cd "$path_tmproot/sourcefiles" || exit
 		PATH="$path_tmproot/fontforge/bin:$PATH" sh ricty_generator.sh auto
 	else
+	# if 'fontforge' is installed in the system, only run the 'ricty' generation script
+
+		# run the 'ricty' generation script
 		cd "$path_tmproot/sourcefiles" || exit
 		sh ricty_generator.sh auto
 	fi
 elif type wget >/dev/null 2>&1; then
-# if 'curl' is not installed but 'wget' is installed, download files using 'wget' to generate ricty
-	# download the ricty generation script
+# if 'curl' is not installed but 'wget' is installed, download files using 'wget' to generate 'ricty'
+
+	# download the 'ricty' generation script
 	wget -O - "$url_script" >'./sourcefiles/ricty_generator.sh'
 
 	# download fonts 'Inconsolata-Regular' and 'Inconsolata-Bold'
@@ -98,23 +105,43 @@ elif type wget >/dev/null 2>&1; then
 
 	# download fonts 'Migu-1m' series
 	wget -O - "$url_migu" >'./migu-1m-20150712.zip'
-	unzip "$path_tmproot/migu-1m-20150712.zip"
+	unzip './migu-1m-20150712.zip'
 	mv -fv './migu-1m-20150712/migu-1m-regular.ttf' './sourcefiles'
 	mv -fv './migu-1m-20150712/migu-1m-bold.ttf' './sourcefiles'
 
-	# if 'FontForge' is not installed in the system, make its binary locally and run the ricty generation script
 	if ! type fontforge >/dev/null 2>&1; then
+	# if 'fontforge' is not installed in the system, make its binary locally and run the 'ricty' generation script
+
+		# download source files of 'fontforge'
 		wget -O - "$url_fontforge" | tar xjv
+
+		# build 'fontforge'
 		cd "$path_tmproot/fontforge-20120731-b" || exit
 		./configure --prefix="$path_tmproot/fontforge" && make && make install
+
+		# run the 'ricty' generation script
 		cd "$path_tmproot/sourcefiles" || exit
 		PATH="$path_tmproot/fontforge/bin:$PATH" sh ricty_generator.sh auto
 	else
+	# if 'fontforge' is installed in the system, only run the 'ricty' generation script
+
+		# run the 'ricty' gene
 		cd "$path_tmproot/sourcefiles" || exit
 		sh ricty_generator.sh auto
 	fi
 else
-# if neither 'curl' or 'wget' is not installed, output error message and exit
+# if neither 'curl' nor 'wget' are installed, output error message and exit
+
 	printf 'ERROR: command wget or curl not found.\n' >&2
 	exit 1
 fi
+
+# make a directory which indicates "$path_fonts_to_set" to install fonts, and change 
+[ ! -d "$path_fonts_to_set" ] && mkdir -p "$path_fonts_to_set"
+
+# change the working directory to the temporary root directory, and move 'ricty' font files and the source files used to generate 'ricty' to "$path_fonts_to_set"
+cd "$path_tmproot" || exit
+mv './sourcefiles/'*'.ttf' "$path_fonts_to_set"
+
+# remove tmporary directory
+remove_tmproot
