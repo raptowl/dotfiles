@@ -1,8 +1,8 @@
 # set modifier key
-set $mod Mod1
+set $mod Mod4
 
 # font config
-font pango:Migu 1M 12
+font pango:Ricty 12
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
