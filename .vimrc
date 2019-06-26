@@ -55,7 +55,7 @@ if has("autocmd")
     autocmd FileType lua setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
     autocmd FileType make setlocal noexpandtab tabstop=2 softtabstop=0 shiftwidth=2
     autocmd FileType python setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
-    autocmd FileType sh setlocal noexpandtab tabstop=2 softtabstop=0 shiftwidth=2
+    autocmd FileType sh setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
     autocmd FileType text setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
     autocmd FileType vim setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
 endif
