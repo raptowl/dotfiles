@@ -1,19 +1,19 @@
 $if Bash
-	set bell-style none
-	set colored-completion-prefix on
-	set colored-stats on
-	set completion-ignore-case on
-	set convert-meta off
-	set editing-mode vi
-	set expand-tilde on
-	set input-meta on
-	set isearch-terminators
-	set mark-symlinked-directories on
-	set menu-complete-display-prefix on
-	set output-meta on
-	set show-all-if-unmodified on
-	set visible-stats on
-	Control-n: history-search-forward
-	Control-p: history-search-backward
-	Control-l: clear-screen
+    set bell-style none
+    set colored-completion-prefix on
+    set colored-stats on
+    set completion-ignore-case on
+    set convert-meta off
+    set editing-mode vi
+    set expand-tilde on
+    set input-meta on
+    set isearch-terminators
+    set mark-symlinked-directories on
+    set menu-complete-display-prefix on
+    set output-meta on
+    set show-all-if-unmodified on
+    set visible-stats on
+    Control-n: history-search-forward
+    Control-p: history-search-backward
+    Control-l: clear-screen
 $endif

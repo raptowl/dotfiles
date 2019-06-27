@@ -38,26 +38,17 @@ let g:netrw_dirhistmax=0
 set autoindent
 set smartindent
 set smarttab
-set noexpandtab
+set expandtab
 set tabstop=4
 set softtabstop=0
 set shiftwidth=4
 if has("autocmd")
     filetype plugin on
     filetype indent on
-    autocmd FileType c setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
     autocmd FileType css setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
-    autocmd FileType cuda setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
-    autocmd FileType haskell setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
     autocmd FileType html setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
-    autocmd FileType javascript setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
-    autocmd FileType json setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
-    autocmd FileType lua setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
     autocmd FileType make setlocal noexpandtab tabstop=2 softtabstop=0 shiftwidth=2
-    autocmd FileType python setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
     autocmd FileType sh setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
-    autocmd FileType text setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
-    autocmd FileType vim setlocal expandtab tabstop=4 softtabstop=0 shiftwidth=4
 endif
 
 " colors

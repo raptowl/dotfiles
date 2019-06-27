@@ -109,48 +109,48 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 # resize window (you can also use the mouse for that)
 set $mode_resize "resize"
 mode $mode_resize {
-	bindsym h resize shrink width 5 px or 5 ppt
-	bindsym j resize grow height 5 px or 5 ppt
-	bindsym k resize shrink height 5 px or 5 ppt
-	bindsym l resize grow width 5 px or 5 ppt
+    bindsym h resize shrink width 5 px or 5 ppt
+    bindsym j resize grow height 5 px or 5 ppt
+    bindsym k resize shrink height 5 px or 5 ppt
+    bindsym l resize grow width 5 px or 5 ppt
 
-	bindsym $mod+r mode "default"
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
+    bindsym $mod+r mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 bindsym $mod+r mode $mode_resize
 
 # default application launcher
 set $mode_app "app: [f]file [i]image [m]mail [s]sound [t]terminal [v]video [w]web"
 mode $mode_app {
-	bindsym f exec dal.sh -f; mode "default"
-	bindsym i exec dal.sh -i; mode "default"
-	bindsym m exec dal.sh -m; mode "default"
-	bindsym s exec dal.sh -s; mode "default"
-	bindsym t exec dal.sh -t; mode "default"
-	bindsym v exec dal.sh -v; mode "default"
-	bindsym w exec dal.sh -w; mode "default"
+    bindsym f exec dal.sh -f; mode "default"
+    bindsym i exec dal.sh -i; mode "default"
+    bindsym m exec dal.sh -m; mode "default"
+    bindsym s exec dal.sh -s; mode "default"
+    bindsym t exec dal.sh -t; mode "default"
+    bindsym v exec dal.sh -v; mode "default"
+    bindsym w exec dal.sh -w; mode "default"
 
-	bindsym $mod+o mode "default"
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
+    bindsym $mod+o mode "default"
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
 }
 bindsym $mod+o mode $mode_app
 
 # status bar
 bar {
-	status_command i3status
-	position top
-	workspace_buttons yes
-	tray_output none
+    status_command i3status
+    position top
+    workspace_buttons yes
+    tray_output none
 
-	colors {
-		background #000000
-		statusline #ffffff
+    colors {
+        background #000000
+        statusline #ffffff
 
-		focused_workspace #ffffff #285577
-		active_workspace #ffffff #333333
-		inactive_workspace #888888 #222222
-		urgent_workspace #ffffff #900000
-	}
+        focused_workspace #ffffff #285577
+        active_workspace #ffffff #333333
+        inactive_workspace #888888 #222222
+        urgent_workspace #ffffff #900000
+    }
 }
