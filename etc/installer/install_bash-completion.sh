@@ -14,43 +14,43 @@ url_tarball='github.com/scop/bash-completion/archive/master.tar.gz'
 
 # remove tmporary directory
 remove_tmproot() {
-	if [ -d "$path_tmproot" ]; then
-		rm -rf "$path_tmproot"
-	fi
+  if [ -d "$path_tmproot" ]; then
+    rm -rf "$path_tmproot"
+  fi
 }
 trap 'remove_tmproot' 1 2 3 15
 
 # output error and exit if command 'autoreconf' is not installed
 if ! type autoreconf >/dev/null 2>&1; then
-	printf 'ERROR: command autoreconf not found.\n' >&2
-	exit 1
+  printf 'ERROR: command autoreconf not found.\n' >&2
+  exit 1
 fi
 
 # output error and exit if command 'make' is not installed
 if ! type make >/dev/null 2>&1; then
-	printf 'ERROR: command make not found.\n' >&2
-	exit 1
+  printf 'ERROR: command make not found.\n' >&2
+  exit 1
 fi
 
 # make a directory which contains local applications
 if [ ! -d "$HOME/usr" ]; then
-	mkdir -p "$HOME/usr"
+  mkdir -p "$HOME/usr"
 fi
 
 # main routine
 mkdir -p "$path_tmproot"
 cd "$path_tmproot" || exit 1
 if type git >/dev/null 2>&1; then
-	git clone "$url_gitrepo" "$path_tmproot/bash-completion-master"
+  git clone "$url_gitrepo" "$path_tmproot/bash-completion-master"
 elif type curl >/dev/null 2>&1; then
-	curl -L "$url_tarball" |
-		tar xvz
+  curl -L "$url_tarball" |
+    tar xvz
 elif type wget >/dev/null 2>&1; then
-	wget -O - "$url_tarball" |
-		tar xvz
+  wget -O - "$url_tarball" |
+    tar xvz
 else
-	printf 'ERROR: command git, curl or wget not found.\n' >&2
-	exit 1
+  printf 'ERROR: command git, curl or wget not found.\n' >&2
+  exit 1
 fi &&
 cd "$path_tmproot/bash-completion-master" || exit 1
 autoreconf -i
