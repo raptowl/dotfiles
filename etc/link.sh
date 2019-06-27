@@ -10,31 +10,35 @@ path_src="$HOME/.dotfiles"
 # rename dotfiles which has already existed in ~
 cd "$path_src" || exit 1
 for line in * .*; do printf '%s\n' "$line"; done |
-	grep -v \
-		-e '^\.$' \
-		-e '^\.\.$' \
-		-e '^\.config$' \
-		-e '^\.git$' \
-		-e '^\.gitignore$' \
-		-e '^etc$' |
-	sed -e "s%^%$path_dst/%" |
-	xargs file |
-	awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") && ! match($2, ".*cannot open.*") { print $1; }' |
-	sed -e "s%\(.*\)%mv '\1' '\1.dotold'%"
+  grep -v \
+    -e '^\.$' \
+    -e '^\.\.$' \
+    -e '^\.config$' \
+    -e '^\.git$' \
+    -e '^\.gitignore$' \
+    -e '^etc$' \
+    -e '^LICENSE$' \
+    -e '^README.md$' |
+  sed -e "s%^%$path_dst/%" |
+  xargs file |
+  awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") && ! match($2, ".*cannot open.*") { print $1; }' |
+  sed -e "s%\(.*\)%mv '\1' '\1.dotold'%"
 
 # put links from ~/.dotfiles to ~
 for line in * .*; do printf '%s\n' "$line"; done |
-	grep -v \
-		-e '^\.$' \
-		-e '^\.\.$' \
-		-e '^\.config$' \
-		-e '^\.git$' \
-		-e '^\.gitignore$' \
-		-e '^\etc$' |
-	sed -e "s%^%$path_dst/%" |
-	xargs file |
-	awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") { print $1; }' |
-	sed -e "s%^$path_dst/\(.*\)\$%ln -fs '$path_src/\1' '$path_dst/\1'%"
+  grep -v \
+    -e '^\.$' \
+    -e '^\.\.$' \
+    -e '^\.config$' \
+    -e '^\.git$' \
+    -e '^\.gitignore$' \
+    -e '^\etc$' \
+    -e '^LICENSE$' \
+    -e '^README.md$' |
+  sed -e "s%^%$path_dst/%" |
+  xargs file |
+  awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") { print $1; }' |
+  sed -e "s%^$path_dst/\(.*\)\$%ln -fs '$path_src/\1' '$path_dst/\1'%"
 
 # about ~/.config
 path_dst="$HOME/.config"
@@ -46,20 +50,20 @@ path_src="$HOME/.dotfiles/.config"
 # rename dotfiles which has already existed in ~/.config
 cd "$path_src" || exit 1
 for line in * .*; do printf '%s\n' "$line"; done |
-	grep -v \
-		-e '^\.$' \
-		-e '^\.\.$' |
-	sed -e "s%^%$path_dst/%" |
-	xargs file |
-	awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") && ! match($2, ".*cannot open.*") { print $1; }' |
-	sed -e "s%\(.*\)%mv '\1' '\1.dotold'%"
+  grep -v \
+    -e '^\.$' \
+    -e '^\.\.$' |
+  sed -e "s%^%$path_dst/%" |
+  xargs file |
+  awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") && ! match($2, ".*cannot open.*") { print $1; }' |
+  sed -e "s%\(.*\)%mv '\1' '\1.dotold'%"
 
 # put links from ~/.dotfiles/.config to ~/.config
 for line in * .*; do printf '%s\n' "$line"; done |
-	grep -v \
-		-e '^\.$' \
-		-e '^\.\.$' |
-	sed -e "s%^%$path_dst/%" |
-	xargs file |
-	awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") { print $1; }' |
-	sed -e "s%^$path_dst/\(.*\)\$%ln -fs '$path_src/\1' '$path_dst/\1'%"
+  grep -v \
+    -e '^\.$' \
+    -e '^\.\.$' |
+  sed -e "s%^%$path_dst/%" |
+  xargs file |
+  awk -F ':' '! match($2, ".*symbolic link to.*'"$path_src"'") { print $1; }' |
+  sed -e "s%^$path_dst/\(.*\)\$%ln -fs '$path_src/\1' '$path_dst/\1'%"
