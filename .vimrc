@@ -20,6 +20,8 @@ set mouse=a
 set nobackup
 set nocompatible
 set noerrorbells
+set visualbell
+set t_vb=
 set noswapfile
 set number
 set ruler
