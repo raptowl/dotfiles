@@ -51,6 +51,7 @@ if has("autocmd")
     autocmd FileType html setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
     autocmd FileType make setlocal noexpandtab tabstop=2 softtabstop=0 shiftwidth=2
     autocmd FileType sh setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
+    autocmd FileType yaml setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
 endif
 
 " colors
