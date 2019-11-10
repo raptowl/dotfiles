@@ -1,18 +1,18 @@
 # load the default login settings
 if [ -f "$HOME/.bash_profile.dotold" ]; then
-  . "$HOME/.bash_profile.dotold"
+	. "$HOME/.bash_profile.dotold"
 elif [ -f "$HOME/.bash_login" ]; then
-  . "$HOME/.bash_login"
+	. "$HOME/.bash_login"
 elif [ -f "$HOME/.profile" ]; then
-  . "$HOME/.profile"
+	. "$HOME/.profile"
 fi
 
 # load the interactive settings
 if [ -f "$HOME/.bashrc" ] && printf '%s\n' "$-" | grep -q -e 'i'; then
-  . "$HOME/.bashrc"
+	. "$HOME/.bashrc"
 fi
 
 # load the local login settings
 if [ -f "$HOME/usr/local/bash_profile" ]; then
-  . "$HOME/usr/local/bash_profile"
+	. "$HOME/usr/local/bash_profile"
 fi

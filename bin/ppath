@@ -5,14 +5,14 @@ umask 0022
 
 # check the number of arguments
 if [ $# -ne 1 ]; then
-  printf 'ERROR: the number of arguments is incorrect.\n' >&2
-  exit 1
+	printf 'ERROR: the number of arguments is incorrect.\n' >&2
+	exit 1
 fi
 
 # main routine
 printf '%s\n' "$PATH" |
-  tr ':' '\n' |
-  sed -e "s%\$%/$1%" |
-  xargs file |
-  awk -F ':' '! match($2, ".*cannot open.*") { print $1; }' |
-  grep -e '^'
+	tr ':' '\n' |
+	sed -e "s%\$%/$1%" |
+	xargs file |
+	awk -F ':' '! match($2, ".*cannot open.*") { print $1; }' |
+	grep -e '^'

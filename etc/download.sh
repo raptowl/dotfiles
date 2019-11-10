@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # initializing
-set -eu
+set -u
 umask 0022
 
 # set variables
