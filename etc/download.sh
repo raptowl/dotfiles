@@ -1,29 +1,25 @@
 #!/bin/sh
 
-set -u
+# initializing
+set -eu
 umask 0022
 
-# the path indicates the dotfiles directory
-path_dotfiles="$HOME/.dotfiles"
+# set variables
+path_dotfiles="$HOME/.dotfiles"  # the path which indicates the dotfiles directory
+url_gitrepo='https://github.com/raptowl/dotfiles.git'  # the url which indicates the git repository on github
+url_tarball='github.com/raptowl/dotfiles/archive/master.tar.gz'  # the url which indicates the tar archive of this repository
 
-# the url indicates the git repository on github
-url_gitrepo='https://github.com/raptowl/dotfiles.git'
-
-# the url indicates the tar archive of this repository
-url_tarball='github.com/raptowl/dotfiles/archive/master.tar.gz'
-
+# main routine
 cd "$HOME" || exit 1
-if type git >/dev/null 2>&1; then
-  git clone "$url_gitrepo" "$path_dotfiles"
-elif type wget >/dev/null 2>&1; then
-  wget -O - "$url_tarball" |
-    tar xzv &&
-  mv -fv "$HOME/dotfiles-master" "$path_dotfiles"
-elif type curl >/dev/null 2>&1; then
-  curl -L "$url_tarball" |
-    tar xzv &&
-  mv -fv "$HOME/dotfiles-master" "$path_dotfiles"
+if type git > /dev/null 2>&1; then
+	git clone "$url_gitrepo" "$path_dotfiles"
+elif type curl > /dev/null 2>&1; then
+	curl -L "$url_tarball" | tar xzv
+	mv -fv "$HOME/dotfiles-master" "$path_dotfiles"
+elif type wget > /dev/null 2>&1; then
+	wget -O - "$url_tarball" | tar xzv
+	mv -fv "$HOME/dotfiles-master" "$path_dotfiles"
 else
-  printf 'ERROR: command git wget or curl not found.\n' >&2
-  exit 1
+	printf 'ERROR: command git wget or curl not found.\n' >&2
+	exit 1
 fi
