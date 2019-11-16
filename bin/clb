@@ -9,23 +9,112 @@
 ################################################################
 
 ################################################################
-# initializing
+# preprocessing
 ################################################################
 
+# initialize shell environment
 set -u
 umask 0022
 type command > /dev/null 2>&1 && type getconf > /dev/null 2>&1 &&
-  export PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
-export UNIX_STD=2003  # to make HP-UX conform to POSIX
+  PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
+UNIX_STD=2003  # to make HP-UX conform to POSIX
+export PATH UNIX_STD
 
-################################################################
-# initializing
-################################################################
-
+# define functions
 error_exit() {
-  ${2+:} false && printf '%s: %s' "${0##*/}" "$2" >&2
+  printf '%s: %s\n' "${0##*/}" "$2" >&2
   exit $1
 }
 
-#print_usage_and_exit() {
-#}
+print_usage_and_exit() {
+  cat <<_EOT_ >&2
+Usage: ${0##*/} [option] ... <operation> [file]
+
+option:
+  -h | --help : print out the usage to stderr
+  -c | --copy : copy and print the data to stdout
+
+<operation>
+  input  : read data from stdin or a file and store the data into the clipboard
+  output : write data in the clipboard to stdout or a file
+  clear  : delete the data in the clipboard
+_EOT_
+  exit 1
+}
+
+# confirm whether the required commands exist
+if type xsel > /dev/null 2>&1; then
+  cmd_input='xsel -i -b'
+  cmd_output='xsel -o -b'
+  cmd_clear='xsel -c -b'
+elif type xclip > /dev/null 2>&1; then
+  cmd_input='xclip -i -selection "clipboard"'
+  cmd_output='xclip -o -selection "clipboard"'
+  cmd_clear='xclip -i -selection "clipboard" < /dev/null'
+elif type pbcopy > /dev/null 2>&1 && type pbpaste > /dev/null 2>&1; then
+  cmd_input='pbcopy'
+  cmd_output='pbpaste'
+  cmd_clear='pbcopy < /dev/null'
+else
+  error_exit 1 'commands "xsel", "xclip", or "pbcopy"/"pbpaste" are not found'
+fi
+
+################################################################
+# argument parsing
+################################################################
+
+# print the usage and exit
+case "$# ${1:-}" in
+  '1 -h'|'1 --help')
+      print_usage_and_exit
+      ;;
+esac
+
+# parse options
+opt_writestdout='false'
+while :; do
+  case "${1:-}" in
+    -c|--copy)
+      copystdout='true'
+      shift
+      ;;
+    --)
+      shift
+      break
+      ;;
+    -*)
+      error_exit 1 "invalid option : $1 ."
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+################################################################
+# main routine
+################################################################
+
+# execute the operation
+case "${1:-} ${2:-}" in
+  'input '|'input -')
+    $cmd_input
+    ;;
+  'input '*)
+    $cmd_input < "$2"
+    ;;
+  'output ')
+    $cmd_output
+    ;;
+  'output '*)
+    $cmd_output > "$2"
+    ;;
+  'clear ')
+    $cmd_clear
+    ;;
+  ' ')
+    error_exit 1 'set any one of operations.'
+    ;;
+  *)
+    error_exit 1 "invalid operation : ${1:-} ${2:-} ."
+esac
