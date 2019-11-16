@@ -24,7 +24,7 @@ error_exit() {
   exit "$1"
 }
 
-print_usage_and_exit() {
+usage() {
   cat <<_EOT_ >&2
 Usage: ${0##*/} [option] ... <command> ...
 
@@ -41,7 +41,7 @@ _EOT_
 # print the usage and exit
 case "$# ${1:-}" in
   '1 -h'|'1 --help')
-    print_usage_and_exit
+    usage
     ;;
 esac
 
@@ -53,7 +53,7 @@ while :; do
       break
       ;;
     -*)
-      error_exit 1 "invalid option : $1 ."
+      error_exit 1 "invalid option. : $1"
       ;;
     *)
       break

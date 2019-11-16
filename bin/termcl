@@ -1,9 +1,74 @@
 #!/bin/sh
 
+################################################################
+# 
+# termcl - terminal color print
+# 
+# edited by raptowl on 2019/11/17
+# 
+################################################################
+
+################################################################
+# preprocessing
+################################################################
+
+# initialize shell environment
 set -u
 umask 0022
+type command > /dev/null 2>&1 && type getconf > /dev/null 2>&1 &&
+  PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
+UNIX_STD=2003  # to make HP-UX conform to POSIX
+export PATH UNIX_STD
 
+# define functions
+error_exit() {
+  printf '%s: %s\n' "${0##*/}" "$2" >&2
+  exit "$1"
+}
+
+usage() {
+  cat <<_EOT_ >&2
+Usage: ${0##*/} [option] ...
+
+option:
+  -h | --help : print out the usage to stderr.
+_EOT_
+  exit 1
+}
+
+################################################################
+# argument parsing
+################################################################
+
+# print the usage and exit
+case "$# ${1:-}" in
+  '1 -h'|'1 --help')
+    usage
+    ;;
+esac
+
+# parse options
+while :; do
+  case "${1:-}" in
+    --)
+      shift
+      break
+      ;;
+    -*)
+      error_exit 1 "invalid option. : $1"
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+[ $# -ne 0 ] && error_exit 1 'invalid arguments.'
+
+################################################################
 # main routine
+################################################################
+
 printf '             40m   41m   42m   43m   44m   45m   46m   47m \n' >&2
 
 printf '    m' >&2
