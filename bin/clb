@@ -23,7 +23,7 @@ export PATH UNIX_STD
 # define functions
 error_exit() {
   printf '%s: %s\n' "${0##*/}" "$2" >&2
-  exit $1
+  exit "$1"
 }
 
 print_usage_and_exit() {
@@ -71,11 +71,11 @@ case "$# ${1:-}" in
 esac
 
 # parse options
-opt_writestdout='false'
+opt_writestdout=''
 while :; do
   case "${1:-}" in
     -c|--copy)
-      copystdout='true'
+      opt_writestdout='true'
       shift
       ;;
     --)
@@ -99,15 +99,18 @@ done
 case "${1:-} ${2:-}" in
   'input '|'input -')
     $cmd_input
+    [ -n "${opt_writestdout:-}" ] && $cmd_output
     ;;
   'input '*)
     $cmd_input < "$2"
+    [ -n "${opt_writestdout:-}" ] && $cmd_output
     ;;
   'output ')
     $cmd_output
     ;;
   'output '*)
     $cmd_output > "$2"
+    [ -n "${opt_writestdout:-}" ] && $cmd_output
     ;;
   'clear ')
     $cmd_clear
