@@ -1,18 +1,76 @@
 #!/bin/sh
 
+################################################################
+# 
+# ppath - program path
+# 
+# edited by raptowl on 2019/11/16
+# 
+################################################################
+
+################################################################
+# preprocessing
+################################################################
+
+# initialize shell environment
 set -u
 umask 0022
+UNIX_STD=2003  # to make HP-UX conform to POSIX
+export UNIX_STD
+
+# define functions
+error_exit() {
+  printf '%s: %s\n' "${0##*/}" "$2" >&2
+  exit "$1"
+}
+
+print_usage_and_exit() {
+  cat <<_EOT_ >&2
+Usage: ${0##*/} [option] ... <command> ...
+
+option:
+  -h | --help : print out the usage to stderr.
+_EOT_
+  exit 1
+}
+
+################################################################
+# argument parsing
+################################################################
+
+# print the usage and exit
+case "$# ${1:-}" in
+  '1 -h'|'1 --help')
+    print_usage_and_exit
+    ;;
+esac
 
 # check the number of arguments
-if [ $# -ne 1 ]; then
-	printf 'ERROR: the number of arguments is incorrect.\n' >&2
-	exit 1
-fi
+while :; do
+  case "${1:-}" in
+    --)
+      shift
+      break
+      ;;
+    -*)
+      error_exit 1 "invalid option : $1 ."
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
+[ $# -ne 1 ] && error_exit 1 'invalid arguments.'
+
+################################################################
 # main routine
+################################################################
+
 printf '%s\n' "$PATH" |
-	tr ':' '\n' |
-	sed -e "s%\$%/$1%" |
-	xargs file |
-	awk -F ':' '! match($2, ".*cannot open.*") { print $1; }' |
-	grep -e '^'
+  tr ':' '\n' |
+  sed -e 's%$%/'"$1"'%' |
+  xargs file |
+  sed -e 's%:  *%:%' |
+  awk -F ':' '! match($2, "cannot open.*") { print $1; }' |
+  grep -e '^'
