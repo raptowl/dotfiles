@@ -45,7 +45,7 @@ case "$# ${1:-}" in
     ;;
 esac
 
-# check the number of arguments
+# parse options
 while :; do
   case "${1:-}" in
     --)
