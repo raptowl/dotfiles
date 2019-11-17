@@ -26,7 +26,7 @@ error_exit() {
 
 usage() {
   cat <<_EOT_ >&2
-Usage: ${0##*/} [option] ... <command> ...
+Usage: ${0##*/} [option] ... <command>
 
 option:
   -h | --help : print out the usage to stderr.
