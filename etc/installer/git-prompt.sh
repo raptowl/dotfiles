@@ -3,7 +3,7 @@
 set -u
 umask 0022
 
-url='https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh'
+url='raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh'
 
 [ ! -d "$HOME/usr/local" ] && mkdir -p "$HOME/usr/local"
 
