@@ -1,18 +1,19 @@
-# load the default login settings
-if [ -f "$HOME/.bash_profile.dotold" ]; then
-	. "$HOME/.bash_profile.dotold"
-elif [ -f "$HOME/.bash_login" ]; then
-	. "$HOME/.bash_login"
-elif [ -f "$HOME/.profile" ]; then
-	. "$HOME/.profile"
-fi
+# load default settings
+[ -f "$HOME/.bash_profile.dotold" ] && . "$HOME/.bash_profile.dotold" ||
+[ -f "$HOME/.bash_login" ] && . "$HOME/.bash_login" ||
+[ -f "$HOME/.profile" ] && . "$HOME/.profile"
 
-# load the interactive settings
-if [ -f "$HOME/.bashrc" ] && printf '%s\n' "$-" | grep -q -e 'i'; then
-	. "$HOME/.bashrc"
-fi
+# set default access permissions
+umask 0022
 
-# load the local login settings
-if [ -f "$HOME/usr/local/bash_profile" ]; then
-	. "$HOME/usr/local/bash_profile"
-fi
+# set environment variables
+export LANG='ja_JP.UTF-8'
+export INPUTRC="$HOME/.inputrc"
+type vim > /dev/null 2>&1 && export EDITOR="vim"
+export PATH="$HOME/bin:$PATH"
+[ -d "$HOME/usr/bin" ] && export PATH="$HOME/usr/bin:$PATH"
+[ -d "$HOME/usr/shellshoccar/bin" ] && export PATH="$HOME/usr/shellshoccar/bin:$PATH"
+[ -d "$HOME/usr/kotoriotoko/BIN" ] && export PATH="$HOME/usr/kotoriotoko/BIN:$PATH"
+
+# load local settings
+[ -f "$HOME/usr/local/bash_profile" ] && . "$HOME/usr/local/bash_profile"
