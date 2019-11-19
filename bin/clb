@@ -50,13 +50,13 @@ if type xsel > /dev/null 2>&1; then
 elif type xclip > /dev/null 2>&1; then
   cmd_input='xclip -i -selection "clipboard"'
   cmd_output='xclip -o -selection "clipboard"'
-  cmd_clear='xclip -i -selection "clipboard" < /dev/null'
+  cmd_clear='printf "" | xclip -i -selection "clipboard"'
 elif type pbcopy > /dev/null 2>&1 && type pbpaste > /dev/null 2>&1; then
   cmd_input='pbcopy'
   cmd_output='pbpaste'
-  cmd_clear='pbcopy < /dev/null'
+  cmd_clear='printf "" | pbcopy'
 else
-  error_exit 1 'commands "xsel", "xclip", or "pbcopy"/"pbpaste" are not found.'
+  error_exit 1 'commands xsel, xclip, or pbcopy/pbpaste are not found.'
 fi
 
 ################################################################
@@ -100,26 +100,27 @@ done
 # execute the operation
 case "${1:-} ${2:-}" in
   'input '|'input -')
-    $cmd_input
-    [ -n "${opt_writestdout:-}" ] && $cmd_output
+    eval "$cmd_input"
+    [ -n "${opt_writestdout:-}" ] && eval "$cmd_output"
     ;;
   'input '*)
-    $cmd_input < "$2"
-    [ -n "${opt_writestdout:-}" ] && $cmd_output
+    eval "$cmd_input" < "$2"
+    [ -n "${opt_writestdout:-}" ] && eval "$cmd_output"
     ;;
   'output ')
-    $cmd_output
+    eval "$cmd_output"
     ;;
   'output '*)
-    $cmd_output > "$2"
-    [ -n "${opt_writestdout:-}" ] && $cmd_output
+    eval "$cmd_output" > "$2"
+    [ -n "${opt_writestdout:-}" ] && eval "$cmd_output"
     ;;
   'clear ')
-    $cmd_clear
+    eval "$cmd_clear"
     ;;
   ' ')
     error_exit 1 'set any one of operations.'
     ;;
   *)
     error_exit 1 "invalid operation. : ${1:-} ${2:-}"
+    ;;
 esac
