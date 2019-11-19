@@ -23,3 +23,9 @@ else
 	printf 'ERROR: command git wget or curl not found.\n' >&2
 	exit 1
 fi
+
+# 1. リポジトリのダウンロード
+# 2. .dotfilesディレクトリをカレントディレクトリ配下に配置（pwd=/home/katsumiなら/home/katsumi/.dotfilesとなる）
+# 3. DOTFILES_LOCの値を設定してエクスポート
+# 4. etc/dotlocをコピーして、3.でエクスポートした内容と同じに書き換えて$HOMEに置く
+# 5. その他のドットファイルをリンク
