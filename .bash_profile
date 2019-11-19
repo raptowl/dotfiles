@@ -1,12 +1,15 @@
 # load default settings
-[ -f "$HOME/.bash_profile.dotold" ] && . "$HOME/.bash_profile.dotold" ||
-[ -f "$HOME/.bash_login" ] && . "$HOME/.bash_login" ||
-[ -f "$HOME/.profile" ] && . "$HOME/.profile"
+[ -r "$HOME/.bash_profile.dotold" ] && . "$HOME/.bash_profile.dotold" ||
+[ -r "$HOME/.bash_login" ] && . "$HOME/.bash_login" ||
+[ -r "$HOME/.profile" ] && . "$HOME/.profile"
 
 # set default access permissions
 umask 0022
 
-# set environment variables
+# load the environment variable 'DOTFILES_LOC'.
+[ -r "$HOME/.dotloc" ] && . "$HOME/.dotloc" || printf 'WARNING: ~/.dotloc could not be read correctly.\n' >&2
+
+# set the other environment variables
 export LANG='ja_JP.UTF-8'
 export INPUTRC="$HOME/.inputrc"
 type vim > /dev/null 2>&1 && export EDITOR="vim"
@@ -16,4 +19,4 @@ export PATH="$HOME/bin:$PATH"
 [ -d "$HOME/usr/kotoriotoko/BIN" ] && export PATH="$HOME/usr/kotoriotoko/BIN:$PATH"
 
 # load local settings
-[ -f "$HOME/usr/local/bash_profile" ] && . "$HOME/usr/local/bash_profile"
+[ -r "$HOME/usr/local/bash_profile" ] && . "$HOME/usr/local/bash_profile"
