@@ -6,4 +6,3 @@
 # This variable is referred by the utilities in dotfiles directory to read other library scripts.
 
 DOTFILES_LOC=
-export DOTFILES_LOC

@@ -7,7 +7,10 @@
 umask 0022
 
 # load the environment variable 'DOTFILES_LOC'.
-[ -r "$HOME/.dotfiles_loc" ] && . "$HOME/.dotfiles_loc" || printf 'WARNING: ~/.dotfiles_loc could not be read correctly.\n' >&2
+[ -r "$HOME/.dotfiles_loc" ] && {
+  . "$HOME/.dotfiles_loc";
+  export DOTFILES_LOC
+} || printf 'WARNING: ~/.dotfiles_loc could not be read correctly.\n' >&2
 
 # set the other environment variables
 export LANG='ja_JP.UTF-8'
