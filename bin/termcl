@@ -20,11 +20,8 @@ type command > /dev/null 2>&1 && type getconf > /dev/null 2>&1 &&
 UNIX_STD=2003  # to make HP-UX conform to POSIX
 export PATH UNIX_STD
 
-# define functions
-error_exit() {
-  printf '%s: %s\n' "${0##*/}" "$2" >&2
-  exit "$1"
-}
+# load and define functions
+. "$DOTFILES_LOC/lib/error_exit.sh"
 
 usage() {
   cat <<_EOT_ >&2
