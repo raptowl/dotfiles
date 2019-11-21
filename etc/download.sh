@@ -27,7 +27,7 @@ else
 fi
 
 # setup the .dotfiles_loc file
-sed -e 's%^DOTFILES_LOC=$%DOTFILES_LOC='"$DOTFILES_LOC"'%' < "$DOTFILES_LOC/etc/template/.dotfiles_loc" > "$HOME/.dotfiles_loc"
+sed -e 's%^DOTFILES_LOC=$%DOTFILES_LOC='"$DOTFILES_LOC"'%' < "$DOTFILES_LOC/etc/template/dotfiles_loc.sh" > "$HOME/.dotfiles_loc"
 
 # deploy configuration files
 sh "$DOTFILES_LOC/etc/deploy.sh" | sh
