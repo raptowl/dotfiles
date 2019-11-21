@@ -19,9 +19,14 @@ fi
 
 # define functions
 newsh() {
-  # make a new shellscript file from templates
+  # make a new command file from templates
   # $1: (optional) the path of a new sh file
   cp -f "$DOTFILES_LOC/etc/template/command.sh" "${1:-./}"
+}
+newfunc() {
+  # make a new function file from templates
+  # $1: (optional) the path of a new sh file
+  cp -f "$DOTFILES_LOC/etc/template/function.sh" "${1:-./}"
 }
 
 # set prompts

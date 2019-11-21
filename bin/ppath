@@ -1,11 +1,12 @@
 #!/bin/sh
 
 ################################################################
-# 
-# ppath - program path
-# 
-# edited by raptowl on 2019/11/16
-# 
+#
+# ppath
+#   - program path
+#
+# written by raptowl on 2019/11/16
+#
 ################################################################
 
 ################################################################
@@ -15,8 +16,9 @@
 # initialize shell environment
 set -u
 umask 0022
-UNIX_STD=2003  # to make HP-UX conform to POSIX
-export UNIX_STD
+LC_ALL=C
+UNIX_STD=2003
+export LC_ALL UNIX_STD
 
 # load and define functions
 . "$DOTFILES_LOC/lib/error_exit.sh"
@@ -26,7 +28,7 @@ usage() {
 Usage: ${0##*/} [option] ... <command>
 
 option:
-  -h | --help : print out the usage to stderr.
+  -h | --help : print out the usage to stderr
 _EOT_
   exit 1
 }
@@ -50,7 +52,7 @@ while :; do
       break
       ;;
     -*)
-      error_exit 1 "invalid option. : $1"
+      error_exit 1 "invalid option: $1"
       ;;
     *)
       break
@@ -58,7 +60,7 @@ while :; do
   esac
 done
 
-[ $# -ne 1 ] && error_exit 1 'invalid arguments.'
+[ $# -ne 1 ] && error_exit 1 'invalid arguments'
 
 ################################################################
 # main routine
