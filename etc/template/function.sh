@@ -2,7 +2,8 @@
 
 ################################################################
 #
-# function.sh - short description
+# function.sh
+#   - short description
 #
 # written by name on 20xx/xx/xx
 #

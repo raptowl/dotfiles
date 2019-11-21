@@ -2,7 +2,8 @@
 
 ################################################################
 #
-# command.sh - short description
+# command.sh
+#   - short description
 #
 # written by name on 20xx/xx/xx
 #
@@ -29,7 +30,7 @@ usage() {
 Usage: ${0##*/} [option] ...
 
 option:
-  -h | --help : print out the usage to stderr.
+  -h | --help : print out the usage to stderr
 _EOT_
   exit 1
 }
