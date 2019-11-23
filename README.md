@@ -9,11 +9,14 @@ It means that the main goal is to make configs and utils which have high sustain
 
 ## how to install
 
-You can download this repository in your home directory by commands below:
+You can download this repository in your **current directory** by command below.
+If you would like to set the dotfiles directory in your home directory,
+you must move your current directory to your home directory before running installer.
 ```
-curl -L raw.githubusercontent.com/raptowl/dotfiles/master/etc/download.sh | sh
+curl -L raw.githubusercontent.com/raptowl/dotfiles/master/etc/install.sh | sh
 ```
 or
 ```
-wget -O - raw.githubusercontent.com/raptowl/dotfiles/master/etc/download.sh | sh
+wget -O - raw.githubusercontent.com/raptowl/dotfiles/master/etc/install.sh | sh
 ```
+

@@ -30,4 +30,4 @@ fi
 sed -e 's%^DOTFILES_LOC=$%DOTFILES_LOC='"$DOTFILES_LOC"'%' < "$DOTFILES_LOC/etc/template/dotfiles_loc.sh" > "$HOME/.dotfiles_loc"
 
 # deploy configuration files
-"$DOTFILES_LOC/bin/dotutil" link
+"$DOTFILES_LOC/bin/dotutil" link | sh
