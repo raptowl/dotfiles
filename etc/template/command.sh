@@ -3,7 +3,7 @@
 ################################################################
 #
 # command.sh
-#   - short description
+#   - short description here
 #
 # written by name on 20xx/xx/xx
 #
@@ -27,10 +27,12 @@ export LC_ALL PATH UNIX_STD
 
 usage() {
   cat <<_EOT_ >&2
-Usage: ${0##*/} [option] ...
+Usage: ${0##*/} [-h | --help] [<args>]
+
+short description of this command here.
 
 option:
-  -h | --help : print out the usage to stderr
+  -h | --help: print out the usage to stderr
 _EOT_
   exit 1
 }

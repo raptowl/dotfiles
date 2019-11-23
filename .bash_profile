@@ -10,13 +10,13 @@ umask 0022
 [ -r "$HOME/.dotfiles_loc" ] && {
   . "$HOME/.dotfiles_loc"
   export DOTFILES_LOC
-} || printf 'WARNING: ~/.dotfiles_loc could not be read correctly.\n' >&2
+} || printf 'WARNING: ~/.dotfiles_loc could not be read correctly\n' >&2
 
 # set the other environment variables
 export LANG='ja_JP.UTF-8'
 export INPUTRC="$HOME/.inputrc"
 type vim > /dev/null 2>&1 && export EDITOR="vim"
-export PATH="$HOME/bin:$PATH"
+export PATH="$DOTFILES_LOC/bin:$PATH"
 [ -d "$HOME/usr/bin" ] && export PATH="$HOME/usr/bin:$PATH"
 [ -d "$HOME/usr/shellshoccar/bin" ] && export PATH="$HOME/usr/shellshoccar/bin:$PATH"
 [ -d "$HOME/usr/kotoriotoko/BIN" ] && export PATH="$HOME/usr/kotoriotoko/BIN:$PATH"

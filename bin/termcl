@@ -27,10 +27,12 @@ export LC_ALL PATH UNIX_STD
 
 usage() {
   cat <<_EOT_ >&2
-Usage: ${0##*/} [option] ...
+Usage: ${0##*/} [-h | --help]
+
+${0##*/} is a utility to check the terminal color.
 
 option:
-  -h | --help : print out the usage to stderr
+  -h | --help: print out the usage to stderr
 _EOT_
   exit 1
 }

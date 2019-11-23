@@ -1,0 +1,160 @@
+#!/bin/sh
+
+################################################################
+#
+# dotutil
+#   - dotfiles manager
+#
+# written by raptowl on 2019/11/22
+#
+################################################################
+
+################################################################
+# preprocessing
+################################################################
+
+# initialize shell environment
+set -u
+umask 0022
+LC_ALL=C
+type command > /dev/null 2>&1 && type getconf > /dev/null 2>&1 &&
+PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
+UNIX_STD=2003
+export LC_ALL PATH UNIX_STD
+
+# load and define functions
+. "$DOTFILES_LOC/lib/error_exit.sh"
+
+usage() {
+  cat <<_EOT_ >&2
+Usage: ${0##*/} [-h | --help] <operation> [<args>]
+
+short description of this command here.
+
+option:
+  -h | --help: print out the usage to stderr
+
+<operation>
+  link
+  unlink
+  list
+  install
+  uninstall
+  withdraw
+_EOT_
+  exit 1
+}
+
+# catch signals
+#trap '' 1 2 3 15
+
+################################################################
+# argument parsing
+################################################################
+
+# print the usage and exit
+case "$# ${1:-}" in
+  '1 -h'|'1 --help')
+    usage
+    ;;
+esac
+
+# parse option
+while :; do
+  case "${1:-}" in
+    --)
+      shift
+      break
+      ;;
+    -*)
+      error_exit 1 "invalid option: $1"
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+################################################################
+# main routine
+################################################################
+
+# execute the operation
+case "$# ${1:-}" in
+  '1 link')
+    # rename config files which has already existed in ~ and put symbolic links from 'DOTFILES_LOC' directory to ~
+    cd "$DOTFILES_LOC" || exit 1
+    printf '%s\n' * .* |
+      grep -v \
+        -e '^\.$' \
+        -e '^\.\.$' \
+        -e '^\.config$' \
+        -e '^\.git$' \
+        -e '^\.gitignore$' \
+        -e '^etc$' \
+        -e '^lib$' \
+        -e '^bin$' \
+        -e '^LICENSE$' \
+        -e '^README\.md$' |
+      sed -e "s%^%$HOME/%" |
+      xargs file |
+      sed -e 's/:[ \t][ \t]*/:/' |
+      sed -e 's/^.*$/__rename_dotold__:&\n__put_link__:&/' |
+      awk -F ':' '
+        BEGIN {
+          OFS = ":";
+        }
+        match($1, "__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ {
+          print $1, $2;
+        }
+        match($1, "__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") {
+          print $1, $2;
+        }
+      ' |
+      sed -e 's/^__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
+      sed -e "s%^__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
+
+    # rename config files which has already existed in ~/.config and put symbolic links from 'DOTFILES_LOC' directory to ~/.config
+    [ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"  # make a directory ~/.config if it does not exist
+    cd "$DOTFILES_LOC/.config" || exit 1
+    printf '%s\n' * .* |
+      grep -v \
+        -e '^\.$' \
+        -e '^\.\.$' |
+      sed -e "s%^%$HOME/.config/%" |
+      xargs file |
+      sed -e 's/:[ \t][ \t]*/:/' |
+      sed -e 's/^.*$/__rename_dotold__:&\n__put_link__:&/' |
+      awk -F ':' '
+        BEGIN {
+          OFS = ":";
+        }
+        match($1, "__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") && $3 !~ /cannot open/ {
+          print $1, $2;
+        }
+        match($1, "__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") {
+          print $1, $2;
+        }
+      ' |
+      sed -e 's/^__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
+      sed -e "s%^__put_link__:$HOME/.config/\(.*\)\$%ln -fs $DOTFILES_LOC/.config/\1 $HOME/.config/\1%"
+    ;;
+  '1 unlink')
+    echo 'unlink'
+    ;;
+  '1 list')
+    echo 'list'
+    ;;
+  [!1]' install')
+    echo 'install'
+    ;;
+  [!1]' uninstall')
+    echo 'uninstall'
+    ;;
+  '1 withdraw')
+    echo 'withdraw'
+    ;;
+  *)
+    error_exit 1 "invalid operation or the number of arguments: $*"
+    ;;
+esac
