@@ -127,3 +127,5 @@ case "${1:-} ${2:-}" in
     error_exit 1 "invalid operation: ${1:-} ${2:-}"
     ;;
 esac
+
+exit 0

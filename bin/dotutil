@@ -98,21 +98,16 @@ case "$# ${1:-}" in
         -e '^README\.md$' |
       sed -e "s%^%$HOME/%" |
       xargs file |
-      sed -e 's/:[ \t][ \t]*/:/' |
-      sed -e 's/^.*$/__rename_dotold__:&\n__put_link__:&/' |
+      sed -e 's/: */:/' |
+      sed -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
       awk -F ':' '
-        BEGIN {
-          OFS = ":";
-        }
-        match($1, "__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ {
-          print $1, $2;
-        }
-        match($1, "__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") {
-          print $1, $2;
-        }
+        BEGIN { OFS = ":"; }
+        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ { print $1, $2; }
+        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") { print $1, $2; }
       ' |
-      sed -e 's/^__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
-      sed -e "s%^__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
+      sort -t ':' -k 1,1 |
+      sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
+      sed -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
 
     # rename config files which has already existed in ~/.config and put symbolic links from 'DOTFILES_LOC' directory to ~/.config
     [ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"  # make a directory ~/.config if it does not exist
@@ -123,24 +118,45 @@ case "$# ${1:-}" in
         -e '^\.\.$' |
       sed -e "s%^%$HOME/.config/%" |
       xargs file |
-      sed -e 's/:[ \t][ \t]*/:/' |
-      sed -e 's/^.*$/__rename_dotold__:&\n__put_link__:&/' |
+      sed -e 's/: */:/' |
+      sed -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
       awk -F ':' '
-        BEGIN {
-          OFS = ":";
-        }
-        match($1, "__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") && $3 !~ /cannot open/ {
-          print $1, $2;
-        }
-        match($1, "__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") {
-          print $1, $2;
-        }
+        BEGIN { OFS = ":"; }
+        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") && $3 !~ /cannot open/ { print $1, $2; }
+        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") { print $1, $2; }
       ' |
-      sed -e 's/^__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
-      sed -e "s%^__put_link__:$HOME/.config/\(.*\)\$%ln -fs $DOTFILES_LOC/.config/\1 $HOME/.config/\1%"
+      sort -t ':' -k 1,1 |
+      sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
+      sed -e "s%^2__put_link__:$HOME/.config/\(.*\)\$%ln -fs $DOTFILES_LOC/.config/\1 $HOME/.config/\1%"
     ;;
   '1 unlink')
-    echo 'unlink'
+    # remove symbolic links at ~ and rename config files which are the original ones
+    cd "$HOME" || exit 1
+    printf '%s\n' "$HOME/"* "$HOME/".* |
+      xargs file |
+      sed -e 's/: */:/' |
+      awk -F ':' '
+        BEGIN { OFS = ":"; }
+        match($2, "symbolic link to '"$DOTFILES_LOC"'") { print "1__del_link__", $1; }
+        $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
+      ' |
+      sort -t ':' -k 1,1 |
+      sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' |
+      sed -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
+
+    # remove symbolic links at ~/.config and rename config files which are the original ones
+    cd "$HOME/.config" || exit 1
+    printf '%s\n' "$HOME/.config/"* "$HOME/.config/".* |
+      xargs file |
+      sed -e 's/: */:/' |
+      awk -F ':' '
+        BEGIN { OFS = ":"; }
+        match($2, "symbolic link to '"$DOTFILES_LOC/.config"'") { print "1__del_link__", $1; }
+        $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
+      ' |
+      sort -t ':' -k 1,1 |
+      sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' |
+      sed -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
     ;;
   '1 list')
     echo 'list'
@@ -158,3 +174,5 @@ case "$# ${1:-}" in
     error_exit 1 "invalid operation or the number of arguments: $*"
     ;;
 esac
+
+exit 0

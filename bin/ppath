@@ -76,3 +76,5 @@ printf '%s\n' "$PATH" |
   sed -e 's%:  *%:%' |
   awk -F ':' '! match($2, "cannot open.*") { print $1; }' |
   grep -e '^'
+
+exit 0

@@ -287,3 +287,5 @@ printf ' \033[1;37;45m gYw \033[0m' >&2
 printf ' \033[1;37;46m gYw \033[0m' >&2
 printf ' \033[1;37;47m gYw \033[0m' >&2
 printf '\n' >&2
+
+exit 0
