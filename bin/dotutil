@@ -35,12 +35,14 @@ option:
   -h | --help: print out the usage to stderr
 
 <operation>
-  link
-  unlink
-  list
-  install
-  uninstall
-  withdraw
+link     : put symbolic links of config files to the home directory
+unlink   : remove symbolic links in the home directory
+list     : list up app installers which are available
+install  : install app to the local app directory
+uninstall: remove app from the local app directory
+newsh    : make a new command file from templates
+newfunc  : make a new function file from templates
+withdraw : remove all of links, local apps, and delete dotfiles directory
 _EOT_
   exit 1
 }
@@ -82,6 +84,10 @@ done
 # execute the operation
 case "$# ${1:-}" in
   '1 link')
+    shift
+    # put symbolic links of config files to the home directory
+    # (no arguments)
+
     # rename config files which has already existed in ~ and put symbolic links from 'DOTFILES_LOC' directory to ~
     cd "$DOTFILES_LOC" || exit 1
     printf '%s\n' * .* |
@@ -130,6 +136,10 @@ case "$# ${1:-}" in
       sed -e "s%^2__put_link__:$HOME/.config/\(.*\)\$%ln -fs $DOTFILES_LOC/.config/\1 $HOME/.config/\1%"
     ;;
   '1 unlink')
+    shift
+    # remove symbolic links in the home directory
+    # (no arguments)
+
     # remove symbolic links at ~ and rename config files which are the original ones
     cd "$HOME" || exit 1
     printf '%s\n' "$HOME/"* "$HOME/".* |
@@ -159,16 +169,36 @@ case "$# ${1:-}" in
       sed -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
     ;;
   '1 list')
-    echo 'list'
+    shift
+    # list up app installers which are available
+    # (no arguments)
     ;;
   [!1]' install')
-    echo 'install'
+    shift
+    # install app to the local app directory
+    # $1~: the name of apps to install
     ;;
   [!1]' uninstall')
-    echo 'uninstall'
+    shift
+    # remove app from the local app directory
+    # $1~: the name of apps to uninstall
+    ;;
+  '2 newsh')
+    shift
+    # make a new command file from templates
+    # $1: the path of a new sh file
+    cp -f "$DOTFILES_LOC/etc/template/command.sh" "$1" || exit 1
+    ;;
+  '2 newfunc')
+    shift
+    # make a new function file from templates
+    # $1: (optional) the path of a new sh file
+    cp -f "$DOTFILES_LOC/etc/template/function.sh" "${1:-./}"
     ;;
   '1 withdraw')
-    echo 'withdraw'
+    shift
+    # remove all of links, local apps, and delete dotfiles directory
+    # (no arguments)
     ;;
   *)
     error_exit 1 "invalid operation or the number of arguments: $*"

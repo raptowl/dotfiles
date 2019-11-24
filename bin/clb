@@ -38,9 +38,9 @@ option:
   -c | --copy: copy and print the data to stdout
 
 <operation>
-  input  : read data from stdin or a file and store the data into the clipboard
-  output : write data in the clipboard to stdout or a file
-  clear  : delete the data in the clipboard
+  input : read data from stdin or a file and store the data into the clipboard
+  output: write data in the clipboard to stdout or a file
+  clear : delete the data in the clipboard
 _EOT_
   exit 1
 }
