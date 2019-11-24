@@ -17,18 +17,6 @@ else
   alias ls='\ls -la -G'
 fi
 
-# define functions
-newsh() {
-  # make a new command file from templates
-  # $1: (optional) the path of a new sh file
-  cp -f "$DOTFILES_LOC/etc/template/command.sh" "${1:-./}"
-}
-newfunc() {
-  # make a new function file from templates
-  # $1: (optional) the path of a new sh file
-  cp -f "$DOTFILES_LOC/etc/template/function.sh" "${1:-./}"
-}
-
 # set prompt
 PS1='$(__exit_status=$?; printf "\[\033[31m\]\u\[\033[0m\] at \[\033[32m\]\H\[\033[0m\] in \[\033[34m\]\w\[\033[0m\]\n"; [ -n "$SSH_TTY" ] && printf "\[\033[36m\][SSH]\[\033[0m\] "; [ $__exit_status -eq 0 ] && printf "\[\033[1;32m\]\$\[\033[0m\] " || printf "\[\033[1;31m\]\$\[\033[0m\] ")'
 
