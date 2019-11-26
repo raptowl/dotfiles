@@ -23,7 +23,7 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-. "$DOTFILES_LOC/lib/error.sh"
+. "$DOTFILES_LOC/lib/error_msg.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -56,7 +56,7 @@ while :; do
       break
       ;;
     -*)
-      error "invalid option: $1"
+      error_msg "invalid option: $1"
       exit 1
       ;;
     *)
@@ -65,7 +65,7 @@ while :; do
   esac
 done
 
-[ $# -ne 0 ] && { error 'invalid arguments'; exit 1; }
+[ $# -ne 0 ] && { error_msg 'invalid arguments'; exit 1; }
 
 ################################################################
 # main routine
