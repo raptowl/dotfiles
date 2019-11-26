@@ -172,6 +172,8 @@ case "$# ${1:-}" in
     shift
     # list up app installers which are available
     # (no arguments)
+    cd "$DOTFILES_LOC/etc/dotutil/install" || exit 1
+    printf '%s\n' *
     ;;
   [!1]' install')
     shift
