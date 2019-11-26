@@ -23,7 +23,7 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-. "$DOTFILES_LOC/lib/error_exit.sh"
+. "$DOTFILES_LOC/lib/error.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -59,7 +59,8 @@ elif type pbcopy > /dev/null 2>&1 && type pbpaste > /dev/null 2>&1; then
   cmd_output='pbpaste'
   cmd_clear='printf "" | pbcopy'
 else
-  error_exit 1 'commands xsel, xclip, or pbcopy/pbpaste are not found'
+  error 'commands xsel, xclip, or pbcopy/pbpaste are not found'
+  exit 1
 fi
 
 ################################################################
@@ -86,7 +87,8 @@ while :; do
       break
       ;;
     -*)
-      error_exit 1 "invalid option: $1"
+      error "invalid option: $1"
+      exit 1
       ;;
     *)
       break
@@ -94,7 +96,7 @@ while :; do
   esac
 done
 
-[ $# -gt 2 ] && error_exit 1 'invalid arguments'
+[ $# -gt 2 ] && { error 'invalid arguments'; exit 1; }
 
 ################################################################
 # main routine
@@ -121,10 +123,12 @@ case "${1:-} ${2:-}" in
     eval "$cmd_clear"
     ;;
   ' ')
-    error_exit 1 'set any one of operations'
+    error 'set any one of operations'
+    exit 1
     ;;
   *)
-    error_exit 1 "invalid operation: ${1:-} ${2:-}"
+    error "invalid operation: ${1:-} ${2:-}"
+    exit 1
     ;;
 esac
 
