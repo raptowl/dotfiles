@@ -179,11 +179,19 @@ case "$# ${1:-}" in
     shift
     # install app to the local app directory
     # $1~: the name of apps to install
+    for scriptname in "$@"; do
+      [ -r "$DOTFILES_LOC/etc/dotutil/install/$scriptname" ] || { printf 'ERROR\n'; continue; }
+      sh "$DOTFILES_LOC/etc/dotutil/install/$scriptname"
+    done
     ;;
   [!1]' uninstall')
     shift
     # remove app from the local app directory
     # $1~: the name of apps to uninstall
+    for scriptname in "$@"; do
+      [ -r "$DOTFILES_LOC/etc/dotutil/uninstall/$scriptname" ] || { printf 'ERROR\n'; continue; }
+      sh "$DOTFILES_LOC/etc/dotutil/uninstall/$scriptname"
+    done
     ;;
   '2 newsh')
     shift
