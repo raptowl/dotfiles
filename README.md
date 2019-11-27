@@ -9,9 +9,7 @@ It means that the main goal is to make configs and utils which have high sustain
 
 ## how to install
 
-You can download this repository in your **current directory** by command below.
-If you would like to set the dotfiles directory in your home directory,
-you must move your current directory to your home directory before running installer.
+You can download this repository in your home directory by commands below.
 ```
 curl -L raw.githubusercontent.com/raptowl/dotfiles/master/etc/install.sh | sh
 ```
