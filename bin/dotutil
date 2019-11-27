@@ -23,7 +23,7 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-. "$DOTFILES_LOC/lib/error_msg.sh"
+. "$HOME/.dotfiles/lib/error_msg.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -89,8 +89,8 @@ case "$# ${1:-}" in
     # put symbolic links of config files to the home directory
     # (no arguments)
 
-    # rename config files which has already existed in ~ and put symbolic links from 'DOTFILES_LOC' directory to ~
-    cd "$DOTFILES_LOC" || exit 1
+    # rename config files which has already existed in ~ and put symbolic links from ~/.dotfiles to ~
+    cd "$HOME/.dotfiles" || exit 1
     printf '%s\n' * .* |
       grep -v \
         -e '^\.$' \
@@ -109,16 +109,16 @@ case "$# ${1:-}" in
       sed -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
       awk -F ':' '
         BEGIN { OFS = ":"; }
-        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ { print $1, $2; }
-        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") { print $1, $2; }
+        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$HOME/.dotfiles"'") && $3 !~ /cannot open/ { print $1, $2; }
+        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$HOME/.dotfiles"'") { print $1, $2; }
       ' |
       sort -t ':' -k 1,1 |
       sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
-      sed -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
+      sed -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $HOME/.dotfiles/\1 $HOME/\1%"
 
-    # rename config files which has already existed in ~/.config and put symbolic links from 'DOTFILES_LOC' directory to ~/.config
+    # rename config files which has already existed in ~/.config and put symbolic links from ~/.dotfiles/.config to ~/.config
     [ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"  # make a directory ~/.config if it does not exist
-    cd "$DOTFILES_LOC/.config" || exit 1
+    cd "$HOME/.dotfiles/.config" || exit 1
     printf '%s\n' * .* |
       grep -v \
         -e '^\.$' \
@@ -129,12 +129,12 @@ case "$# ${1:-}" in
       sed -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
       awk -F ':' '
         BEGIN { OFS = ":"; }
-        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") && $3 !~ /cannot open/ { print $1, $2; }
-        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") { print $1, $2; }
+        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$HOME/.dotfiles/.config"'") && $3 !~ /cannot open/ { print $1, $2; }
+        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$HOME/.dotfiles/.config"'") { print $1, $2; }
       ' |
       sort -t ':' -k 1,1 |
       sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
-      sed -e "s%^2__put_link__:$HOME/.config/\(.*\)\$%ln -fs $DOTFILES_LOC/.config/\1 $HOME/.config/\1%"
+      sed -e "s%^2__put_link__:$HOME/.config/\(.*\)\$%ln -fs $HOME/.dotfiles/.config/\1 $HOME/.config/\1%"
     ;;
   '1 unlink')
     shift
@@ -148,7 +148,7 @@ case "$# ${1:-}" in
       sed -e 's/: */:/' |
       awk -F ':' '
         BEGIN { OFS = ":"; }
-        match($2, "symbolic link to '"$DOTFILES_LOC"'") { print "1__del_link__", $1; }
+        match($2, "symbolic link to '"$HOME/.dotfiles"'") { print "1__del_link__", $1; }
         $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
       ' |
       sort -t ':' -k 1,1 |
@@ -162,7 +162,7 @@ case "$# ${1:-}" in
       sed -e 's/: */:/' |
       awk -F ':' '
         BEGIN { OFS = ":"; }
-        match($2, "symbolic link to '"$DOTFILES_LOC/.config"'") { print "1__del_link__", $1; }
+        match($2, "symbolic link to '"$HOME/.dotfiles/.config"'") { print "1__del_link__", $1; }
         $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
       ' |
       sort -t ':' -k 1,1 |
@@ -173,7 +173,7 @@ case "$# ${1:-}" in
     shift
     # list up app installers which are available
     # (no arguments)
-    cd "$DOTFILES_LOC/etc/dotutil/install" || exit 1
+    cd "$HOME/.dotfiles/etc/dotutil/install" || exit 1
     printf '%s\n' *
     ;;
   [!1]' install')
@@ -181,8 +181,8 @@ case "$# ${1:-}" in
     # install app to the local app directory
     # $1~: the name of apps to install
     for scriptname in "$@"; do
-      [ -r "$DOTFILES_LOC/etc/dotutil/install/$scriptname" ] || { printf 'ERROR\n'; continue; }
-      sh "$DOTFILES_LOC/etc/dotutil/install/$scriptname"
+      [ -r "$HOME/.dotfiles/etc/dotutil/install/$scriptname" ] || { printf 'ERROR\n'; continue; }
+      sh "$HOME/.dotfiles/etc/dotutil/install/$scriptname"
     done
     ;;
   [!1]' uninstall')
@@ -190,21 +190,21 @@ case "$# ${1:-}" in
     # remove app from the local app directory
     # $1~: the name of apps to uninstall
     for scriptname in "$@"; do
-      [ -r "$DOTFILES_LOC/etc/dotutil/uninstall/$scriptname" ] || { printf 'ERROR\n'; continue; }
-      sh "$DOTFILES_LOC/etc/dotutil/uninstall/$scriptname"
+      [ -r "$HOME/.dotfiles/etc/dotutil/uninstall/$scriptname" ] || { printf 'ERROR\n'; continue; }
+      sh "$HOME/.dotfiles/etc/dotutil/uninstall/$scriptname"
     done
     ;;
   '2 newsh')
     shift
     # make a new command file from templates
     # $1: the path of a new sh file
-    cp -f "$DOTFILES_LOC/etc/template/command.sh" "$1" || exit 1
+    cp -f "$HOME/.dotfiles/etc/template/command.sh" "$1" || exit 1
     ;;
   '2 newfunc')
     shift
     # make a new function file from templates
     # $1: (optional) the path of a new sh file
-    cp -f "$DOTFILES_LOC/etc/template/function.sh" "${1:-./}"
+    cp -f "$HOME/.dotfiles/etc/template/function.sh" "${1:-./}"
     ;;
   '1 withdraw')
     shift

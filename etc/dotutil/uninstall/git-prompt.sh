@@ -23,7 +23,7 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-#. "$DOTFILES_LOC/lib/xxx.sh"
+#. "$HOME/.dotfiles/lib/xxx.sh"
 
 usage() {
   cat <<_EOT_ >&2
