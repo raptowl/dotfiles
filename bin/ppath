@@ -76,6 +76,6 @@ printf '%s\n' "$PATH" |
   xargs file |
   sed -e 's%:  *%:%' |
   awk -F ':' '! match($2, "cannot open.*") { print $1; }' |
-  grep -e '^'
+  grep -e '^' || exit 1
 
 exit 0

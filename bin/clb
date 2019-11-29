@@ -45,24 +45,6 @@ _EOT_
   exit 1
 }
 
-# confirm whether the required commands exist
-if type xsel > /dev/null 2>&1; then
-  cmd_input='xsel -i -b'
-  cmd_output='xsel -o -b'
-  cmd_clear='xsel -c -b'
-elif type xclip > /dev/null 2>&1; then
-  cmd_input='xclip -i -selection "clipboard"'
-  cmd_output='xclip -o -selection "clipboard"'
-  cmd_clear='printf "" | xclip -i -selection "clipboard"'
-elif type pbcopy > /dev/null 2>&1 && type pbpaste > /dev/null 2>&1; then
-  cmd_input='pbcopy'
-  cmd_output='pbpaste'
-  cmd_clear='printf "" | pbcopy'
-else
-  error_msg 'commands xsel, xclip, or pbcopy/pbpaste are not found'
-  exit 1
-fi
-
 ################################################################
 # argument parsing
 ################################################################
@@ -101,6 +83,24 @@ done
 ################################################################
 # main routine
 ################################################################
+
+# confirm whether the required commands exist
+if type xsel > /dev/null 2>&1; then
+  cmd_input='xsel -i -b'
+  cmd_output='xsel -o -b'
+  cmd_clear='xsel -c -b'
+elif type xclip > /dev/null 2>&1; then
+  cmd_input='xclip -i -selection "clipboard"'
+  cmd_output='xclip -o -selection "clipboard"'
+  cmd_clear='printf "" | xclip -i -selection "clipboard"'
+elif type pbcopy > /dev/null 2>&1 && type pbpaste > /dev/null 2>&1; then
+  cmd_input='pbcopy'
+  cmd_output='pbpaste'
+  cmd_clear='printf "" | pbcopy'
+else
+  error_msg 'commands xsel, xclip, or pbcopy/pbpaste are not found'
+  exit 1
+fi
 
 # execute the operation
 case "${1:-} ${2:-}" in
