@@ -3,7 +3,7 @@
 ################################################################
 #
 # list_files_with_dot.sh
-#   - list up files including dotfiles in a directory
+#   - list up files including hidden files in a directory
 #
 # written by raptowl on 2019/11/28
 #
