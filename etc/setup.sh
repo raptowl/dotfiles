@@ -18,10 +18,10 @@ if type git > /dev/null 2>&1; then
 	git clone "$url_gitrepo" "$DOTFILES_LOC"
 elif type curl > /dev/null 2>&1; then
 	curl -L "$url_tarball" | tar xzv
-	mv -fv "$HOME/dotfiles-master" "$DOTFILES_LOC"
+	mv -f "$HOME/dotfiles-master" "$DOTFILES_LOC"
 elif type wget > /dev/null 2>&1; then
 	wget -O - "$url_tarball" | tar xzv
-	mv -fv "$HOME/dotfiles-master" "$DOTFILES_LOC"
+	mv -f "$HOME/dotfiles-master" "$DOTFILES_LOC"
 else
 	printf 'ERROR: command git wget or curl not found.\n' >&2
 	exit 1

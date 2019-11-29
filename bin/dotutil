@@ -24,6 +24,7 @@ export LC_ALL PATH UNIX_STD
 
 # load and define functions
 . "$DOTFILES_LOC/lib/error_msg.sh"
+. "$DOTFILES_LOC/lib/list_files_with_dot.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -89,62 +90,37 @@ case "$# ${1:-}" in
     # put symbolic links of config files to the home directory
     # (no arguments)
 
-    # rename config files which has already existed in ~ and put symbolic links from "$DOTFILES_LOC" to ~
-    cd "$DOTFILES_LOC" || exit 1
-    printf '%s\n' * .* |
-      grep -v \
-        -e '^\.$' \
-        -e '^\.\.$' \
-        -e '^\.config$' \
-        -e '^\.git$' \
-        -e '^\.gitignore$' \
-        -e '^etc$' \
-        -e '^lib$' \
-        -e '^bin$' \
-        -e '^LICENSE$' \
-        -e '^README\.md$' |
+    [ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"  # make a directory ~/.config if it does not exist
+    {
+      cd "$DOTFILES_LOC" || exit 1;
+      list_files_with_dot;
+      list_files_with_dot .config/;
+    } |  # list up all config files
+      sort -k 1,1 |
+      join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_LOC/etc/dotutil/blacklist.txt" - |  # join blacklist to extract target config files
+      grep -e '^(null)' |
+      cut -d ':' -f 2 |  # get config files list
       sed -e "s%^%$HOME/%" |
-      xargs file |
-      sed -e 's/: */:/' |
-      sed -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
+      xargs file |  # check the file types in ~ which are the files whose name are same as config files in "$DOTFILES_LOC"
+      sed -e 's/: */:/' -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
       awk -F ':' '
         BEGIN { OFS = ":"; }
         match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ { print $1, $2; }
         match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") { print $1, $2; }
       ' |
       sort -t ':' -k 1,1 |
-      sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
-      sed -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
-
-    # rename config files which has already existed in ~/.config and put symbolic links from "$DOTFILES_LOC"/.config to ~/.config
-    [ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"  # make a directory ~/.config if it does not exist
-    cd "$DOTFILES_LOC/.config" || exit 1
-    printf '%s\n' * .* |
-      grep -v \
-        -e '^\.$' \
-        -e '^\.\.$' |
-      sed -e "s%^%$HOME/.config/%" |
-      xargs file |
-      sed -e 's/: */:/' |
-      sed -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
-      awk -F ':' '
-        BEGIN { OFS = ":"; }
-        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") && $3 !~ /cannot open/ { print $1, $2; }
-        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC/.config"'") { print $1, $2; }
-      ' |
-      sort -t ':' -k 1,1 |
-      sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' |
-      sed -e "s%^2__put_link__:$HOME/.config/\(.*\)\$%ln -fs $DOTFILES_LOC/.config/\1 $HOME/.config/\1%"
+      sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
     ;;
   '1 unlink')
     shift
     # remove symbolic links in the home directory
     # (no arguments)
 
-    # remove symbolic links at ~ and rename config files which are the original ones
-    cd "$HOME" || exit 1
-    printf '%s\n' "$HOME/"* "$HOME/".* |
-      xargs file |
+    {
+      list_files_with_dot "$HOME/";
+      list_files_with_dot "$HOME/.config/";
+    } |  # list up all files in ~ and ~/.config
+      xargs file |  # check the file types in ~ and ~/.config
       sed -e 's/: */:/' |
       awk -F ':' '
         BEGIN { OFS = ":"; }
@@ -152,22 +128,7 @@ case "$# ${1:-}" in
         $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
       ' |
       sort -t ':' -k 1,1 |
-      sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' |
-      sed -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
-
-    # remove symbolic links at ~/.config and rename config files which are the original ones
-    cd "$HOME/.config" || exit 1
-    printf '%s\n' "$HOME/.config/"* "$HOME/.config/".* |
-      xargs file |
-      sed -e 's/: */:/' |
-      awk -F ':' '
-        BEGIN { OFS = ":"; }
-        match($2, "symbolic link to '"$DOTFILES_LOC/.config"'") { print "1__del_link__", $1; }
-        $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
-      ' |
-      sort -t ':' -k 1,1 |
-      sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' |
-      sed -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
+      sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
     ;;
   '1 list')
     shift
@@ -183,7 +144,7 @@ case "$# ${1:-}" in
     # $1~: the name of apps to install
 
     for scriptname in "$@"; do
-      [ -r "$DOTFILES_LOC/etc/installer/$scriptname" ] || { printf 'ERROR\n'; continue; }
+      [ -r "$DOTFILES_LOC/etc/installer/$scriptname" ] || { error_msg "installer not found: $scriptname"; continue; }
       sh "$DOTFILES_LOC/etc/installer/$scriptname"
     done
     ;;
@@ -193,7 +154,7 @@ case "$# ${1:-}" in
     # $1~: the name of apps to uninstall
 
     for scriptname in "$@"; do
-      [ -r "$DOTFILES_LOC/etc/installer/$scriptname" ] || { printf 'ERROR\n'; continue; }
+      [ -r "$DOTFILES_LOC/etc/installer/$scriptname" ] || { error_msg "installer not found: $scriptname"; continue; }
       sh "$DOTFILES_LOC/etc/installer/$scriptname"  # (!todo!) implement an option to run as a uninstaller
     done
     ;;
