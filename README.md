@@ -11,10 +11,10 @@ It means that the main goal is to make configs and utils which have high sustain
 
 You can download this repository in your home directory by commands below.
 ```
-curl -L raw.githubusercontent.com/raptowl/dotfiles/master/etc/install.sh | sh
+curl -L raw.githubusercontent.com/raptowl/dotfiles/master/etc/setup.sh | sh
 ```
 or
 ```
-wget -O - raw.githubusercontent.com/raptowl/dotfiles/master/etc/install.sh | sh
+wget -O - raw.githubusercontent.com/raptowl/dotfiles/master/etc/setup.sh | sh
 ```
 
