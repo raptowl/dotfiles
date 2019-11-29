@@ -204,7 +204,7 @@ case "$# ${1:-}" in
     shift
     # make a new function file from templates
     # $1: (optional) the path of a new sh file
-    cp -f "$DOTFILES_LOC/etc/template/function.sh" "${1:-./}"
+    cp -f "$DOTFILES_LOC/etc/template/libfunc.sh" "${1:-./}"
     ;;
   '1 withdraw')
     shift
