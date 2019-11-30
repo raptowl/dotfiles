@@ -23,6 +23,7 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
+. "$DOTFILES_LOC/lib/check_dir_empty.sh"
 . "$DOTFILES_LOC/lib/error_msg.sh"
 . "$DOTFILES_LOC/lib/list_files.sh"
 . "$DOTFILES_LOC/lib/list_files_with_dot.sh"
@@ -92,10 +93,11 @@ case "$# ${1:-}" in
     # (no arguments)
 
     [ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"  # make a directory ~/.config if it does not exist
+
     {
-      cd "$DOTFILES_LOC" || exit 1;
-      list_files_with_dot;
-      list_files_with_dot .config/;
+      cd "$DOTFILES_LOC" || exit 1
+      list_files_with_dot
+      list_files_with_dot .config/
     } |  # list up all config files
       sort -k 1,1 |
       join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_LOC/etc/dotutil/blacklist.txt" - |  # join blacklist to extract target config files
@@ -118,8 +120,8 @@ case "$# ${1:-}" in
     # (no arguments)
 
     {
-      list_files_with_dot "$HOME/";
-      list_files_with_dot "$HOME/.config/";
+      list_files_with_dot "$HOME/"
+      list_files_with_dot "$HOME/.config/"
     } |  # list up all files in ~ and ~/.config
       xargs file |  # check the file types in ~ and ~/.config
       sed -e 's/: */:/' |
@@ -130,6 +132,8 @@ case "$# ${1:-}" in
       ' |
       sort -t ':' -k 1,1 |
       sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
+
+      [ -d "$HOME/.config" ] && check_dir_empty "$HOME/.config/" && rmdir "$HOME/.config"  # remove ~/.config if it is empty
     ;;
   '1 list')
     shift
