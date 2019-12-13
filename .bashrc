@@ -31,6 +31,7 @@ GIT_PS1_SHOWSTASHSTATE=1
 GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWUPSTREAM='auto'
 GIT_PS1_STATESEPARATOR=':'
+[ -r "$HOME/usr/local/conda_init" ] && . "$HOME/usr/local/conda_init"  # conda_init
 
 # load local settings
 [ -r "$HOME/usr/local/bashrc" ] && . "$HOME/usr/local/bashrc"
