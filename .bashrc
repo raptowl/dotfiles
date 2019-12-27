@@ -22,16 +22,20 @@ PS1='$(__exit_status=$?; printf "\[\033[31m\]\u\[\033[0m\] at \[\033[32m\]\H\[\0
 
 # load extra modules
 [ -r "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh" ] && . "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh"  # bash_completion
-[ -r "$HOME/usr/local/git-prompt.sh" ] && {
-  . "$HOME/usr/local/git-prompt.sh"  # git_prompt
+[ -r "$HOME/usr/local/git-prompt.sh" ] && {  # git_prompt
+  . "$HOME/usr/local/git-prompt.sh"
   PS1='$(__exit_status=$?; printf "\[\033[31m\]\u\[\033[0m\] at \[\033[32m\]\H\[\033[0m\] in \[\033[34m\]\w\[\033[0m\] %s\n" "$(__git_ps1 "on \[\033[33m\]%s\[\033[0m\]")"; [ -n "$SSH_TTY" ] && printf "\[\033[36m\][SSH]\[\033[0m\] "; printf "\[\033[35m\](\j)\[\033[0m\] "; [ $__exit_status -eq 0 ] && printf "\[\033[1;32m\]\$\[\033[0m\] " || printf "\[\033[1;31m\]\$\[\033[0m\] ")'
+  GIT_PS1_SHOWDIRTYSTATE=1
+  GIT_PS1_SHOWSTASHSTATE=1
+  GIT_PS1_SHOWUNTRACKEDFILES=1
+  GIT_PS1_SHOWUPSTREAM='auto'
+  GIT_PS1_STATESEPARATOR=':'
 }
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWSTASHSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWUPSTREAM='auto'
-GIT_PS1_STATESEPARATOR=':'
-[ -r "$HOME/usr/local/conda_init" ] && . "$HOME/usr/local/conda_init"  # conda_init
+[ -r "$HOME/usr/local/init_conda" ] && {  # init_conda
+  init_conda() {
+    . "$HOME/usr/local/init_conda"
+  }
+}
 
 # load local settings
 [ -r "$HOME/usr/local/bashrc" ] && . "$HOME/usr/local/bashrc"
