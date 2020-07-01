@@ -24,6 +24,9 @@ trap 'remove_tmproot' 1 2 3 15
 # make a temporary root directory
 [ ! -d "$path_tmproot" ] && mkdir -p "$path_tmproot"
 
+# make a directory which indicates "$path_fonts_to_set" to install fonts, and change 
+[ ! -d "$path_fonts_to_set" ] && mkdir -p "$path_fonts_to_set"
+
 # change the working directory to the temporary root directory
 cd "$path_tmproot" || exit
 
@@ -46,9 +49,6 @@ else
   printf 'ERROR: command git, wget or curl not found.\n' >&2
   exit 1
 fi
-
-# make a directory which indicates "$path_fonts_to_set" to install fonts, and change 
-[ ! -d "$path_fonts_to_set" ] && mkdir -p "$path_fonts_to_set"
 
 # remove tmporary directory
 remove_tmproot
