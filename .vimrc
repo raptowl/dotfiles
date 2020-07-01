@@ -47,11 +47,11 @@ set shiftwidth=4
 if has("autocmd")
     filetype plugin on
     filetype indent on
-    autocmd FileType css setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
-    autocmd FileType html setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
+    autocmd FileType css  setlocal expandtab   tabstop=2 softtabstop=0 shiftwidth=2
+    autocmd FileType html setlocal expandtab   tabstop=2 softtabstop=0 shiftwidth=2
     autocmd FileType make setlocal noexpandtab tabstop=2 softtabstop=0 shiftwidth=2
-    autocmd FileType sh setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
-    autocmd FileType yaml setlocal expandtab tabstop=2 softtabstop=0 shiftwidth=2
+    autocmd FileType sh   setlocal expandtab   tabstop=2 softtabstop=0 shiftwidth=2
+    autocmd FileType yaml setlocal expandtab   tabstop=2 softtabstop=0 shiftwidth=2
 endif
 
 " colors
