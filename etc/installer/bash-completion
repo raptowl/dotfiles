@@ -43,16 +43,17 @@ cd "$path_tmproot" || exit 1
 if type git >/dev/null 2>&1; then
   git clone "$url_gitrepo" "$path_tmproot/bash-completion-master"
 elif type curl >/dev/null 2>&1; then
-  curl -L "$url_tarball" |
-    tar xvz
+  curl -L "$url_tarball" \
+    | tar xvz
 elif type wget >/dev/null 2>&1; then
-  wget -O - "$url_tarball" |
-    tar xvz
+  wget -O - "$url_tarball" \
+    | tar xvz
 else
   printf 'ERROR: command git, curl or wget not found.\n' >&2
   exit 1
-fi &&
-cd "$path_tmproot/bash-completion-master" || exit 1
+fi \
+  && cd "$path_tmproot/bash-completion-master" || exit 1
+
 autoreconf -i
 ./configure --prefix="$HOME/usr/local/bash-completion"
 make

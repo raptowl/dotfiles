@@ -64,18 +64,22 @@ while :; do
   esac
 done
 
-[ $# -ne 1 ] && { error_msg 'invalid arguments'; exit 1; }
+if [ $# -ne 1 ]; then
+  error_msg 'invalid arguments'
+  exit 1
+fi
 
 ################################################################
 # main routine
 ################################################################
 
-printf '%s\n' "$PATH" |
-  tr ':' '\n' |
-  sed -e 's%$%/'"$1"'%' |
-  xargs file |
-  sed -e 's%:  *%:%' |
-  awk -F ':' '! match($2, "cannot open.*") { print $1; }' |
-  grep -e '^' || exit 1
+printf '%s\n' "$PATH" \
+  | tr ':' '\n' \
+  | sed -e 's%$%/'"$1"'%' \
+  | xargs file \
+  | sed -e 's%:  *%:%' \
+  | awk -F ':' '! match($2, "cannot open.*") { print $1; }' \
+  | grep -e '^' \
+  || exit 1
 
 exit 0

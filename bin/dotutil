@@ -92,27 +92,30 @@ case "$# ${1:-}" in
     # put symbolic links of config files to the home directory
     # (no arguments)
 
-    [ ! -d "$HOME/.config" ] && mkdir -p "$HOME/.config"  # make a directory ~/.config if it does not exist
+    if [ ! -d "$HOME/.config" ]; then
+      mkdir -p "$HOME/.config"
+    fi
 
     {
-      cd "$DOTFILES_LOC" || exit 1
+      cd "$DOTFILES_LOC" \
+        || exit 1
       list_files_with_dot
       list_files_with_dot .config/
-    } |  # list up all config files
-      sort -k 1,1 |
-      join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_LOC/etc/dotutil/blacklist.txt" - |  # join blacklist to extract target config files
-      grep -e '^(null)' |
-      cut -d ':' -f 2 |  # get config files list
-      sed -e "s%^%$HOME/%" |
-      xargs file |  # check the file types in ~ which are the files whose name are same as config files in "$DOTFILES_LOC"
-      sed -e 's/: */:/' -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' |
-      awk -F ':' '
-        BEGIN { OFS = ":"; }
-        match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ { print $1, $2; }
-        match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") { print $1, $2; }
-      ' |
-      sort -t ':' -k 1,1 |
-      sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
+    } \
+      | sort -k 1,1 \
+      | join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_LOC/etc/dotutil/blacklist.txt" - \
+      | grep -e '^(null)' \
+      | cut -d ':' -f 2 \
+      | sed -e "s%^%$HOME/%" \
+      | xargs file \
+      | sed -e 's/: */:/' -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' \
+      | awk -F ':' '
+          BEGIN { OFS = ":"; }
+          match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ { print $1, $2; }
+          match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") { print $1, $2; }
+      ' \
+      | sort -t ':' -k 1,1 \
+      | sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
     ;;
   '1 unlink')
     shift
@@ -122,25 +125,29 @@ case "$# ${1:-}" in
     {
       list_files_with_dot "$HOME/"
       list_files_with_dot "$HOME/.config/"
-    } |  # list up all files in ~ and ~/.config
-      xargs file |  # check the file types in ~ and ~/.config
-      sed -e 's/: */:/' |
-      awk -F ':' '
-        BEGIN { OFS = ":"; }
-        match($2, "symbolic link to '"$DOTFILES_LOC"'") { print "1__del_link__", $1; }
-        $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
-      ' |
-      sort -t ':' -k 1,1 |
-      sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
+    } \
+      | xargs file \
+      | sed -e 's/: */:/' \
+      | awk -F ':' '
+          BEGIN { OFS = ":"; }
+          match($2, "symbolic link to '"$DOTFILES_LOC"'") { print "1__del_link__", $1; }
+          $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
+      ' \
+      | sort -t ':' -k 1,1 \
+      | sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
 
-      [ -d "$HOME/.config" ] && check_dir_empty "$HOME/.config/" && rmdir "$HOME/.config"  # remove ~/.config if it is empty
+      if [ -d "$HOME/.config" ]; then
+        check_dir_empty "$HOME/.config/" \
+          && rmdir "$HOME/.config"
+      fi
     ;;
   '1 list')
     shift
     # list up app installers which are available
     # (no arguments)
 
-    cd "$DOTFILES_LOC/etc/installer" || exit 1
+    cd "$DOTFILES_LOC/etc/installer" \
+      || exit 1
     list_files
     ;;
   [!1]' install')
@@ -149,7 +156,10 @@ case "$# ${1:-}" in
     # $1~: the name of apps to install
 
     for scriptname in "$@"; do
-      [ -r "$DOTFILES_LOC/etc/installer/$scriptname" ] || { error_msg "installer not found: $scriptname"; continue; }
+      if [ ! -r "$DOTFILES_LOC/etc/installer/$scriptname" ]; then
+        error_msg "installer not found: $scriptname"
+        continue
+      fi
       sh "$DOTFILES_LOC/etc/installer/$scriptname"
     done
     ;;
@@ -159,8 +169,12 @@ case "$# ${1:-}" in
     # $1~: the name of apps to uninstall
 
     for scriptname in "$@"; do
-      [ -r "$DOTFILES_LOC/etc/installer/$scriptname" ] || { error_msg "installer not found: $scriptname"; continue; }
-      sh "$DOTFILES_LOC/etc/installer/$scriptname"  # (!todo!) implement an option to run as a uninstaller
+      if [ ! -r "$DOTFILES_LOC/etc/installer/$scriptname" ]; then
+        error_msg "installer not found: $scriptname"
+        continue
+      fi
+      # TODO: implement an option to run as a uninstaller
+      sh "$DOTFILES_LOC/etc/installer/$scriptname"
     done
     ;;
   '2 newsh')
@@ -168,7 +182,8 @@ case "$# ${1:-}" in
     # make a new command file from templates
     # $1: the path of a new sh file
 
-    cp -f "$DOTFILES_LOC/etc/template/command.sh" "$1" || exit 1
+    cp -f "$DOTFILES_LOC/etc/template/command.sh" "$1" \
+      || exit 1
     ;;
   '2 newfunc')
     shift

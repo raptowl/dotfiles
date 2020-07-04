@@ -1,5 +1,3 @@
-#!/bin/sh
-
 ################################################################
 #
 # get_scriptpath.sh
@@ -12,8 +10,11 @@
 # (no arguments)
 get_scriptpath() {
   l_scriptpath="${0%/*}/"
-  [ "_$l_scriptpath" = "_$0/" ] && l_scriptpath='./'
-  cd "$l_scriptpath" || exit 1
+  if [ "_$l_scriptpath" = "_$0/" ]; then
+    l_scriptpath='./'
+  fi
+  cd "$l_scriptpath" \
+    || exit 1
   pwd
 
   unset -v l_scriptpath

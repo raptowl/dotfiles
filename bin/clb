@@ -78,7 +78,10 @@ while :; do
   esac
 done
 
-[ $# -gt 2 ] && { error_msg 'invalid arguments'; exit 1; }
+if [ $# -gt 2 ]; then
+  error_msg 'invalid arguments'
+  exit 1
+fi
 
 ################################################################
 # main routine
@@ -106,18 +109,24 @@ fi
 case "${1:-} ${2:-}" in
   'input '|'input -')
     eval "$cmd_input"
-    [ -n "${opt_writestdout:-}" ] && eval "$cmd_output"
+    if [ -n "${opt_writestdout:-}" ]; then
+      eval "$cmd_output"
+    fi
     ;;
   'input '*)
     eval "$cmd_input" < "$2"
-    [ -n "${opt_writestdout:-}" ] && eval "$cmd_output"
+    if [ -n "${opt_writestdout:-}" ]; then
+      eval "$cmd_output"
+    fi
     ;;
   'output ')
     eval "$cmd_output"
     ;;
   'output '*)
     eval "$cmd_output" > "$2"
-    [ -n "${opt_writestdout:-}" ] && eval "$cmd_output"
+    if [ -n "${opt_writestdout:-}" ]; then
+      eval "$cmd_output"
+    fi
     ;;
   'clear ')
     eval "$cmd_clear"

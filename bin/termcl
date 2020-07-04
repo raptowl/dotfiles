@@ -65,7 +65,10 @@ while :; do
   esac
 done
 
-[ $# -ne 0 ] && { error_msg 'invalid arguments'; exit 1; }
+if [ $# -ne 0 ]; then
+  error_msg 'invalid arguments'
+  exit 1
+fi
 
 ################################################################
 # main routine

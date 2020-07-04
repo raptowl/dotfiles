@@ -14,7 +14,9 @@ url_fontarch='https://ipafont.ipa.go.jp/IPAexfont/IPAexfont00401.zip'
 
 # remove tmporary directory
 remove_tmproot() {
-  [ -d "$path_tmproot" ] && rm -rf "$path_tmproot"
+  if [ -d "$path_tmproot" ]; then
+    rm -rf "$path_tmproot"
+  fi
 }
 trap 'remove_tmproot' 1 2 3 15
 
@@ -25,29 +27,28 @@ if ! type unzip >/dev/null 2>&1; then
 fi
 
 # make a temporary root directory
-[ ! -d "$path_tmproot" ] && mkdir -p "$path_tmproot"
+if [ ! -d "$path_tmproot" ]; then
+  mkdir -p "$path_tmproot"
+fi
 
 # make a directory which indicates "$path_fonts_to_set" to install fonts, and change 
-[ ! -d "$path_fonts_to_set" ] && mkdir -p "$path_fonts_to_set"
+if [ ! -d "$path_fonts_to_set" ]; then
+  mkdir -p "$path_fonts_to_set"
+fi
 
 # change the working directory to the temporary root directory
-cd "$path_tmproot" || exit
+cd "$path_tmproot" || exit 1
 
 if type curl >/dev/null 2>&1; then
-# if command 'curl' is installed, download the archive of 'ipaex' using 'curl'
   curl -L "$url_fontarch" >'./archives.zip'
-  unzip './archives.zip'
-  mv -fv './IPAexfont00401/'*'.ttf' "$path_fonts_to_set"
 elif type wget >/dev/null 2>&1; then
-# if command 'wget' is installed, download the archive of 'ipaex' using 'wget'
   wget -O - "$url_fontarch" >'./archives.zip'
-  unzip './archives.zip'
-  mv -fv './IPAexfont00401/'*'.ttf' "$path_fonts_to_set"
 else
-# if any commands is not installed, output error message and exit
   printf 'ERROR: command git, wget or curl not found.\n' >&2
   exit 1
-fi
+fi \
+  && unzip './archives.zip' \
+  && mv -fv './IPAexfont00401/'*'.ttf' "$path_fonts_to_set"
 
 # remove tmporary directory
 remove_tmproot

@@ -26,15 +26,14 @@ fi
 mkdir -p "$path_tmproot"
 cd "$path_tmproot" || exit 1
 if type curl >/dev/null 2>&1; then
-  wget -O - "$url_installer" >"$path_tmproot/installer.sh" &&
-  sh "$path_tmproot/installer.sh" --prefix="$HOME/usr/shellshoccar" install
+  curl -L "$url_installer" >"$path_tmproot/installer.sh"
 elif type wget >/dev/null 2>&1; then
-  curl -L "$url_installer" >"$path_tmproot/installer.sh" &&
-  sh "$path_tmproot/installer.sh" --prefix="$HOME/usr/shellshoccar" install
+  wget -O - "$url_installer" >"$path_tmproot/installer.sh"
 else
   printf 'ERROR: command curl or wget not found.\n' >&2
   exit 1
-fi
+fi \
+  && sh "$path_tmproot/installer.sh" --prefix="$HOME/usr/shellshoccar" install
 
 # remove the temporary directory
 remove_tmproot
