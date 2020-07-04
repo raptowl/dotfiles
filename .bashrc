@@ -18,13 +18,13 @@ else
 fi
 
 # set prompt
-PS1='$(__exit_status=$?; printf "\[\033[31m\]\u\[\033[0m\] at \[\033[32m\]\H\[\033[0m\] in \[\033[34m\]\w\[\033[0m\]\n"; [ -n "$SSH_TTY" ] && printf "\[\033[36m\][SSH]\[\033[0m\] "; printf "\[\033[35m\](\j)\[\033[0m\] "; [ $__exit_status -eq 0 ] && printf "\[\033[1;32m\]\$\[\033[0m\] " || printf "\[\033[1;31m\]\$\[\033[0m\] ")'
+PS1='$(__exit_status=$?; if [ -n "$SSH_TTY" ]; then printf "%s " "\[\033[36m\][SSH]\[\033[0m\]"; fi; printf "%s " "\[\033[34m\]\w\[\033[0m\]"; if [ $__exit_status -eq 0 ]; then printf "%s " "\[\033[1;32m\]\$\[\033[0m\]"; else printf "%s " "\[\033[1;31m\]\$\[\033[0m\]"; fi)'
 
 # load extra modules
 [ -r "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh" ] && . "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh"  # bash_completion
 [ -r "$HOME/usr/local/git-prompt.sh" ] && {  # git_prompt
   . "$HOME/usr/local/git-prompt.sh"
-  PS1='$(__exit_status=$?; printf "\[\033[31m\]\u\[\033[0m\] at \[\033[32m\]\H\[\033[0m\] in \[\033[34m\]\w\[\033[0m\] %s\n" "$(__git_ps1 "on \[\033[33m\]%s\[\033[0m\]")"; [ -n "$SSH_TTY" ] && printf "\[\033[36m\][SSH]\[\033[0m\] "; printf "\[\033[35m\](\j)\[\033[0m\] "; [ $__exit_status -eq 0 ] && printf "\[\033[1;32m\]\$\[\033[0m\] " || printf "\[\033[1;31m\]\$\[\033[0m\] ")'
+  PS1='$(__exit_status=$?; if [ -n "$SSH_TTY" ]; then printf "%s " "\[\033[36m\][SSH]\[\033[0m\]"; fi; printf "%s" "$(__git_ps1 "\[\033[35m\](%s)\[\033[0m\] ")"; printf "%s " "\[\033[34m\]\w\[\033[0m\]"; if [ $__exit_status -eq 0 ]; then printf "%s " "\[\033[1;32m\]\$\[\033[0m\]"; else printf "%s " "\[\033[1;31m\]\$\[\033[0m\]"; fi)'
   GIT_PS1_SHOWDIRTYSTATE=1
   GIT_PS1_SHOWSTASHSTATE=1
   GIT_PS1_SHOWUNTRACKEDFILES=1
