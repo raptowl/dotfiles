@@ -12,6 +12,6 @@
 ################################
 logging_info() {
   printf '%s %s: %s\n' \
-         "$(color_term -b blue none ""[INFO]"")" "${0##*/}" "$1" >&2
+         "$(color_term -b blue none '[INFO]')" "${0##*/}" "$1" >&2
   return 0
 }

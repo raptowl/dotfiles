@@ -14,6 +14,7 @@ list_files() {
   l_dir=$(printf '%s' "${1:-.}" \
             | sed -e 's%/$%%')
   if [ ! -d "$l_dir" ]; then
+    unset l_dir
     return 1
   fi
   printf '%s\n' "$l_dir/"*

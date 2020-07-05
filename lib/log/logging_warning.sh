@@ -12,6 +12,6 @@
 ################################
 logging_warning() {
   printf '%s %s: %s\n' \
-         "$(color_term -b yellow none ""[WARNING]"")" "${0##*/}" "$1" >&2
+         "$(color_term -b yellow none '[WARNING]')" "${0##*/}" "$1" >&2
   return 0
 }

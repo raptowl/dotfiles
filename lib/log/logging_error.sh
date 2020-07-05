@@ -12,6 +12,6 @@
 ################################
 logging_error() {
   printf '%s %s: %s\n' \
-         "$(color_term -b red none ""[ERROR]"")" "${0##*/}" "$1" >&2
+         "$(color_term -b red none '[ERROR]')" "${0##*/}" "$1" >&2
   return 0
 }

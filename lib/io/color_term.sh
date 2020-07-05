@@ -26,6 +26,7 @@ color_term() {
     shift 1
   done
   if [ $# -ne 3 ]; then
+    unset l_prefix
     return 1
   fi
 
