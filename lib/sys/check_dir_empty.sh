@@ -20,7 +20,7 @@ check_dir_empty() {
   fi
 
   {
-    list_files_with_hidden "$l_dir";
+    list_files_with_hidden "$l_dir"
     unset l_dir
   } \
     | grep -e '^' > /dev/null 2>&1 \
