@@ -1,17 +1,15 @@
-#!/bin/sh
-
-################################################################
-#
-# libfunc.sh
-#   - short description here
-#
-# written by name on 20xx/xx/xx
-#
-################################################################
-
-# (no arguments)
-# -- or --
-# $1: short description here
+#. "$DOTFILES_LOC/lib/log/logging_error.sh"
+################################
+# Short description here
+# Globals:
+#   None
+# Arguments:
+#   None
+# Outputs:
+#   None
+# Returns:
+#   None
+################################
 libfunc() {
   :
 }

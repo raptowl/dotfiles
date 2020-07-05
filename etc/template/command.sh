@@ -1,13 +1,8 @@
 #!/bin/sh
-
-################################################################
-#
-# command.sh
-#   - short description here
-#
-# written by name on 20xx/xx/xx
-#
-################################################################
+# >> parse_and_print_usage[description]
+# Short description here ...
+# ...
+# << parse_and_print_usage[description]
 
 ################################################################
 # preprocessing
@@ -23,22 +18,10 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-#. "$DOTFILES_LOC/lib/xxx.sh"
-
-usage() {
-  cat <<_EOT_ >&2
-Usage: ${0##*/} [-h | --help] [<args>]
-
-short description of this command here.
-
-option:
-  -h | --help: print out the usage to stderr
-_EOT_
-  exit 1
-}
+#. "$DOTFILES_LOC/lib/io/logging_error.sh"
 
 # catch signals
-#trap '' 1 2 3 15
+#trap '' HUP INT QUIT TERM
 
 ################################################################
 # argument parsing
@@ -47,7 +30,8 @@ _EOT_
 # print the usage and exit
 case "$# ${1:-}" in
   '1 -h'|'1 --help')
-    usage
+    #parse_and_print_usage
+    :
     ;;
 esac
 

@@ -21,7 +21,7 @@ UNIX_STD=2003
 export LC_ALL UNIX_STD
 
 # load and define functions
-. "$DOTFILES_LOC/lib/error_msg.sh"
+. "$DOTFILES_LOC/lib/log/logging_error.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -55,7 +55,7 @@ while :; do
       break
       ;;
     -*)
-      error_msg "invalid option: $1"
+      logging_error "invalid option: $1"
       exit 1
       ;;
     *)
@@ -65,7 +65,7 @@ while :; do
 done
 
 if [ $# -ne 1 ]; then
-  error_msg 'invalid arguments'
+  logging_error 'invalid arguments'
   exit 1
 fi
 

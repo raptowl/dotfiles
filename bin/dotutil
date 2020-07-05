@@ -23,10 +23,10 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-. "$DOTFILES_LOC/lib/check_dir_empty.sh"
-. "$DOTFILES_LOC/lib/error_msg.sh"
-. "$DOTFILES_LOC/lib/list_files.sh"
-. "$DOTFILES_LOC/lib/list_files_with_dot.sh"
+. "$DOTFILES_LOC/lib/log/logging_error.sh"
+. "$DOTFILES_LOC/lib/sys/check_dir_empty.sh"
+. "$DOTFILES_LOC/lib/sys/list_files.sh"
+. "$DOTFILES_LOC/lib/sys/list_files_with_hidden.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -72,7 +72,7 @@ while :; do
       break
       ;;
     -*)
-      error_msg "invalid option: $1"
+      logging_error "invalid option: $1"
       exit 1
       ;;
     *)
@@ -99,8 +99,9 @@ case "$# ${1:-}" in
     {
       cd "$DOTFILES_LOC" \
         || exit 1
-      list_files_with_dot
-      list_files_with_dot .config/
+      list_files_with_hidden . \
+        | sed -e 's%^\./%%'
+      list_files_with_hidden .config
     } \
       | sort -k 1,1 \
       | join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_LOC/etc/dotutil/blacklist.txt" - \
@@ -123,8 +124,8 @@ case "$# ${1:-}" in
     # (no arguments)
 
     {
-      list_files_with_dot "$HOME/"
-      list_files_with_dot "$HOME/.config/"
+      list_files_with_hidden "$HOME"
+      list_files_with_hidden "$HOME/.config"
     } \
       | xargs file \
       | sed -e 's/: */:/' \
@@ -137,8 +138,9 @@ case "$# ${1:-}" in
       | sed -e 's/^1__del_link__:\(.*\)$/rm -f \1/' -e 's/^2__rename_dotold__:\(.*\)\.dotold$/mv -f \1.dotold \1/'
 
       if [ -d "$HOME/.config" ]; then
-        check_dir_empty "$HOME/.config/" \
-          && rmdir "$HOME/.config"
+        if check_dir_empty "$HOME/.config"; then
+          rmdir "$HOME/.config"
+        fi
       fi
     ;;
   '1 list')
@@ -148,7 +150,8 @@ case "$# ${1:-}" in
 
     cd "$DOTFILES_LOC/etc/installer" \
       || exit 1
-    list_files
+    list_files . \
+      | sed -e 's%^\./%%'
     ;;
   [!1]' install')
     shift
@@ -157,7 +160,7 @@ case "$# ${1:-}" in
 
     for scriptname in "$@"; do
       if [ ! -r "$DOTFILES_LOC/etc/installer/$scriptname" ]; then
-        error_msg "installer not found: $scriptname"
+        logging_error "installer not found: $scriptname"
         continue
       fi
       sh "$DOTFILES_LOC/etc/installer/$scriptname"
@@ -170,7 +173,7 @@ case "$# ${1:-}" in
 
     for scriptname in "$@"; do
       if [ ! -r "$DOTFILES_LOC/etc/installer/$scriptname" ]; then
-        error_msg "installer not found: $scriptname"
+        logging_error "installer not found: $scriptname"
         continue
       fi
       # TODO: implement an option to run as a uninstaller
@@ -198,7 +201,7 @@ case "$# ${1:-}" in
     # (no arguments)
     ;;
   *)
-    error_msg "invalid operation or the number of arguments: $*"
+    logging_error "invalid operation or the number of arguments: $*"
     exit 1
     ;;
 esac
