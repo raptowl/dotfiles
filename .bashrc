@@ -1,5 +1,7 @@
 # load default settings
-[ -r "$HOME/.bashrc.dotold" ] && . "$HOME/.bashrc.dotold"
+if [ -r "$HOME/.bashrc.dotold" ]; then
+  . "$HOME/.bashrc.dotold"
+fi
 
 # set aliases
 alias ..='\cd ..'
@@ -21,8 +23,11 @@ fi
 PS1='$(__exit_status=$?; if [ -n "$SSH_TTY" ]; then printf "%s " "\[\033[36m\][SSH]\[\033[0m\]"; fi; printf "%s " "\[\033[34m\]\w\[\033[0m\]"; if [ $__exit_status -eq 0 ]; then printf "%s " "\[\033[1;32m\]\$\[\033[0m\]"; else printf "%s " "\[\033[1;31m\]\$\[\033[0m\]"; fi)'
 
 # load extra modules
-[ -r "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh" ] && . "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh"  # bash_completion
-[ -r "$HOME/usr/local/git-prompt.sh" ] && {  # git_prompt
+if [ -r "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh" ]; then
+  . "$HOME/usr/local/bash-completion/etc/profile.d/bash_completion.sh"
+fi
+
+if [ -r "$HOME/usr/local/git-prompt.sh" ]; then
   . "$HOME/usr/local/git-prompt.sh"
   PS1='$(__exit_status=$?; if [ -n "$SSH_TTY" ]; then printf "%s " "\[\033[36m\][SSH]\[\033[0m\]"; fi; printf "%s" "$(__git_ps1 "\[\033[35m\](%s)\[\033[0m\] ")"; printf "%s " "\[\033[34m\]\w\[\033[0m\]"; if [ $__exit_status -eq 0 ]; then printf "%s " "\[\033[1;32m\]\$\[\033[0m\]"; else printf "%s " "\[\033[1;31m\]\$\[\033[0m\]"; fi)'
   GIT_PS1_SHOWDIRTYSTATE=1
@@ -30,12 +35,15 @@ PS1='$(__exit_status=$?; if [ -n "$SSH_TTY" ]; then printf "%s " "\[\033[36m\][S
   GIT_PS1_SHOWUNTRACKEDFILES=1
   GIT_PS1_SHOWUPSTREAM='auto'
   GIT_PS1_STATESEPARATOR=':'
-}
-[ -r "$HOME/usr/local/init_conda" ] && {  # init_conda
+fi
+
+if [ -r "$HOME/usr/local/init_conda" ]; then
   init_conda() {
     . "$HOME/usr/local/init_conda"
   }
-}
+fi
 
 # load local settings
-[ -r "$HOME/usr/local/bashrc" ] && . "$HOME/usr/local/bashrc"
+if [ -r "$HOME/usr/local/bashrc" ]; then
+  . "$HOME/usr/local/bashrc"
+fi
