@@ -1,4 +1,4 @@
-#. "$DOTFILES_LOC/lib/log/logging_error.sh"
+#. "$DOTFILES_DIR/lib/log/logging_error.sh"
 ################################
 # Short description here
 # Globals:

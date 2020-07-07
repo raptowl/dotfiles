@@ -1,4 +1,4 @@
-. "$DOTFILES_LOC/lib/io/color_term.sh"
+. "$DOTFILES_DIR/lib/io/color_term.sh"
 ################################
 # Output warning log message
 # Globals:

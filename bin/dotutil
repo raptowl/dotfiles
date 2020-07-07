@@ -23,10 +23,10 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-. "$DOTFILES_LOC/lib/log/logging_error.sh"
-. "$DOTFILES_LOC/lib/sys/check_dir_empty.sh"
-. "$DOTFILES_LOC/lib/sys/list_files.sh"
-. "$DOTFILES_LOC/lib/sys/list_files_with_hidden.sh"
+. "$DOTFILES_DIR/lib/log/logging_error.sh"
+. "$DOTFILES_DIR/lib/sys/check_dir_empty.sh"
+. "$DOTFILES_DIR/lib/sys/list_files.sh"
+. "$DOTFILES_DIR/lib/sys/list_files_with_hidden.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -97,14 +97,14 @@ case "$# ${1:-}" in
     fi
 
     {
-      cd "$DOTFILES_LOC" \
+      cd "$DOTFILES_DIR" \
         || exit 1
       list_files_with_hidden . \
         | sed -e 's%^\./%%'
       list_files_with_hidden .config
     } \
       | sort -k 1,1 \
-      | join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_LOC/etc/dotutil/blacklist.txt" - \
+      | join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_DIR/etc/dotutil/blacklist.txt" - \
       | grep -e '^(null)' \
       | cut -d ':' -f 2 \
       | sed -e "s%^%$HOME/%" \
@@ -112,11 +112,11 @@ case "$# ${1:-}" in
       | sed -e 's/: */:/' -e 's/^.*$/1__rename_dotold__:&\n2__put_link__:&/' \
       | awk -F ':' '
           BEGIN { OFS = ":"; }
-          match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") && $3 !~ /cannot open/ { print $1, $2; }
-          match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_LOC"'") { print $1, $2; }
+          match($1, "1__rename_dotold__") && ! match ($3, "symbolic link to '"$DOTFILES_DIR"'") && $3 !~ /cannot open/ { print $1, $2; }
+          match($1, "2__put_link__") && ! match ($3, "symbolic link to '"$DOTFILES_DIR"'") { print $1, $2; }
       ' \
       | sort -t ':' -k 1,1 \
-      | sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_LOC/\1 $HOME/\1%"
+      | sed -e 's/^1__rename_dotold__:\(.*\)$/mv -f \1 \1.dotold/' -e "s%^2__put_link__:$HOME/\(.*\)\$%ln -fs $DOTFILES_DIR/\1 $HOME/\1%"
     ;;
   '1 unlink')
     shift
@@ -131,7 +131,7 @@ case "$# ${1:-}" in
       | sed -e 's/: */:/' \
       | awk -F ':' '
           BEGIN { OFS = ":"; }
-          match($2, "symbolic link to '"$DOTFILES_LOC"'") { print "1__del_link__", $1; }
+          match($2, "symbolic link to '"$DOTFILES_DIR"'") { print "1__del_link__", $1; }
           $1 ~ /\.dotold$/ { print "2__rename_dotold__", $1; }
       ' \
       | sort -t ':' -k 1,1 \
@@ -148,7 +148,7 @@ case "$# ${1:-}" in
     # list up app installers which are available
     # (no arguments)
 
-    cd "$DOTFILES_LOC/etc/installer" \
+    cd "$DOTFILES_DIR/etc/installer" \
       || exit 1
     list_files . \
       | sed -e 's%^\./%%'
@@ -159,11 +159,11 @@ case "$# ${1:-}" in
     # $1~: the name of apps to install
 
     for scriptname in "$@"; do
-      if [ ! -r "$DOTFILES_LOC/etc/installer/$scriptname" ]; then
+      if [ ! -r "$DOTFILES_DIR/etc/installer/$scriptname" ]; then
         logging_error "installer not found: $scriptname"
         continue
       fi
-      sh "$DOTFILES_LOC/etc/installer/$scriptname"
+      sh "$DOTFILES_DIR/etc/installer/$scriptname"
     done
     ;;
   [!1]' uninstall')
@@ -172,12 +172,12 @@ case "$# ${1:-}" in
     # $1~: the name of apps to uninstall
 
     for scriptname in "$@"; do
-      if [ ! -r "$DOTFILES_LOC/etc/installer/$scriptname" ]; then
+      if [ ! -r "$DOTFILES_DIR/etc/installer/$scriptname" ]; then
         logging_error "installer not found: $scriptname"
         continue
       fi
       # TODO: implement an option to run as a uninstaller
-      sh "$DOTFILES_LOC/etc/installer/$scriptname"
+      sh "$DOTFILES_DIR/etc/installer/$scriptname"
     done
     ;;
   '2 newsh')
@@ -185,7 +185,7 @@ case "$# ${1:-}" in
     # make a new command file from templates
     # $1: the path of a new sh file
 
-    cp -f "$DOTFILES_LOC/etc/template/command.sh" "$1" \
+    cp -f "$DOTFILES_DIR/etc/template/command.sh" "$1" \
       || exit 1
     ;;
   '2 newfunc')
@@ -193,7 +193,7 @@ case "$# ${1:-}" in
     # make a new function file from templates
     # $1: (optional) the path of a new sh file
 
-    cp -f "$DOTFILES_LOC/etc/template/libfunc.sh" "${1:-./}"
+    cp -f "$DOTFILES_DIR/etc/template/libfunc.sh" "${1:-./}"
     ;;
   '1 withdraw')
     shift

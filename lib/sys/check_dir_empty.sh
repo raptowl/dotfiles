@@ -1,4 +1,4 @@
-. "$DOTFILES_LOC/lib/sys/list_files_with_hidden.sh"
+. "$DOTFILES_DIR/lib/sys/list_files_with_hidden.sh"
 ################################
 # Check the specified directory is empty
 # Globals:

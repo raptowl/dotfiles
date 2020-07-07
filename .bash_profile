@@ -12,8 +12,10 @@ unset l_path
 # set default access permissions
 umask 0022
 
-# set a environment variable "$DOTFILES_LOC"
-export DOTFILES_LOC="$HOME/.dotfiles"
+# set a environment variable "$DOTFILES_DIR"
+export DOTFILES_DIR=$(grep '^..*$' "$HOME/usr/local/dotfiles_dir" \
+                        | head -n 1 \
+                        | tr -d '\n')
 
 # set the other environment variables
 export LANG='ja_JP.UTF-8'
@@ -21,7 +23,7 @@ export INPUTRC="$HOME/.inputrc"
 if type vim > /dev/null 2>&1; then
   export EDITOR="vim"
 fi
-export PATH="$DOTFILES_LOC/bin:$PATH"
+export PATH="$DOTFILES_DIR/bin:$PATH"
 for l_path in "$HOME/usr/bin" \
               "$HOME/usr/shellshoccar/bin" \
               "$HOME/usr/kotoriotoko/BIN"; do

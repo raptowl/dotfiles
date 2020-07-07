@@ -18,7 +18,7 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-#. "$DOTFILES_LOC/lib/io/logging_error.sh"
+#. "$DOTFILES_DIR/lib/io/logging_error.sh"
 
 # catch signals
 #trap '' HUP INT QUIT TERM

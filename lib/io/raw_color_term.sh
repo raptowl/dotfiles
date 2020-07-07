@@ -1,7 +1,7 @@
-. "$DOTFILES_LOC/lib/io/_put_background_color.sh"
-. "$DOTFILES_LOC/lib/io/_put_bold_color.sh"
-. "$DOTFILES_LOC/lib/io/_put_foreground_color.sh"
-. "$DOTFILES_LOC/lib/io/_put_reset_color.sh"
+. "$DOTFILES_DIR/lib/io/_put_background_color.sh"
+. "$DOTFILES_DIR/lib/io/_put_bold_color.sh"
+. "$DOTFILES_DIR/lib/io/_put_foreground_color.sh"
+. "$DOTFILES_DIR/lib/io/_put_reset_color.sh"
 ################################
 # Print color text to console
 # Globals:
