@@ -23,10 +23,10 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-. "$DOTFILES_DIR/lib/log/logging_error.sh"
-. "$DOTFILES_DIR/lib/sys/check_dir_empty.sh"
-. "$DOTFILES_DIR/lib/sys/list_files.sh"
-. "$DOTFILES_DIR/lib/sys/list_files_with_hidden.sh"
+. "$DOTFILES_DIR/lib/logging_error.sh"
+. "$DOTFILES_DIR/lib/check_dir_empty.sh"
+. "$DOTFILES_DIR/lib/list_files.sh"
+. "$DOTFILES_DIR/lib/list_files_with_hidden.sh"
 
 usage() {
   cat <<_EOT_ >&2

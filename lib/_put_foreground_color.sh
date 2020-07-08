@@ -1,4 +1,4 @@
-. "$DOTFILES_DIR/lib/io/_get_color_number.sh"
+. "$DOTFILES_DIR/lib/_get_color_number.sh"
 ################################
 # Print ANSI escape sequence for foreground color
 # Globals:

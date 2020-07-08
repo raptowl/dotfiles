@@ -1,7 +1,7 @@
-. "$DOTFILES_DIR/lib/io/_put_background_color.sh"
-. "$DOTFILES_DIR/lib/io/_put_bold_color.sh"
-. "$DOTFILES_DIR/lib/io/_put_foreground_color.sh"
-. "$DOTFILES_DIR/lib/io/_put_reset_color.sh"
+. "$DOTFILES_DIR/lib/_put_background_color.sh"
+. "$DOTFILES_DIR/lib/_put_bold_color.sh"
+. "$DOTFILES_DIR/lib/_put_foreground_color.sh"
+. "$DOTFILES_DIR/lib/_put_reset_color.sh"
 ################################
 # Print color text to console
 # Globals:
@@ -17,11 +17,12 @@
 #   success, 0
 #   invalid specifier, 1
 ################################
-raw_color_term() {
+color_term() {
   l_prefix=''
-  while printf '%s' "$1" | grep '^-' > /dev/null 2>&1; do
-    case "$(printf '%s' "$1" | sed 's/-//')" in
-      b)  l_prefix="${l_prefix}""$(_put_bold_color)" ;;
+  while :; do
+    case "$1" in
+      -b) l_prefix="${l_prefix}""$(_put_bold_color)" ;;
+      * ) break ;;
     esac
     shift 1
   done
@@ -33,9 +34,8 @@ raw_color_term() {
   l_fore_color=$(_put_foreground_color "$1")
   l_back_color=$(_put_background_color "$2")
   l_body_text=$(printf '%s' "$3")
-  printf '%s' \
-         "${l_prefix}${l_fore_color}${l_back_color}${l_body_text}"\
-         "$(_put_reset_color)"
+  printf "${l_prefix}${l_fore_color}${l_back_color}"'%s'"$(_put_reset_color)" \
+         "$l_body_text"
 
   unset l_prefix l_fore_color l_back_color l_body_text
   return 0

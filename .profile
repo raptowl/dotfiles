@@ -7,9 +7,7 @@ export DOTFILES_DIR=$(grep '^..*$' "$HOME/usr/local/dotfiles_dir" \
 . "$DOTFILES_DIR/etc/bash_profile_base"
 
 # load configuration
-_load_bash_configuration "$HOME/.bash_profile.dotold" \
-                         "$HOME/.bash_login" \
-                         "$HOME/.profile.dotold"
+_load_bash_configuration "$HOME/.profile.dotold"
 
 # unset configure function
 unset -f _load_bash_configuration

@@ -1,6 +1,6 @@
-. "$DOTFILES_DIR/lib/io/color_term.sh"
+. "$DOTFILES_DIR/lib/color_term.sh"
 ################################
-# Output warning log message
+# Output information log message
 # Globals:
 #   None
 # Arguments:
@@ -10,8 +10,8 @@
 # Returns:
 #   success, 0
 ################################
-logging_warning() {
+logging_info() {
   printf '%s %s: %s\n' \
-         "$(color_term -b yellow none '[WARNING]')" "${0##*/}" "$1" >&2
+         "$(color_term -b blue none '[INFO]')" "${0##*/}" "$1" >&2
   return 0
 }
