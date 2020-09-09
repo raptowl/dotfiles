@@ -1,11 +1,14 @@
+source $VIMRUNTIME/defaults.vim  " load default settings
+
 " general
-scriptencoding utf-8
+scriptencoding utf-8  " the encoding of vimscript
 set ambiwidth=double
 set autoread
 set backspace=start,eol,indent
 set clipboard=unnamed,autoselect
 set cmdheight=2
 set confirm
+set cursorline
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8,ucs-boms,euc-jp,cp932
@@ -57,3 +60,7 @@ endif
 " colors
 syntax on
 colorscheme default
+set background=dark
+
+" Escを2回押すとハイライトを消す
+nnoremap <Esc><Esc> :nohlsearch<CR>

@@ -13,34 +13,44 @@ XTerm*marginBell: false
 XTerm*popOnBell: false
 XTerm*visualBell: false
 XTerm*cursorBlink: true
+
 ! Xterm-font
 XTerm*faceName: Inconsolata:style=Regular
 XTerm*faceNameDoublesize: Migu 1M:style=Regular
 XTerm*faceSize: 14
+
 ! Xterm-default_color
-XTerm*foreground: #d2d4de
 XTerm*background: #161821
+XTerm*foreground: #d2d4de
+
 ! Xterm-black
 XTerm*color0: #161821
 XTerm*color8: #6b7089
+
 ! Xterm-red
 XTerm*color1: #e27878
 XTerm*color9: #e98989
+
 ! Xterm-green
-XTerm*color2: #b4be82
+XTerm*color2:  #b4be82
 XTerm*color10: #c0ca8e
+
 ! Xterm-yellow
-XTerm*color3: #e2a478
+XTerm*color3:  #e2a478
 XTerm*color11: #e9b189
+
 ! Xterm-blue
-XTerm*color4: #84a0c6
+XTerm*color4:  #84a0c6
 XTerm*color12: #91acd1
+
 ! Xterm-magenta
-XTerm*color5: #a093c7
+XTerm*color5:  #a093c7
 XTerm*color13: #ada0d3
+
 ! Xterm-cyan
-XTerm*color6: #89b8c2
+XTerm*color6:  #89b8c2
 XTerm*color14: #95c4ce
+
 ! Xterm-white
-XTerm*color7: #c6c8d1
+XTerm*color7:  #c6c8d1
 XTerm*color15: #d2d4de
