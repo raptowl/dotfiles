@@ -1,0 +1,24 @@
+# general
+defutf8 on
+defencoding utf8
+encoding utf8 utf8
+startup_message off
+vbell off
+escape ^Tt
+term screen-256color
+hardstatus off
+hardstatus alwayslastline
+hardstatus string '%{= kG}[ %{G}%H %{g}][%= %{= kw}%?%-Lw%?%{r}(%{W}%n*%f%t%?(%u)%?%{r})%{w}%?%+Lw%?%?%= %{g}][%{B} %m-%d %{W} %c %{g}]'
+
+# key-bindings
+bind w command -c window
+bind -c window j focus down
+bind -c window k focus up
+bind -c window h focus left
+bind -c window l focus right
+
+bind x command -c sizectrl
+bind -c sizectrl j resize -v +1
+bind -c sizectrl k resize -v -1
+bind -c sizectrl h resize -h +1
+bind -c sizectrl l resize -h -1
