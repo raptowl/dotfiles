@@ -1,16 +1,14 @@
-################################
-# Get color number for terminal ANSI code
-# Globals:
-#   None
-# Arguments:
-#   color name, string
-# Outputs:
-#   color number, integer
-# Returns:
-#   success, 0
-#   invalid color name, 1
-################################
-_get_color_number() {
+get_color_number() {
+  # Get color number for terminal ANSI code
+  # Globals:
+  #   None
+  # Arguments:
+  #   color name, string
+  # Outputs:
+  #   color number, integer
+  # Returns:
+  #   success, 0
+  #   invalid color name, 1
   case "${1:-}" in
     black  )  printf '%d' '0' ;;
     red    )  printf '%d' '1' ;;
