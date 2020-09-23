@@ -26,7 +26,6 @@ export LC_ALL PATH UNIX_STD
 . "$DOTFILES_DIR/lib/logging_error.sh"
 . "$DOTFILES_DIR/lib/check_dir_empty.sh"
 . "$DOTFILES_DIR/lib/list_files.sh"
-. "$DOTFILES_DIR/lib/list_files_with_hidden.sh"
 
 usage() {
   cat <<_EOT_ >&2
@@ -99,9 +98,9 @@ case "$# ${1:-}" in
     {
       cd "$DOTFILES_DIR" \
         || exit 1
-      list_files_with_hidden . \
+      list_files -h . \
         | sed -e 's%^\./%%'
-      list_files_with_hidden .config
+      list_files -h .config
     } \
       | sort -k 1,1 \
       | join -a 2 -e '(null)' -o 1.1,2.1 -t ':' -1 1 -2 1 "$DOTFILES_DIR/etc/dotutil/blacklist.txt" - \
@@ -124,8 +123,8 @@ case "$# ${1:-}" in
     # (no arguments)
 
     {
-      list_files_with_hidden "$HOME"
-      list_files_with_hidden "$HOME/.config"
+      list_files -h "$HOME"
+      list_files -h "$HOME/.config"
     } \
       | xargs file \
       | sed -e 's/: */:/' \
