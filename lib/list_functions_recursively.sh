@@ -1,16 +1,14 @@
-################################
-# Output functions namelist recursively
-# Globals:
-#   None
-# Arguments:
-#   path to lib_function, a string
-# Outputs:
-#   lib_functions namelist
-# Returns:
-#   more than one hit, 0
-#   nothing hit, or file not found, 1
-################################
 list_functions_recursively() {
+  # Output functions namelist recursively
+  # Globals:
+  #   None
+  # Arguments:
+  #   path to lib_function, a string
+  # Outputs:
+  #   lib_functions namelist
+  # Returns:
+  #   more than one hit, 0
+  #   nothing hit, or file not found, 1
   l_path=$(eval printf '%s' "${1:-}")
   if [ ! -r "$l_path" ]; then
     unset l_path

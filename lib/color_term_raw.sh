@@ -3,7 +3,7 @@
 . "$DOTFILES_DIR/lib/put_foreground_color.sh"
 . "$DOTFILES_DIR/lib/put_reset_color.sh"
 color_term_raw() {
-  # Print color text to console
+  # Print color text to console by raw code
   # Globals:
   #   None
   # Arguments:
@@ -12,7 +12,7 @@ color_term_raw() {
   #   background color
   #   body text
   # Outputs:
-  #   colored string
+  #  string with raw color code
   # Returns:
   #   success, 0
   #   invalid specifier, 1
