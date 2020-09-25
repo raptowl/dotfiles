@@ -21,7 +21,7 @@ export LC_ALL PATH UNIX_STD
 
 
 # load and define functions
-#. "$DOTFILES_DIR/lib/logging_error.sh"
+#. "$DOTFILES_DIR/lib/log_error.sh"
 
 
 # catch signals

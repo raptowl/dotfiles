@@ -1,5 +1,5 @@
 . "$DOTFILES_DIR/lib/color_term.sh"
-logging_info() {
+log_info() {
   # Output information log message
   # Globals:
   #   None

@@ -1,4 +1,4 @@
-#. "$DOTFILES_DIR/lib/logging_error.sh"
+#. "$DOTFILES_DIR/lib/log_error.sh"
 libfunc() {
   # Short description here
   # Globals:

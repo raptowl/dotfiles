@@ -23,7 +23,7 @@ UNIX_STD=2003
 export LC_ALL PATH UNIX_STD
 
 # load and define functions
-. "$DOTFILES_DIR/lib/logging_error.sh"
+. "$DOTFILES_DIR/lib/log_error.sh"
 . "$DOTFILES_DIR/lib/check_dir_empty.sh"
 . "$DOTFILES_DIR/lib/list_files.sh"
 
@@ -71,7 +71,7 @@ while :; do
       break
       ;;
     -*)
-      logging_error "invalid option: $1"
+      log_error "invalid option: $1"
       exit 1
       ;;
     *)
@@ -159,7 +159,7 @@ case "$# ${1:-}" in
 
     for scriptname in "$@"; do
       if [ ! -r "$DOTFILES_DIR/etc/installer/$scriptname" ]; then
-        logging_error "installer not found: $scriptname"
+        log_error "installer not found: $scriptname"
         continue
       fi
       sh "$DOTFILES_DIR/etc/installer/$scriptname"
@@ -172,7 +172,7 @@ case "$# ${1:-}" in
 
     for scriptname in "$@"; do
       if [ ! -r "$DOTFILES_DIR/etc/installer/$scriptname" ]; then
-        logging_error "installer not found: $scriptname"
+        log_error "installer not found: $scriptname"
         continue
       fi
       # TODO: implement an option to run as a uninstaller
@@ -200,7 +200,7 @@ case "$# ${1:-}" in
     # (no arguments)
     ;;
   *)
-    logging_error "invalid operation or the number of arguments: $*"
+    log_error "invalid operation or the number of arguments: $*"
     exit 1
     ;;
 esac
