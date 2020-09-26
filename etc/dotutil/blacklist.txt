@@ -1,9 +1,0 @@
-.config
-.git
-.github
-.gitignore
-LICENSE
-README.md
-bin
-etc
-lib
