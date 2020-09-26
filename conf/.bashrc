@@ -50,8 +50,7 @@ set_envvars_common() {
   #   0
   append_item_to_path_envvar() {
     if ! printf '%s' "$PATH" \
-           | grep -e "$1" > /dev/null 2>&1
-    then
+           | grep -e "$1" > /dev/null 2>&1; then
       PATH="${1}:$PATH"
     fi
   }
@@ -269,10 +268,8 @@ choose_and_connect_ssh_host() {
     return 0
   }
 
-  # 
   if ppath ssh > /dev/null 2>&1 \
-       && list_ssh_hosts > /dev/null 2>&1
-  then
+       && list_ssh_hosts > /dev/null 2>&1; then
     printf "Connect local or remote?\n" > /dev/tty
     printf "If you connect local, press enter with blank.\n" > /dev/tty
     printf "If you connect remote, press enter with number.\n" > /dev/tty

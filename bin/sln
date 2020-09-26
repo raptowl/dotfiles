@@ -44,7 +44,7 @@ esac
 
 
 tmpfile=$(mktemp "/tmp/tmp.${0##*/}.XXXXXXXXXX")
-trap "rm -f ${tmpfile}" EXIT HUP INT QUIT TERM
+trap 'rm -f '"$tmpfile"'' EXIT HUP INT QUIT TERM
 
 
 # display lines to be able to choose
@@ -55,15 +55,14 @@ cat "$tmpfile" > /dev/tty
 # await the input of number to be chosen by the prompt
 while :; do
   printf '> ' > /dev/tty
-  read prompt_input < /dev/tty
+  read -r prompt_input < /dev/tty
   if [ "$prompt_input" = "" ]; then
     # if the input is a blank, output null to stdoud and exit with error code.
     printf ''
     exit 1
   else
     if sed -e 's/^  *//' "$tmpfile" \
-         | grep -e "^${prompt_input}:" > /dev/null 2>&1
-    then
+         | grep -e "^${prompt_input}:" > /dev/null 2>&1; then
       # if the input is a kind of number, output the appropriate value.
       sed -e 's/^  *//' "$tmpfile" \
         | grep -e "^${prompt_input}:" \
