@@ -65,7 +65,7 @@ done
 
 
 if [ $# -ne 0 ]; then
-  log_error "invalid arguments: $@"
+  log_error "invalid arguments: $*"
   exit 1
 fi
 
@@ -76,8 +76,7 @@ fi
 
 
 # define variables
-#src_dir="$DOTFILES_DIR/conf"
-src_dir="$DOTFILES_DIR"
+src_dir="$DOTFILES_DIR/conf"
 tgt_dir="$HOME"
 
 
@@ -106,6 +105,7 @@ ln_q_flag() {
 }
 
 
+# main routine
 if [ -n "$opt_quiet" ]; then
   printf 'Quiet mode ...\n' >&2
 fi
@@ -118,25 +118,21 @@ fi
 
 cd "$src_dir" \
   || exit 1
-for file_ in * .* .config/*; do
-  if [    "$file_" = "LICENSE" \
-       -o "$file_" = "README.md" \
-       -o "$file_" = "bin" \
-       -o "$file_" = "etc" \
-       -o "$file_" = "lib" \
-       -o "$file_" = "." \
-       -o "$file_" = ".." \
-       -o "$file_" = ".config" \
-       -o "$file_" = ".git" \
-       -o "$file_" = ".github" \
-       -o "$file_" = ".gitignore" ]
-  then
+for file_ in * .* .config/* .config/.*; do
+  if [      "$file_" = "*" ] \
+       || [ "$file_" = "." ] \
+       || [ "$file_" = ".." ] \
+       || [ "$file_" = ".config" ] \
+       || [ "$file_" = ".config/*" ] \
+       || [ "$file_" = ".config/." ] \
+       || [ "$file_" = ".config/.." ]; then
     continue
   fi
 
   if [ ! -e "$tgt_dir/$file_" ]; then
     ln_q_flag "$src_dir/$file_" "$tgt_dir/$file_"
-  elif [ -e "$tgt_dir/$file_" -a ! -h "$tgt_dir/$file_" ]; then
+  elif [        -e "$tgt_dir/$file_" ] \
+         && [ ! -h "$tgt_dir/$file_" ]; then
     mv_q_flag "$tgt_dir/$file_" "$tgt_dir/${file_}.dotold"
     ln_q_flag "$src_dir/$file_" "$tgt_dir/$file_"
   fi

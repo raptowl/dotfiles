@@ -66,7 +66,7 @@ done
 
 
 if [ $# -ne 0 ]; then
-  log_error "invalid arguments: $@"
+  log_error "invalid arguments: $*"
   exit 1
 fi
 
@@ -76,11 +76,11 @@ fi
 
 
 # define variables
-#src_dir="$DOTFILES_DIR/conf"
-src_dir="$DOTFILES_DIR"
+src_dir="$DOTFILES_DIR/conf"
 tgt_dir="$HOME"
 
 
+# define functions
 rm_q_flag() {
   printf 'remove: %s\n' "$*" >&2
   if [ -z "$opt_quiet" ]; then
@@ -97,6 +97,15 @@ mv_q_flag() {
 }
 
 
+rmdir_q_flag() {
+  printf 'rmdir: %s\n' "$*" >&2
+  if [ -z "$opt_quiet" ]; then
+    rmdir "$@"
+  fi
+}
+
+
+# main routine
 if [ -n "$opt_quiet" ]; then
   printf 'Quiet mode ...\n' >&2
 fi
@@ -104,19 +113,14 @@ fi
 
 cd "$src_dir" \
   || exit 1
-for file_ in * .* .config/*; do
-  if [    "$file_" = "LICENSE" \
-       -o "$file_" = "README.md" \
-       -o "$file_" = "bin" \
-       -o "$file_" = "etc" \
-       -o "$file_" = "lib" \
-       -o "$file_" = "." \
-       -o "$file_" = ".." \
-       -o "$file_" = ".config" \
-       -o "$file_" = ".git" \
-       -o "$file_" = ".github" \
-       -o "$file_" = ".gitignore" ]
-  then
+for file_ in * .* .config/* .config/.*; do
+  if [      "$file_" = "*" ] \
+       || [ "$file_" = "." ] \
+       || [ "$file_" = ".." ] \
+       || [ "$file_" = ".config" ] \
+       || [ "$file_" = ".config/*" ] \
+       || [ "$file_" = ".config/." ] \
+       || [ "$file_" = ".config/.." ]; then
     continue
   fi
 
@@ -130,9 +134,8 @@ done
 
 
 if [ -d "$tgt_dir/.config" ] \
-     && check_dir_empty "$tgt_dir/.config"
-then
-  rmdir "$tgt_dir/.config"
+     && check_dir_empty "$tgt_dir/.config"; then
+  rmdir_q_flag "$tgt_dir/.config"
 fi
 
 
