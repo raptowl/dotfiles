@@ -36,9 +36,28 @@ set_prompt() {
   # Returns:
   #   0
 
-  autoload -Uz promptinit
-  promptinit
-  prompt adam1
+  # set an option for command substitution
+  setopt prompt_subst
+
+  # load my original text coloring module
+  . "$DOTFILES_DIR/lib/color_term_raw.sh"
+
+  # function for escape terminal sequence code
+  wrap_control_sequence_for_prompt() {
+    sed -e 's/\(\\033\)/%%{\1/g' \
+        -e 's/\([0-9]m\)/\1%%}/g' \
+      | sed -e 's/\\/\\\\/g'
+  }
+
+  # set PROMPT
+  PROMPT=$(printf '%s' '$(__exit_status=$?; printf "__format_user__@__format_host__ " "%n" "%M"; if [ -n "$SSH_CLIENT" ]; then printf "__format_ssh__ " "[SSH]"; fi; if [ -r "$HOME/usr/local/git-prompt.sh" ]; then printf "__format_branch__" "$(__git_ps1 "(%s) ")"; fi; printf "__format_cd__ " "%~"; if [ $__exit_status -eq 0 ]; then printf "__format_good_status__ " "%#"; else printf "__format_bad_status__ " "%#"; fi)' \
+          | sed -e 's/__format_user__/'"$(color_term_raw -b magenta none '%s' | wrap_control_sequence_for_prompt)"'/' \
+                -e 's/__format_host__/'"$(color_term_raw -b magenta none '%s' | wrap_control_sequence_for_prompt)"'/' \
+                -e 's/__format_ssh__/'"$(color_term_raw -b cyan none '%s' | wrap_control_sequence_for_prompt)"'/' \
+                -e 's/__format_branch__/'"$(color_term_raw -b yellow none '%s' | wrap_control_sequence_for_prompt)"'/' \
+                -e 's/__format_cd__/'"$(color_term_raw -b blue none '%s' | wrap_control_sequence_for_prompt)"'/' \
+                -e 's/__format_good_status__/'"$(color_term_raw -b green none '%s' | wrap_control_sequence_for_prompt)"'/' \
+                -e 's/__format_bad_status__/'"$(color_term_raw -b red none '%s' | wrap_control_sequence_for_prompt)"'/')
 
   return 0
 }
@@ -54,6 +73,18 @@ load_extra_modules() {
   #   None
   # Returns:
   #   0
+
+  # show information about git branch
+  if [ -r "$HOME/usr/local/git-prompt.sh" ]; then
+    . "$HOME/usr/local/git-prompt.sh"
+    GIT_PS1_SHOWDIRTYSTATE=1
+    GIT_PS1_SHOWSTASHSTATE=1
+    GIT_PS1_SHOWUNTRACKEDFILES=1
+    GIT_PS1_SHOWUPSTREAM='auto'
+    GIT_PS1_STATESEPARATOR=':'
+  fi
+
+  # set general options
   setopt histignorealldups sharehistory
 
   # Use emacs keybindings even if our EDITOR is set to vi

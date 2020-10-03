@@ -37,7 +37,6 @@ set_prompt() {
   #   0
 
   # load my original text coloring module
-  . "$DOTFILES_DIR/lib/list_functions_recursively.sh"
   . "$DOTFILES_DIR/lib/color_term_raw.sh"
 
   # function for escape terminal sequence code
@@ -56,16 +55,6 @@ set_prompt() {
                 -e 's/__format_cd__/'"$(color_term_raw -b blue none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_good_status__/'"$(color_term_raw -b green none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_bad_status__/'"$(color_term_raw -b red none '%s' | wrap_control_sequence_for_prompt)"'/')
-
-  # unloaded modules and functions recursively
-  unset -f wrap_control_sequence_for_prompt
-  for l_path in "$DOTFILES_DIR/lib/color_term_raw.sh"; do
-    for l_func in $(list_functions_recursively "$l_path"); do
-      unset -f "$l_func"
-    done
-  done
-  unset l_path l_func
-  unset -f list_functions_recursively
 
   return 0
 }

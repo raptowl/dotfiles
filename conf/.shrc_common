@@ -51,7 +51,6 @@ set_envvars_common() {
   export PATH LANG INPUTRC EDITOR
 
   unset l_path
-  unset -f append_item_to_path_envvar
   return 0
 }
 
@@ -164,7 +163,6 @@ choose_and_connect_ssh_host() {
     unset l_target_host
   fi
 
-  unset -f list_ssh_hosts
   return 0
 }
 
