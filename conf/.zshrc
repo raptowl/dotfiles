@@ -84,20 +84,31 @@ load_extra_modules() {
     GIT_PS1_STATESEPARATOR=':'
   fi
 
-  # set general options
-  setopt histignorealldups sharehistory
-
-  # Use emacs keybindings even if our EDITOR is set to vi
+  # zsh use vi key bindings
   bindkey -v
 
-  # Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+  # zsh history settings
   HISTSIZE=1000
   SAVEHIST=10000
   HISTFILE=~/.zsh_history
 
-  # Use modern completion system
+  setopt hist_ignore_all_dups
+  setopt hist_ignore_space
+  setopt hist_reduce_blanks
+  setopt hist_save_no_dups
+  setopt hist_no_store
+  setopt share_history
+
+  # zsh completing settings
   autoload -Uz compinit
   compinit
+
+  setopt inc_append_history
+
+  bindkey '^R' history-incremental-search-backward
+  bindkey '^S' history-incremental-search-forward
+  bindkey '^P' history-beginning-search-backward
+  bindkey '^N' history-beginning-search-forward
 
   zstyle ':completion:*' auto-description 'specify: %d'
   zstyle ':completion:*' completer _expand _complete _correct _approximate
