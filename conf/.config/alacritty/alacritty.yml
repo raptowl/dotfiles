@@ -6,6 +6,7 @@ window:
     x: 2
     y: 2
   dynamic_padding: false
+  dynamic_title: false
   decorations: full
   startup_mode: Windowed
 
@@ -61,14 +62,12 @@ colors:
     white:   '#d2d4de'
   indexed_colors: []
 
-visual_bell:
+bell:
   animation: EaseOutExpo
   duration: 0
   color: '0xffffff'
 
 background_opacity: 0.9
-
-dynamic_title: false
 
 cursor:
   style: Block
