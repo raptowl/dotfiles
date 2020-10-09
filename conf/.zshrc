@@ -115,7 +115,6 @@ load_extra_modules() {
   zstyle ':completion:*' format 'Completing %d'
   zstyle ':completion:*' group-name ''
   zstyle ':completion:*' menu select=2
-  eval "$(dircolors -b)"
   zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
   zstyle ':completion:*' list-colors ''
   zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
