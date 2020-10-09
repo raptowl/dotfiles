@@ -86,13 +86,6 @@ load_extra_modules() {
     GIT_PS1_STATESEPARATOR=':'
   fi
 
-  # initializer for Anaconda environment
-  if [ -r "$HOME/usr/local/init_conda" ]; then
-    init_conda() {
-      . "$HOME/usr/local/init_conda"
-    }
-  fi
-
   return 0
 }
 
