@@ -104,6 +104,7 @@ load_extra_modules() {
   compinit
 
   setopt inc_append_history
+  unsetopt nomatch
 
   bindkey '^R' history-incremental-search-backward
   bindkey '^S' history-incremental-search-forward

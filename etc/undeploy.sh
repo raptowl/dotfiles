@@ -22,7 +22,6 @@ export LC_ALL PATH UNIX_STD
 
 # load and define functions
 . "$DOTFILES_DIR/lib/log_error.sh"
-. "$DOTFILES_DIR/lib/list_files.sh"
 . "$DOTFILES_DIR/lib/check_dir_empty.sh"
 
 

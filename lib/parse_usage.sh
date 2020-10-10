@@ -1,5 +1,5 @@
-#. "$DOTFILES_DIR/lib/init_env.sh"
-libfunc() {
+#. "$DOTFILES_DIR/lib/log_error.sh"
+parse_usage() {
   # Short description here
   # Globals:
   #   None

@@ -1,4 +1,3 @@
-. "$DOTFILES_DIR/lib/list_files.sh"
 check_dir_empty() {
   # Check the specified directory is empty
   # Globals:
@@ -11,16 +10,20 @@ check_dir_empty() {
   #   empty, 0
   #   not empty, 1
   #   directory not found, 2
-  l_dir="${1:-.}"
+  l_dir=$(printf '%s' "${1:-.}" \
+            | sed -e 's%/$%%')
   if [ ! -d "$l_dir" ]; then
     unset l_dir
     return 2
   fi
 
   {
-    list_files -h "$l_dir"
+    printf '%s\n' "$l_dir/"* "$l_dir/".*
     unset l_dir
   } \
+    | grep -v -e '/\*$' \
+              -e '/\.$' \
+              -e '/\.\.$' \
     | grep -e '^' > /dev/null 2>&1 \
     && return 1
 

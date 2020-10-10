@@ -1,8 +1,8 @@
 #!/bin/sh
-# >> parse_and_print_usage[description]
+# >> __description__
 # Short description here ...
 # ...
-# << parse_and_print_usage[description]
+# <<
 
 
 ######################################################################
@@ -10,36 +10,39 @@
 ######################################################################
 
 
+# load library functions
+. "$DOTFILES_DIR/lib/init_env.sh"
+. "$DOTFILES_DIR/lib/parse_usage.sh"
+. "$DOTFILES_DIR/lib/log_error.sh"
+
+
 # initialize shell environment
-set -u
-umask 0022
-LC_ALL=C
-type command > /dev/null 2>&1 && type getconf > /dev/null 2>&1 &&
-PATH="$(command -p getconf PATH)${PATH+:}${PATH-}"
-UNIX_STD=2003
-export LC_ALL PATH UNIX_STD
+init_env
 
 
-# load and define functions
-#. "$DOTFILES_DIR/lib/log_error.sh"
-
-
-# catch signals
-#trap '' EXIT HUP INT QUIT TERM
-
-
-######################################################################
-# argument parsing
-######################################################################
-
-
-# print the usage and exit
-case "$# ${1:-}" in
-  '1 -h'|'1 --help')
-    #parse_and_print_usage
-    :
-    ;;
-esac
+# parse options
+# s: switch, no need any values (ex. -s)
+# v: value, need to input some values (ex. -k abc)
+# o: optional, no need to specify (e.g. [-s])
+while :; do
+  case "${1:-}" in
+    -h|--help)  # >> __option__[so]:print out the usage to stderr
+      parse_usage
+      exit 0
+      ;;
+    --)  # >> __option__[so]
+      shift
+      break
+      ;;
+    -*)
+      log_error "invalid option: $1"
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
 
 
 ######################################################################
@@ -47,3 +50,8 @@ esac
 ######################################################################
 
 
+# catch signals
+#trap '' EXIT HUP INT QUIT TERM
+
+
+exit 0
