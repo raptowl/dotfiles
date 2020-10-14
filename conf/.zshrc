@@ -116,7 +116,7 @@ load_extra_modules() {
   zstyle ':completion:*' format 'Completing %d'
   zstyle ':completion:*' group-name ''
   zstyle ':completion:*' menu select=2
-  zstyle ':completion:*:default' list-colors ${(s.:.)LS_COLORS}
+  zstyle ':completion:*:default' list-colors "${(s.:.)LS_COLORS}"
   zstyle ':completion:*' list-colors ''
   zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
   zstyle ':completion:*' matcher-list '' 'm:{a-z}={A-Z}' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=* l:|=*'
@@ -155,22 +155,23 @@ load_local_settings() {
 ######################################################################
 
 
-# load settings for each zsh sessions
-set_envvar_dotfiles_dir
-load_default_settings
-set_envvars_common
-set_aliases
-set_prompt
-load_extra_modules
-load_local_settings
+if check_is_in_interactive; then
+  # load settings for each zsh sessions
+  set_envvar_dotfiles_dir
+  load_default_settings
+  set_envvars_common
+  set_aliases
+  set_prompt
+  load_extra_modules
+  load_local_settings
 
+  # if it is not in any sessions of terminal-multiplexer,
+  # 1. choose the host to attach, e.g. local or remote by ssh
+  # 2. attach any session there, or establish a new session of terminal-multiplexer
+  if ! check_is_in_tmux && ! check_is_in_screen; then
+    choose_and_connect_ssh_host
 
-# if it is not in any sessions of terminal-multiplexer,
-# 1. choose the host to attach, e.g. local or remote by ssh
-# 2. attach any session there, or establish a new session of terminal-multiplexer
-if ! check_is_in_tmux && ! check_is_in_screen; then
-  choose_and_connect_ssh_host
-
-  attach_any_session_on_tmux
-  attach_any_session_on_screen
+    attach_any_session_on_tmux
+    attach_any_session_on_screen
+  fi
 fi

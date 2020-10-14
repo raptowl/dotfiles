@@ -87,6 +87,26 @@ set_aliases() {
 }
 
 
+check_is_in_interactive() {
+  # Check if it is in a interactive session
+  # Globals:
+  #   None
+  # Arguments:
+  #   None
+  # Outputs:
+  #   None
+  # Returns:
+  #   in a session, 0
+  #   not in a session, 1
+  if printf '%s' "$-" \
+       | grep -e 'i' > /dev/null 2>&1; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+
 check_is_in_tmux() {
   # Check if it is in a tmux session
   # Globals:
@@ -163,7 +183,7 @@ choose_and_connect_ssh_host() {
     l_target_host=$(list_ssh_hosts \
                       | sln)
 
-    if [ ! -z "$l_target_host" ]; then
+    if [ -n "$l_target_host" ]; then
       exec ssh "$l_target_host"
     fi
     unset l_target_host
