@@ -28,20 +28,22 @@ set_envvars_common() {
   . "$DOTFILES_DIR/lib/alt_which.sh"
   alt_which
 
-  append_item_to_path_envvar() {
-    if ! printf '%s' "$PATH" \
-           | grep -e "$1" > /dev/null 2>&1; then
-      PATH="${1}:$PATH"
-    fi
-  }
+  #append_item_to_path_envvar() {
+  #  if ! printf '%s' "$PATH" \
+  #         | grep -e "$1" > /dev/null 2>&1; then
+  #    PATH="${1}:$PATH"
+  #  fi
+  #}
 
   umask 0022
-  append_item_to_path_envvar "$DOTFILES_DIR/bin"
+  PATH="$DOTFILES_DIR/bin:$PATH"
+  #append_item_to_path_envvar "$DOTFILES_DIR/bin"
   for l_path in "$HOME/usr/local/bin" \
                 "$HOME/usr/shellshoccar/bin" \
                 "$HOME/usr/kotoriotoko/BIN"; do
     if [ -d "$l_path" ]; then
-      append_item_to_path_envvar "$l_path"
+      PATH="$l_path:$PATH"
+      #append_item_to_path_envvar "$l_path"
     fi
   done
 
@@ -181,7 +183,7 @@ choose_and_connect_ssh_host() {
     printf "\n" > /dev/tty
 
     l_target_host=$(list_ssh_hosts \
-                      | sln)
+                      | "$DOTFILES_DIR/bin/sln")
 
     if [ -n "$l_target_host" ]; then
       exec ssh "$l_target_host"

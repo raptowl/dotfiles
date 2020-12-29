@@ -58,7 +58,6 @@ set_prompt() {
                 -e 's/__format_cd__/'"$(color_term_raw -b blue none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_good_status__/'"$(color_term_raw -b green none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_bad_status__/'"$(color_term_raw -b red none '%s' | wrap_control_sequence_for_prompt)"'/')
-
   return 0
 }
 
@@ -156,22 +155,22 @@ load_local_settings() {
 
 
 if check_is_in_interactive; then
-  # load settings for each zsh sessions
   set_envvar_dotfiles_dir
-  load_default_settings
-  set_envvars_common
-  set_aliases
-  set_prompt
-  load_extra_modules
-  load_local_settings
 
   # if it is not in any sessions of terminal-multiplexer,
   # 1. choose the host to attach, e.g. local or remote by ssh
   # 2. attach any session there, or establish a new session of terminal-multiplexer
   if ! check_is_in_tmux && ! check_is_in_screen; then
     choose_and_connect_ssh_host
-
     attach_any_session_on_tmux
     attach_any_session_on_screen
   fi
+
+  # load settings for each zsh sessions
+  load_default_settings
+  set_envvars_common
+  set_aliases
+  set_prompt
+  load_extra_modules
+  load_local_settings
 fi
