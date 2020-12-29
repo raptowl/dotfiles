@@ -64,3 +64,6 @@ set background=dark
 
 " Escを2回押すとハイライトを消す
 nnoremap <Esc><Esc> :nohlsearch<CR>
+
+
+set runtimepath+=~/usr/vim-plug/nerdtree

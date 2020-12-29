@@ -6,10 +6,10 @@ umask 0022
 # path to the temporary directory
 path_tmproot="$HOME/tmp$$"
 
-# url of the git repository of 'bash-completion'
+# url of the git repository of 'kotoriotoko'
 url_gitrepo='https://github.com/ShellShoccar-jpn/kotoriotoko.git'
 
-# url of the tarball of 'bash-completion'
+# url of the tarball of 'kotoriotoko'
 url_tarball='github.com/ShellShoccar-jpn/kotoriotoko/archive/master.tar.gz'
 
 # remove tmporary directory

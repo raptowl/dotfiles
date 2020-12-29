@@ -5,11 +5,11 @@ umask 0022
 
 url='raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh'
 
-if [ ! -d "$HOME/usr/local" ]; then
-  mkdir -p "$HOME/usr/local"
+if [ ! -d "$HOME/usr" ]; then
+  mkdir -p "$HOME/usr"
 fi
 
-cd "$HOME/usr/local" || exit 1
+cd "$HOME/usr" || exit 1
 if type curl > /dev/null 2>&1; then
   curl -L "$url" > './git-prompt.sh'
 elif type wget > /dev/null 2>&1; then

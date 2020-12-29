@@ -55,7 +55,7 @@ fi \
   && cd "$path_tmproot/bash-completion-master" || exit 1
 
 autoreconf -i
-./configure --prefix="$HOME/usr/local/bash-completion"
+./configure --prefix="$HOME/usr/bash-completion"
 make
 make install
 

@@ -37,7 +37,7 @@ set_envvars_common() {
 
   umask 0022
   append_item_to_path_envvar "$DOTFILES_DIR/bin"
-  for l_path in "$HOME/usr/bin" \
+  for l_path in "$HOME/usr/local/bin" \
                 "$HOME/usr/shellshoccar/bin" \
                 "$HOME/usr/kotoriotoko/BIN"; do
     if [ -d "$l_path" ]; then
