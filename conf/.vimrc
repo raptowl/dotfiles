@@ -65,5 +65,11 @@ set background=dark
 " Escを2回押すとハイライトを消す
 nnoremap <Esc><Esc> :nohlsearch<CR>
 
-
+" プラグインのインストール先のパスを追加
+set runtimepath+=~/usr/vim-plug/vimdoc-ja
+set runtimepath+=~/usr/vim-plug/iceberg.vim
 set runtimepath+=~/usr/vim-plug/nerdtree
+set runtimepath+=~/usr/vim-plug/vim-lsp
+set runtimepath+=~/usr/vim-plug/vim-lsp-settings
+set runtimepath+=~/usr/vim-plug/asyncomplete.vim
+set runtimepath+=~/usr/vim-plug/asyncomplete-lsp.vim
