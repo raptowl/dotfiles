@@ -47,7 +47,7 @@ set_prompt() {
   }
 
   # set PS1
-  PS1=$(printf '%s' '$(__exit_status=$?; printf "__format_user__@__format_host__ " "\u" "\h"; if [ -n "$SSH_CLIENT" ]; then printf "__format_ssh__ " "[SSH]"; fi; if [ -r "$HOME/usr/git-prompt.sh" ]; then printf "__format_branch__" "$(__git_ps1 "(%s) ")"; fi; printf "__format_cd__ " "\w"; if [ $__exit_status -eq 0 ]; then printf "__format_good_status__ " "\$"; else printf "__format_bad_status__ " "\$"; fi)' \
+  PS1=$(printf '%s' '$(__exit_status=$?; printf "__format_user__@__format_host__ " "\u" "\h"; if [ -n "$SSH_CLIENT" ]; then printf "__format_ssh__ " "[SSH]"; fi; if [ -r "$HOME/usr/git-prompt/git-prompt.sh" ]; then printf "__format_branch__" "$(__git_ps1 "(%s) ")"; fi; printf "__format_cd__ " "\w"; if [ $__exit_status -eq 0 ]; then printf "__format_good_status__ " "\$"; else printf "__format_bad_status__ " "\$"; fi)' \
           | sed -e 's/__format_user__/'"$(color_term_raw -b magenta none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_host__/'"$(color_term_raw -b magenta none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_ssh__/'"$(color_term_raw -b cyan none '%s' | wrap_control_sequence_for_prompt)"'/' \
@@ -77,8 +77,8 @@ load_extra_modules() {
   fi
 
   # show information about git branch
-  if [ -r "$HOME/usr/git-prompt.sh" ]; then
-    . "$HOME/usr/git-prompt.sh"
+  if [ -r "$HOME/usr/git-prompt/git-prompt.sh" ]; then
+    . "$HOME/usr/git-prompt/git-prompt.sh"
     GIT_PS1_SHOWDIRTYSTATE=1
     GIT_PS1_SHOWSTASHSTATE=1
     GIT_PS1_SHOWUNTRACKEDFILES=1
