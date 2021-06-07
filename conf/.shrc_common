@@ -65,15 +65,11 @@ set_aliases() {
   alias ...='\cd ../..'
   alias ....='\cd ../../..'
   if ls --color > /dev/null 2>&1; then
-    alias l='\ls --color=auto'
-    alias ll='\ls -l --color=auto'
-    alias la='\ls -a --color=auto'
-    alias ls='\ls -la --color=auto'
+    alias ls='ls --color=auto'
+    alias lsa='ls -a'
   else
-    alias l='\ls -G'
-    alias ll='\ls -l -G'
-    alias la='\ls -a -G'
-    alias ls='\ls -la -G'
+    alias ls='ls -G'
+    alias lsa='ls -a'
   fi
 
   return 0
