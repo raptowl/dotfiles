@@ -31,6 +31,7 @@ set_envvars_common() {
   umask 0022
   PATH="$DOTFILES_DIR/bin:$PATH"
   for l_path in "$HOME/usr/local/bin" \
+                "$HOME/usr/rclone/bin" \
                 "$HOME/usr/shellshoccar/bin" \
                 "$HOME/usr/kotoriotoko/BIN"; do
     if [ -d "$l_path" ]; then
