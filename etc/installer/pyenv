@@ -1,0 +1,99 @@
+#!/bin/sh
+# >> __description__
+# Short description here ...
+# ...
+# <<
+
+
+######################################################################
+# preprocessing
+######################################################################
+
+
+# load library functions
+. "$DOTFILES_DIR/lib/init_env.sh"
+. "$DOTFILES_DIR/lib/parse_usage.sh"
+. "$DOTFILES_DIR/lib/log_error.sh"
+
+
+# initialize shell environment
+init_env
+
+
+# parse options
+# s: switch, no need any values (ex. -s)
+# v: value, need to input some values (ex. -k abc)
+# o: optional, no need to specify (e.g. [-s])
+while :; do
+  case "${1:-}" in
+    -h|--help)  # >> __option__[so]:print out the usage to stderr
+      parse_usage
+      exit 0
+      ;;
+    --)  # >> __option__[so]
+      shift
+      break
+      ;;
+    -*)
+      log_error "invalid option: $1"
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+
+######################################################################
+# main routine
+######################################################################
+
+# path to the temporary directory
+path_tmproot="$HOME/tmp$$"
+# url of the git repository of 'pyenv'
+url_gitrepo='https://github.com/pyenv/pyenv.git'
+# url of the tarball of 'pyenv'
+url_tarball='github.com/pyenv/pyenv/archive/master.tar.gz'
+
+
+# remove tmporary directory
+remove_tmproot() {
+  [ -d "$path_tmproot" ] && rm -rf "$path_tmproot"
+}
+
+
+# catch signals
+trap 'remove_tmproot' EXIT HUP INT QUIT TERM
+
+
+# install dependencies to build python
+sudo apt-get update &&
+sudo apt-get install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+
+
+# make a directory which contains local applications
+[ ! -d "$HOME/usr" ] && mkdir -p "$HOME/usr"
+
+
+# download repository
+mkdir -p "$path_tmproot"
+cd "$path_tmproot" || exit 1
+if type git >/dev/null 2>&1; then
+  git clone "$url_gitrepo" "$path_tmproot/pyenv-master"
+elif type curl >/dev/null 2>&1; then
+  curl -L "$url_tarball" | tar xvz
+elif type wget >/dev/null 2>&1; then
+  wget -O - "$url_tarball" | tar xvz
+else
+  printf 'ERROR: command git, curl or wget not found.\n' >&2
+  exit 1
+fi && mv "$path_tmproot/pyenv-master" "$HOME/usr/pyenv"
+cd "$HOME/usr/pyenv" || exit 1
+
+
+# remove tmporary directory
+remove_tmproot
+
+
+exit 0
