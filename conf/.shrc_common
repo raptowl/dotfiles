@@ -9,6 +9,9 @@ set_envvar_dotfiles_dir() {
   # Returns:
   #   0
   DOTFILES_DIR="$HOME/.dotfiles"
+  if [ -f "$HOME/.dotfiles_dir" ]; then
+    DOTFILES_DIR=$(head -n 1 < "$HOME/.dotfiles_dir" | sed -e 's:\~:'"$HOME"':')
+  fi
   export DOTFILES_DIR
 
   return 0
