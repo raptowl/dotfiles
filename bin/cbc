@@ -1,0 +1,72 @@
+#!/bin/sh
+# >> __description__
+# This command is an filter to copy sequence of bytes into a clipboard.
+# <<
+
+
+######################################################################
+# preprocessing
+######################################################################
+
+
+# load library functions
+. "$DOTFILES_DIR/lib/alt_which.sh"
+. "$DOTFILES_DIR/lib/init_env.sh"
+. "$DOTFILES_DIR/lib/parse_usage.sh"
+. "$DOTFILES_DIR/lib/log_error.sh"
+
+
+# initialize shell environment
+init_env
+alt_which
+
+
+# parse options
+# s: switch, no need any values (ex. -s)
+# v: value, need to input some values (ex. -k abc)
+# o: optional, no need to specify (e.g. [-s])
+while :; do
+  case "${1:-}" in
+    -h|--help)  # >> __option__[so]:print out the usage to stderr
+      parse_usage
+      exit 0
+      ;;
+    --)  # >> __option__[so]
+      shift
+      break
+      ;;
+    -*)
+      log_error "invalid option: $1"
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+
+######################################################################
+# main routine
+######################################################################
+
+
+# check what commands or utilities are installed, and choose one of them
+copy_command=''
+if which xsel > /dev/null 2>&1; then
+  copy_command='xsel -i -b'
+elif which xclip > /dev/null 2>&1; then
+  copy_command="xclip -i -selection 'clipboard'"
+elif which pbcopy > /dev/null 2>&1; then
+  copy_command='pbcopy'
+else
+  log_error "no commands or utilities for copying into clipboard"
+  exit 1
+fi
+
+
+# run(=wait input)
+eval "$copy_command"
+
+
+exit 0
