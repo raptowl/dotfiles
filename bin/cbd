@@ -25,11 +25,32 @@ alt_which
 # s: switch, no need any values (ex. -s)
 # v: value, need to input some values (ex. -k abc)
 # o: optional, no need to specify (e.g. [-s])
+f_input='false'
+f_output='false'
+f_clear='false'
 while :; do
   case "${1:-}" in
     -h|--help)  # >> __option__[so]:print out the usage to stderr
       parse_usage
       exit 0
+      ;;
+    -i|--input)  # >> __option__[s]:copy stdin-buffer into the clipboard
+      f_input='true'
+      [ "$f_output" = "true" ] && { log_error 'already switch on: --output'; exit 1; }
+      [ "$f_clear" = "true" ] &&  { log_error 'already switch on: --clear';  exit 1; }
+      shift
+      ;;
+    -o|--output)  # >> __option__[s]:write down the clipboard to stdout-buffer
+      f_output='true'
+      [ "$f_input" = "true" ] && { log_error 'already switch on: --input'; exit 1; }
+      [ "$f_clear" = "true" ] && { log_error 'already switch on: --clear'; exit 1; }
+      shift
+      ;;
+    -c|--clear)  # >> __option__[s]:clear the contents in the clipboard
+      f_clear='true'
+      [ "$f_input" = "true" ] &&  { log_error 'already switch on: --input';  exit 1; }
+      [ "$f_output" = "true" ] && { log_error 'already switch on: --output'; exit 1; }
+      shift
       ;;
     --)  # >> __option__[so]
       shift
@@ -51,22 +72,16 @@ done
 ######################################################################
 
 
-# check what commands or utilities are installed, and choose one of them
-copy_command=''
-if which xsel > /dev/null 2>&1; then
-  copy_command='xsel -i -b'
-elif which xclip > /dev/null 2>&1; then
-  copy_command="xclip -i -selection 'clipboard'"
-elif which pbcopy > /dev/null 2>&1; then
-  copy_command='pbcopy'
-else
-  log_error "no commands or utilities for copying into clipboard"
-  exit 1
-fi
+[ "$f_input" = "true" ] && which xsel > /dev/null 2>&1 &&   xsel -i -b ||
+[ "$f_input" = "true" ] && which xclip > /dev/null 2>&1 &&  xclip -i -selection 'clipboard' ||
+[ "$f_input" = "true" ] && which pbcopy > /dev/null 2>&1 && pbcopy
 
+[ "$f_output" = "true" ] && which xsel > /dev/null 2>&1 &&   xsel -o -b ||
+[ "$f_output" = "true" ] && which xclip > /dev/null 2>&1 &&  xclip -o -selection 'clipboard' ||
+[ "$f_output" = "true" ] && which pbcopy > /dev/null 2>&1 && pbpaste
 
-# run(=wait input)
-eval "$copy_command"
-
+[ "$f_clear" = "true" ] && which xsel > /dev/null 2>&1 &&   xsel -c -b ||
+[ "$f_clear" = "true" ] && which xclip > /dev/null 2>&1 &&  xclip -i -selection 'clipboard' < /dev/null ||
+[ "$f_clear" = "true" ] && which pbcopy > /dev/null 2>&1 && pbcopy < /dev/null
 
 exit 0
