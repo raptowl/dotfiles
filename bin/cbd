@@ -1,6 +1,6 @@
 #!/bin/sh
 # >> __description__
-# This command is an filter to copy sequence of bytes into a clipboard.
+# This command is an filter to manage clipboard status.
 # <<
 
 

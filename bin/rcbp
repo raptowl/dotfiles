@@ -1,0 +1,63 @@
+#!/bin/sh
+# >> __description__
+# This command is an filter to copy sequence of bytes into a clipboard.
+# <<
+
+
+######################################################################
+# preprocessing
+######################################################################
+
+
+# load library functions
+. "$DOTFILES_DIR/lib/alt_which.sh"
+. "$DOTFILES_DIR/lib/init_env.sh"
+. "$DOTFILES_DIR/lib/parse_usage.sh"
+. "$DOTFILES_DIR/lib/log_error.sh"
+
+
+# initialize shell environment
+init_env
+alt_which
+
+
+# parse options
+# s: switch, no need any values (ex. -s)
+# v: value, need to input some values (ex. -k abc)
+# o: optional, no need to specify (e.g. [-s])
+RCBP_PORT=10022
+export RCBP_PORT
+while :; do
+  case "${1:-}" in
+    -h|--help)  # >> __option__[so]:print out the usage to stderr
+      parse_usage
+      exit 0
+      ;;
+    -p|--port)  # >> __option__[vo]:port number for send sequence of bytes
+      RCBP_PORT="${2:-}"
+      shift; shift
+      ;;
+    --)  # >> __option__[so]
+      shift
+      break
+      ;;
+    -*)
+      log_error "invalid option: $1"
+      exit 1
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+
+######################################################################
+# main routine
+######################################################################
+
+is_ssh="${SSH_CLIENT:-no}"
+
+echo "$is_ssh"
+
+exit 0
