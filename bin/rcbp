@@ -59,7 +59,15 @@ done
 is_ssh="${SSH_CLIENT:-no}"
 nc_exist="$(which nc || echo no)"
 
-echo "$is_ssh"
-echo "$nc_exist"
+if [ "$is_ssh" != 'no' ] && [ "$nc_exist" = 'no' ]; then
+  log_error 'command "nc" is not installed'
+  exit 1
+fi
+
+if [ "$is_ssh" = 'no' ]; then
+  cbd -i
+else
+  nc -q 0 localhost "$RCBP_PORT"
+fi
 
 exit 0
