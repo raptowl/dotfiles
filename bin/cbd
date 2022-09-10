@@ -68,20 +68,52 @@ done
 
 
 ######################################################################
+# define sub routines
+######################################################################
+
+
+subcommand_routine_input() {
+  [ "$f_input" = "true" ] && which xsel   > /dev/null 2>&1 && xsel -i -b ||
+  [ "$f_input" = "true" ] && which xclip  > /dev/null 2>&1 && xclip -i -selection 'clipboard' ||
+  [ "$f_input" = "true" ] && which pbcopy > /dev/null 2>&1 && pbcopy
+
+  return
+}
+
+
+subcommand_routine_output() {
+  [ "$f_output" = "true" ] && which xsel   > /dev/null 2>&1 && xsel -o -b ||
+  [ "$f_output" = "true" ] && which xclip  > /dev/null 2>&1 && xclip -o -selection 'clipboard' ||
+  [ "$f_output" = "true" ] && which pbcopy > /dev/null 2>&1 && pbpaste
+
+  return
+}
+
+
+subcommand_routine_clear() {
+  [ "$f_clear" = "true" ] && which xsel >   /dev/null 2>&1 && xsel -c -b ||
+  [ "$f_clear" = "true" ] && which xclip >  /dev/null 2>&1 && xclip -i -selection 'clipboard' < /dev/null ||
+  [ "$f_clear" = "true" ] && which pbcopy > /dev/null 2>&1 && pbcopy < /dev/null
+
+  return
+}
+
+
+######################################################################
 # main routine
 ######################################################################
 
 
-[ "$f_input" = "true" ] && which xsel > /dev/null 2>&1 &&   xsel -i -b ||
-[ "$f_input" = "true" ] && which xclip > /dev/null 2>&1 &&  xclip -i -selection 'clipboard' ||
-[ "$f_input" = "true" ] && which pbcopy > /dev/null 2>&1 && pbcopy
+if [ "$f_input" = "true" ]; then
+  subcommand_routine_input
+  exit 0
+elif [ "$f_output" = "true" ]; then
+  subcommand_routine_output
+  exit 0
+elif [ "$f_clear" = "true" ]; then
+  subcommand_routine_clear
+  exit 0
+fi
 
-[ "$f_output" = "true" ] && which xsel > /dev/null 2>&1 &&   xsel -o -b ||
-[ "$f_output" = "true" ] && which xclip > /dev/null 2>&1 &&  xclip -o -selection 'clipboard' ||
-[ "$f_output" = "true" ] && which pbcopy > /dev/null 2>&1 && pbpaste
 
-[ "$f_clear" = "true" ] && which xsel > /dev/null 2>&1 &&   xsel -c -b ||
-[ "$f_clear" = "true" ] && which xclip > /dev/null 2>&1 &&  xclip -i -selection 'clipboard' < /dev/null ||
-[ "$f_clear" = "true" ] && which pbcopy > /dev/null 2>&1 && pbcopy < /dev/null
-
-exit 0
+exit 1
