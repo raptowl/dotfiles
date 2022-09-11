@@ -26,11 +26,17 @@ alt_which
 # s: switch, no need any values (ex. -s)
 # v: value, need to input some values (ex. -k abc)
 # o: optional, no need to specify (e.g. [-s])
+CBDI_PORT=10022
+export CBDI_PORT
 while :; do
   case "${1:-}" in
     -h|--help)  # >> __option__[so]:print out the usage to stderr
       parse_usage
       exit 0
+      ;;
+    -p|--port)  # >> __option__[vo]:port number for send sequence of bytes
+      CBDI_PORT="${2:-}"
+      shift; shift
       ;;
     --)  # >> __option__[so]
       shift
@@ -52,6 +58,28 @@ done
 ######################################################################
 
 
+check_if_remote_host() {
+  if [ "${SSH_CLIENT:-no}" = 'no' ]; then
+    printf 'no'
+  else
+    printf 'yes'
+  fi
+
+  return
+}
+
+
+check_cmd_exist_nc() {
+  if which nc > /dev/null 2>&1; then
+    printf 'yes'
+  else
+    printf 'no'
+  fi
+
+  return
+}
+
+
 input_stdin_into_local_clipboard() {
   if which xsel > /dev/null 2>&1; then
     xsel -i -b
@@ -70,7 +98,21 @@ input_stdin_into_local_clipboard() {
 ######################################################################
 
 
-input_stdin_into_local_clipboard
+is_ssh="$(check_if_remote_host)"
+cmd_exist_nc="$(check_cmd_exist_nc)"
+
+
+if [ "$is_ssh" = 'yes' ] && [ "$cmd_exist_nc" = 'no' ]; then
+  log_error 'command "nc" is not installed'
+  exit 1
+fi
+
+
+if [ "$is_ssh" = 'no' ]; then
+  input_stdin_into_local_clipboard
+else
+  nc -q 0 localhost "$CBDI_PORT"
+fi
 
 
 exit 0
