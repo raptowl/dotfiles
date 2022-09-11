@@ -52,7 +52,7 @@ done
 ######################################################################
 
 
-subcommand_routine_input() {
+input_stdin_into_local_clipboard() {
   if which xsel > /dev/null 2>&1; then
     xsel -i -b
   elif which xclip  > /dev/null 2>&1; then
@@ -70,7 +70,7 @@ subcommand_routine_input() {
 ######################################################################
 
 
-subcommand_routine_input
+input_stdin_into_local_clipboard
 
 
 exit 0
