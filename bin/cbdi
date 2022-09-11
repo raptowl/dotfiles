@@ -26,8 +26,7 @@ alt_which
 # s: switch, no need any values (ex. -s)
 # v: value, need to input some values (ex. -k abc)
 # o: optional, no need to specify (e.g. [-s])
-CBDI_PORT=10022
-export CBDI_PORT
+arg_port=
 while :; do
   case "${1:-}" in
     -h|--help)  # >> __option__[so]:print out the usage to stderr
@@ -35,7 +34,7 @@ while :; do
       exit 0
       ;;
     -p|--port)  # >> __option__[vo]:port number for send sequence of bytes
-      CBDI_PORT="${2:-}"
+      arg_port="${2:-}"
       shift; shift
       ;;
     --)  # >> __option__[so]
@@ -80,6 +79,17 @@ check_cmd_exist_nc() {
 }
 
 
+get_target_port() {
+  if [ -n "$arg_port" ]; then
+    printf '%s' "$arg_port"
+  elif [ -z "$arg_port" ] && [ -n "${CBDI_PORT:-}" ]; then
+    printf '%s' "$CBDI_PORT"
+  fi
+
+  return
+}
+
+
 input_stdin_into_local_clipboard() {
   if which xsel > /dev/null 2>&1; then
     xsel -i -b
@@ -100,6 +110,7 @@ input_stdin_into_local_clipboard() {
 
 is_ssh="$(check_if_remote_host)"
 cmd_exist_nc="$(check_cmd_exist_nc)"
+port="$(get_target_port)"
 
 
 if [ "$is_ssh" = 'yes' ] && [ "$cmd_exist_nc" = 'no' ]; then
@@ -108,10 +119,16 @@ if [ "$is_ssh" = 'yes' ] && [ "$cmd_exist_nc" = 'no' ]; then
 fi
 
 
+if [ "$is_ssh" = 'yes' ] && [ -z "$port" ]; then
+  log_error 'specify port to transfer bytestream: use --port option or CBDI_PORT envvar'
+  exit 1
+fi
+
+
 if [ "$is_ssh" = 'no' ]; then
   input_stdin_into_local_clipboard
 else
-  nc -q 0 localhost "$CBDI_PORT"
+  nc -q 0 localhost "$port"
 fi
 
 
