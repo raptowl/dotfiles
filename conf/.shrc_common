@@ -73,6 +73,7 @@ set_aliases() {
   else
     alias ls='ls -la -G'
   fi
+  alias sl='ls'
 
   return 0
 }
