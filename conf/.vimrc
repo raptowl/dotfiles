@@ -66,10 +66,26 @@ set background=dark
 nnoremap <Esc><Esc> :nohlsearch<CR>
 
 " プラグインのインストール先のパスを追加
-set runtimepath+=~/usr/vim-plug/vimdoc-ja
-set runtimepath+=~/usr/vim-plug/iceberg.vim
-set runtimepath+=~/usr/vim-plug/nerdtree
-set runtimepath+=~/usr/vim-plug/vim-lsp
-set runtimepath+=~/usr/vim-plug/vim-lsp-settings
-set runtimepath+=~/usr/vim-plug/asyncomplete.vim
-set runtimepath+=~/usr/vim-plug/asyncomplete-lsp.vim
+"set runtimepath+=~/usr/vim-plug/vimdoc-ja
+"set runtimepath+=~/usr/vim-plug/iceberg.vim
+"set runtimepath+=~/usr/vim-plug/nerdtree
+"set runtimepath+=~/usr/vim-plug/vim-lsp
+"set runtimepath+=~/usr/vim-plug/vim-lsp-settings
+"set runtimepath+=~/usr/vim-plug/asyncomplete.vim
+"set runtimepath+=~/usr/vim-plug/asyncomplete-lsp.vim
+
+
+" Plugins will be downloaded under the specified directory.
+call plug#begin(has('nvim') ? stdpath('data') . '/plugged' : '~/.vim/plugged')
+
+" Declare the list of plugins.
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'preservim/nerdtree'
+Plug 'cocopon/iceberg.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'vim-jp/vimdoc-ja'
+
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
