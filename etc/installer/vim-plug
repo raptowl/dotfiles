@@ -1,0 +1,25 @@
+#!/bin/sh
+
+set -u
+umask 0022
+
+# path to install a file
+path_dir_to_install="$HOME/.vim/autoload"
+
+# url of a file to download and install
+url_file='https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+
+# make a directory which indicates "$path_dir_to_install" to install a file
+if [ ! -d "$path_dir_to_install" ]; then
+  mkdir -p "$path_dir_to_install"
+fi
+
+if type curl >/dev/null 2>&1; then
+  curl -L "$url_file" > "$path_dir_to_install"/plug.vim
+elif type wget >/dev/null 2>&1; then
+  wget -O - "$url_file" > "$path_dir_to_install"/plug.vim
+else
+  printf 'ERROR: command wget or curl not found.\n' >&2
+  exit 1
+fi
