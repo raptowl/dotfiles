@@ -3,27 +3,27 @@
 set -u
 umask 0022
 
-# path to the temporary directory
-path_tmproot="$HOME/tmp$$"
-
-# path to install fonts
+archive_version='v2.10.0'
+archive_filename="HackGen_${archive_version}.zip"
+url_archive="https://github.com/yuru7/HackGen/releases/download/${archive_version}/${archive_filename}"
 path_fonts_to_set="$HOME/.local/share/fonts"
 
-# url of 'hackgen' github repository
-url_gitrepo='https://github.com/yuru7/HackGen.git'
+path_tmproot="$HOME/tmp$$"
 
-# url of 'hackgen' github archive
-url_gitarcv='github.com/yuru7/HackGen/archive/master.tar.gz'
 
-# remove tmporary directory
 remove_tmproot() {
+  # remove tmporary directory
   if [ -d "$path_tmproot" ]; then
     rm -rf "$path_tmproot"
   fi
 }
 trap 'remove_tmproot' 1 2 3 15
 
-# make a temporary root directory
+if ! type unzip > /dev/null 2>&1; then
+  echo 'ERROR: command unzip not found.' >&2
+  exit 1
+fi
+
 if [ ! -d "$path_tmproot" ]; then
   mkdir -p "$path_tmproot"
 fi
@@ -33,24 +33,18 @@ if [ ! -d "$path_fonts_to_set" ]; then
   mkdir -p "$path_fonts_to_set"
 fi
 
-# change the working directory to the temporary root directory
+# main routine
 cd "$path_tmproot" || exit
-
-if type git >/dev/null 2>&1; then
-  git clone "$url_gitrepo" \
-    && mv -fv './HackGen/build/'*'.ttf' "$path_fonts_to_set"
-elif type curl >/dev/null 2>&1; then
-  curl -L "$url_gitarcv" >'./master.tar.gz' \
-    && tar xvf './master.tar.gz' \
-    && mv -fv './HackGen-master/build/'*'.ttf' "$path_fonts_to_set"
-elif type wget >/dev/null 2>&1; then
-  wget -O - "$url_gitarcv" >'./master.tar.gz' \
-    && tar xvf './master.tar.gz' \
-    && mv -fv './HackGen-master/build/'*'.ttf' "$path_fonts_to_set"
+if type curl > /dev/null 2>&1; then
+  curl -L "$url_archive" > "./${archive_filename}" || exit 1
+elif type wget > /dev/null 2>&1; then
+  wget -O - "$url_archive" > "./${archive_filename}" || exit 1
 else
   printf 'ERROR: command git, wget or curl not found.\n' >&2
   exit 1
 fi
+unzip "./${archive_filename}" && \
+mv -fv "./${archive_filename%.zip}"/*'.ttf' "$path_fonts_to_set"
 
-# remove tmporary directory
+# postprocess
 remove_tmproot
