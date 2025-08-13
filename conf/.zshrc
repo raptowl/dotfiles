@@ -50,7 +50,7 @@ set_prompt() {
   }
 
   # set PROMPT
-  PROMPT=$(printf '%s' '$(__exit_status=$?; printf "__format_user__@__format_host__ " "%n" "%M"; if [ -n "$SSH_CLIENT" ]; then printf "__format_ssh__ " "[SSH]"; fi; if [ -r "$HOME/usr/git-prompt/git-prompt.sh" ]; then printf "__format_branch__" "$(__git_ps1 "(%s) ")"; fi; printf "__format_cd__ " "%~"; if [ $__exit_status -eq 0 ]; then printf "__format_good_status__ " "%#"; else printf "__format_bad_status__ " "%#"; fi)' \
+  PROMPT=$(printf '%s' '$(__exit_status=$?; printf "%s " $(date "+%Y-%m-%d_%H:%M:%S"); printf "__format_user__@__format_host__ " "%n" "%M"; if [ -n "$SSH_CLIENT" ]; then printf "__format_ssh__ " "[SSH]"; fi; if [ -r "$HOME/usr/git-prompt/git-prompt.sh" ]; then printf "__format_branch__" "$(__git_ps1 "(%s) ")"; fi; printf "__format_cd__ " "%~"; if [ $__exit_status -eq 0 ]; then printf "__format_good_status__ " "%#"; else printf "__format_bad_status__ " "%#"; fi)' \
           | sed -e 's/__format_user__/'"$(color_term_raw -b magenta none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_host__/'"$(color_term_raw -b magenta none '%s' | wrap_control_sequence_for_prompt)"'/' \
                 -e 's/__format_ssh__/'"$(color_term_raw -b cyan none '%s' | wrap_control_sequence_for_prompt)"'/' \
